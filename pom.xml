@@ -19,6 +19,7 @@
 
 	<properties>
 		<java.version>17</java.version>
+		<jpa-hibernate.version>3.0.5</jpa-hibernate.version>
 	</properties>
 
 	<dependencies>
@@ -32,6 +33,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${jpa-hibernate.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId> <!-- when compiled generate file inside of JAR to help IDE auto-complete in properties files  -->
