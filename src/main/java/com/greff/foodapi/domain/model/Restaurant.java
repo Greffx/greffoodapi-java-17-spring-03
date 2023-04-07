@@ -17,13 +17,13 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "restaurant_name")
+    @Column(name = "restaurant_name", nullable = false)
     private String name;
 
-    @Column(name = "delivery_tax")
+    @Column(name = "delivery_tax", nullable = false)
     private BigDecimal deliveryTax;
 
     @ManyToOne //many restaurants own one kitchen
-    @JoinColumn(name = "kitchen_id_code") //this is the way to change the mapping name of joined columns
+    @JoinColumn(name = "kitchen_id_code", nullable = false) //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
 }

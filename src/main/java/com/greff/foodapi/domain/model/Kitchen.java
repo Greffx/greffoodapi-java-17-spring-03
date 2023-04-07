@@ -12,9 +12,9 @@ public class Kitchen {
 
     @EqualsAndHashCode.Include //that is how we choose an attribute to be used in hashcode and equals
     @Id //id of kitchen, say this attribute will represent id of entity
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //to configure how is going to be generation of id. Receive property 'strategy', will be IDENTITY, given responsibility to SQL to be the provider, it will do id generation for us
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //to configure how is going to be generation of id. Receive property 'STRATEGY', will be IDENTITY, given responsibility to SQL to be the provider, it will do id generation for us
     private Long id;
 
-    @Column(name = "kitchen_name") //column map a attribute, can change name
+    @Column(name = "kitchen_name", nullable = false) //column map an attribute, can change name, using nullable = false, attribute will not be accepted as null no more
     private String name;
 }
