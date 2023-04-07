@@ -26,4 +26,8 @@ public class Restaurant {
     @ManyToOne //many restaurants own one kitchen
     @JoinColumn(name = "kitchen_id_code", nullable = false) //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
+
+    @ManyToOne
+    @JoinColumn(name = "payment_method_id", nullable = false)
+    private PaymentMethod paymentMethod;
 }
