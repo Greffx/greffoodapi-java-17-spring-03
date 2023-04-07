@@ -7,3 +7,5 @@ public interface KitchenRepository extends JpaRepository<Kitchen, Long> { //repo
 }
 
 //repository is to be in domain level
+//standard repository should clone a collection, like with method signature, like 'create', should be 'add' or 'find', should be 'findById or something'
+//not should repository per entity/table, should only create repository per AGGREGATE ROOT, it's standard, a rule, should only be AGGREGATE ROOT repositories
