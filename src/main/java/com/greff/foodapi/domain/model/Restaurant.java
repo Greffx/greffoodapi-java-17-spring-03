@@ -22,4 +22,8 @@ public class Restaurant {
 
     @Column(name = "delivery_tax")
     private BigDecimal deliveryTax;
+
+    @ManyToOne //many restaurants own one kitchen
+    @JoinColumn(name = "kitchen_id_code") //this is the way to change the mapping name of joined columns
+    private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
 }
