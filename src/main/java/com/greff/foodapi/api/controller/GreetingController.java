@@ -1,4 +1,4 @@
-package com.greff.foodapi.rest.controller;
+package com.greff.foodapi.api.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
