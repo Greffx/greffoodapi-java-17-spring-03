@@ -31,6 +31,7 @@ public class KitchenController {
     @GetMapping("/{id}") //This is specification, we need this because can't have 2 endpoints with same path.
                             //problem with ambiguous endpoints with same URL path "/{can be any other name in here}", that is a placeholder and will bind with our method param 'id'
                             //with annotation PathVariable, means that will be required to have that id and will do correctly binding part
+                            //this can be called as a singleton resource, that means is something that is exposed in web
     public ResponseEntity<Kitchen> getKitchen(@PathVariable Long id) {
         return ResponseEntity.ok(kitchenService.findById(id));
     }
