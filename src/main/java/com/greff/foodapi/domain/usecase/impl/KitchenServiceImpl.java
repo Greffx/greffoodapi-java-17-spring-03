@@ -19,4 +19,9 @@ public class KitchenServiceImpl implements KitchenService {
     public List<Kitchen> findAll() {
         return kitchenRepository.findAll(); //the return will be a list of kitchens that we got with repository
     }
+
+    @Override
+    public Kitchen findById(Long id) {
+        return kitchenRepository.findById(id).orElseThrow();
+    }
 }
