@@ -3,10 +3,8 @@ package com.greff.foodapi.api.controller; //api package is to controllers and mo
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -38,5 +36,12 @@ public class KitchenController {
     public ResponseEntity<Kitchen> getKitchen(@PathVariable Long id) { //ResponseEntity represents HTTP response, which can have an instance of object of some type, ResponseEntity<Type>
         return ResponseEntity.ok(kitchenService.findById(id)); //it is a builder, has some methods, it means that we can build our response, like ok() return 200 ok status http.
         //inside (here) is the body response, with that response got payload singleton response or could be a collection resource
+    }
+
+    @PostMapping//need to map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
+    public ResponseEntity<Kitchen> create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
+        //annotation RequestBody means that param 'kitchen' will receive body of request, transformation of body JSON and bind with 'kitchen' instance
+        Kitchen kitchen1 = kitchenService.addKitchen(kitchen);
+        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(kitchen1.getId()).toUri()).body(kitchen1);
     }
 }
