@@ -25,4 +25,9 @@ public class KitchenServiceImpl implements KitchenService {
     public Kitchen findById(Long id) {
         return kitchenRepository.findById(id).orElseThrow(() -> new NotFoundObjectException("This object was not found"));
     }
+
+    @Override
+    public Kitchen addKitchen(Kitchen kitchen) {
+        return kitchenRepository.save(kitchen);
+    }
 }

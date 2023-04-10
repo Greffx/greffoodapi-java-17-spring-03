@@ -7,6 +7,6 @@ import java.util.List;
 public interface KitchenService {
 
     List<Kitchen> findAll();
-
     Kitchen findById(Long id);
+    Kitchen addKitchen(Kitchen kitchen);
 }
