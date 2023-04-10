@@ -3,6 +3,7 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.usecase.KitchenService;
+import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,6 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public Kitchen findById(Long id) {
-        return kitchenRepository.findById(id).orElseThrow();
+        return kitchenRepository.findById(id).orElseThrow(() -> new NotFoundObjectException("This object was not found"));
     }
 }
