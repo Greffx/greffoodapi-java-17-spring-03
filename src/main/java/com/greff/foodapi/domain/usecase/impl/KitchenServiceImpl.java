@@ -47,7 +47,7 @@ public class KitchenServiceImpl implements KitchenService {
         try {
             findById(id);
             kitchenRepository.deleteById(id);
-        } catch (DataIntegrityViolationException e) { //structure exception, can be treated in here
+        } catch (DataIntegrityViolationException e) { //structure exception, can be treated in here, this exception happens when entity object is inserted in another objects entities
             throw new EntityInUseException("Can't remove a kitchen with data attached to it"); //customized exception to treat some specific problems
         }
     }
