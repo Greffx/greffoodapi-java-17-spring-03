@@ -2,9 +2,12 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.usecase.StateService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
+import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -19,7 +22,39 @@ public class StateController {
     }
 
     @GetMapping
-    public List<State> getList() { //It's ok to use ResponseEntity, when we need to modify a response of some request, but when we don't need, it's ok to not use too
+    public List<State> findAll() {
         return stateService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public State findById(@PathVariable Long id) {
+        return stateService.findById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<State> createState(@RequestBody State state, UriComponentsBuilder builder) {
+        State state1 = stateService.create(state);
+        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(state1.getId()).toUri()).body(state1);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<State> updateState(@RequestBody State state, @PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(stateService.update(state, id));
+        } catch (NotFoundObjectException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteState(@PathVariable Long id) {
+        try {
+            stateService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityInUseException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (NotFoundObjectException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
