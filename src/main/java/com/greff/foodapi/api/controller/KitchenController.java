@@ -26,7 +26,7 @@ public class KitchenController {
 
     @GetMapping
     //need to map method, getMapping means that requests with verb http 'GET' will use this method
-    public ResponseEntity<List<Kitchen>> getList() { //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
+    public ResponseEntity<List<Kitchen>> findAll() { //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
         //this can be called as a collection of resources, that means is something that is exposed in web
         //resource to be reached, need to be id by a URI, we need a URL to request, using http protocol
         return ResponseEntity.ok(kitchenService.findAll());
