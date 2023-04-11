@@ -2,7 +2,6 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.usecase.StateService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +19,7 @@ public class StateController {
     }
 
     @GetMapping
-    public ResponseEntity<List<State>> getList() {
-        return ResponseEntity.ok().body(stateService.findAll());
+    public List<State> getList() { //It's ok to use ResponseEntity, when we need to modify a response of some request, but when we don't need, it's ok to not use too
+        return stateService.findAll();
     }
 }
