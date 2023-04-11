@@ -53,4 +53,16 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         return restaurantRepository.save(restaurant);
     }
+
+    @Override
+    public Restaurant update(Restaurant restaurant, Long id) {
+        Restaurant restaurantToChange = findById(id);
+
+        restaurantToChange.setName(restaurant.getName());
+        restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
+        restaurantToChange.setKitchen(restaurant.getKitchen());
+        restaurantToChange.setPaymentMethod(restaurant.getPaymentMethod());
+
+        return create(restaurantToChange);
+    }
 }
