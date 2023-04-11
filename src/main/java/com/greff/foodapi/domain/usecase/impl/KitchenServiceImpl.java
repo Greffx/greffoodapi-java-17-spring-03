@@ -30,4 +30,16 @@ public class KitchenServiceImpl implements KitchenService {
     public Kitchen addKitchen(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
     }
+
+    @Override
+    public Kitchen updateKitchen(Kitchen kitchen, Long id) {
+        Kitchen kitchen1 = findById(id);
+        return kitchenRepository.save(updateMethod(kitchen1, kitchen));
+
+    }
+
+    private Kitchen updateMethod(Kitchen kitchenToBeChange, Kitchen kitchen) {
+        kitchenToBeChange.setName(kitchen.getName());
+        return kitchenToBeChange;
+    }
 }
