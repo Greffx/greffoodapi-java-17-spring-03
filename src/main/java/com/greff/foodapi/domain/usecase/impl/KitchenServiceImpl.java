@@ -1,14 +1,16 @@
-package com.greff.foodapi.domain.usecase.impl;
+package com.greff.foodapi.domain.usecase.impl; //service domain is without state and do tasks to domain, like behavior of application, business rules and such
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.usecase.KitchenService;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Service //it's a @component, to define Domain-Driven Design, DDD. To id better, to see that is a service class
 public class KitchenServiceImpl implements KitchenService {
 
     private final KitchenRepository kitchenRepository; //injection of repository, to get crud methods of this
@@ -45,7 +47,12 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public void deleteById(Long id) {
-        if (findById(id) != null) kitchenRepository.deleteById(id);
+        findById(id);
+        try {
+            kitchenRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) { //structure exception, can be treated in here
+            throw new EntityInUseException("Can't remove a kitchen with data attached to it"); //customized exception to treat some specific problems
+        }
     }
 
 }
