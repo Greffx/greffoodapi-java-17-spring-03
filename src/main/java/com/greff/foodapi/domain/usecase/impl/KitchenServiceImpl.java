@@ -42,4 +42,10 @@ public class KitchenServiceImpl implements KitchenService {
         kitchenToBeChange.setName(kitchen.getName());
         return kitchenToBeChange;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        if (findById(id) != null) kitchenRepository.deleteById(id);
+    }
+
 }
