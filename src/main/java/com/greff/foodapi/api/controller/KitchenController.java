@@ -2,6 +2,8 @@ package com.greff.foodapi.api.controller; //api package is to controllers and mo
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,7 +24,8 @@ public class KitchenController {
         this.kitchenService = kitchenService;
     }
 
-    @GetMapping//need to map method, getMapping means that requests with verb http 'GET' will use this method
+    @GetMapping
+    //need to map method, getMapping means that requests with verb http 'GET' will use this method
     public ResponseEntity<List<Kitchen>> getList() { //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
         //this can be called as a collection of resources, that means is something that is exposed in web
         //resource to be reached, need to be id by a URI, we need a URL to request, using http protocol
@@ -50,6 +53,17 @@ public class KitchenController {
     //map method, PutMapping means that requests with verb http 'PUT' will use this method, will update obj based on id
     public ResponseEntity<Kitchen> update(@RequestBody Kitchen kitchen, @PathVariable Long id) {
         return ResponseEntity.ok(kitchenService.updateKitchen(kitchen, id));
+    }
+
+    @DeleteMapping("/{id}")
+    //map method, DeleteMapping means that requests with verb http 'DELETE' will use this method, will delete obj based on id
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        try {
+            kitchenService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
     }
 
 }
