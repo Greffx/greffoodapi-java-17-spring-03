@@ -3,6 +3,7 @@ package com.greff.foodapi.api.controller;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
  import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -41,6 +42,12 @@ public class RestaurantController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable Long id) {
+        try {
+            restaurantService.findById(id);
+        } catch (NotFoundObjectException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
         try {
             return ResponseEntity.ok(restaurantService.update(restaurant, id));
         } catch (NotFoundObjectException e) {
