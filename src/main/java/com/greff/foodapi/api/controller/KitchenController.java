@@ -2,7 +2,7 @@ package com.greff.foodapi.api.controller; //api package is to controllers and mo
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
-import org.springframework.dao.DataIntegrityViolationException;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import java.util.List;
 //controller needs to be mapped, those requests need to found their right controller, this annotation does it
 public class KitchenController {
 
-    private final KitchenService kitchenService; //injection of kitchen service, with the interface type, to be less coupled as possible,
+    private final KitchenService kitchenService; //injection of instance of kitchen service, with the interface type, to be less coupled as possible,
 
     //always good to inject interfaces than coupled classes, but if there is no other way, do with the simple type
     public KitchenController(KitchenService kitchenService) {
@@ -61,9 +61,8 @@ public class KitchenController {
         try {
             kitchenService.deleteById(id);
             return ResponseEntity.noContent().build();
-        } catch (DataIntegrityViolationException e) {
+        } catch (EntityInUseException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
-
 }
