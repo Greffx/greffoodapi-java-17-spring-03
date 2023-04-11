@@ -36,8 +36,8 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public Kitchen updateKitchen(Kitchen kitchen, Long id) {
-        Kitchen kitchen1 = findById(id);
-        return addKitchen(updateMethod(kitchen1, kitchen));
+        Kitchen kitchenToChange = findById(id);
+        return addKitchen(updateMethod(kitchenToChange, kitchen));
 
     }
 
