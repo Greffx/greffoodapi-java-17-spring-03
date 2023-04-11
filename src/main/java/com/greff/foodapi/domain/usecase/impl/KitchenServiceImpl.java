@@ -36,7 +36,7 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public Kitchen updateKitchen(Kitchen kitchen, Long id) {
         Kitchen kitchen1 = findById(id);
-        return kitchenRepository.save(updateMethod(kitchen1, kitchen));
+        return addKitchen(updateMethod(kitchen1, kitchen));
 
     }
 
@@ -47,12 +47,11 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public void deleteById(Long id) {
-        findById(id);
         try {
+            findById(id);
             kitchenRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) { //structure exception, can be treated in here
             throw new EntityInUseException("Can't remove a kitchen with data attached to it"); //customized exception to treat some specific problems
         }
     }
-
 }
