@@ -37,13 +37,9 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public Kitchen updateKitchen(Kitchen kitchen, Long id) {
         Kitchen kitchenToChange = findById(id);
-        return addKitchen(updateMethod(kitchenToChange, kitchen));
+        kitchenToChange.setName(kitchen.getName());
+        return addKitchen(kitchenToChange);
 
-    }
-
-    private Kitchen updateMethod(Kitchen kitchenToBeChange, Kitchen kitchen) {
-        kitchenToBeChange.setName(kitchen.getName());
-        return kitchenToBeChange;
     }
 
     @Override
