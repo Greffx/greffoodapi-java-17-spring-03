@@ -22,7 +22,7 @@ public class KitchenController {
         this.kitchenService = kitchenService;
     }
 
-    @GetMapping()//need to map method, getMapping means that requests with verb http 'GET' will use this method
+    @GetMapping//need to map method, getMapping means that requests with verb http 'GET' will use this method
     public ResponseEntity<List<Kitchen>> getList() { //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
         //this can be called as a collection of resources, that means is something that is exposed in web
         //resource to be reached, need to be id by a URI, we need a URL to request, using http protocol
@@ -31,17 +31,25 @@ public class KitchenController {
 
     @GetMapping("/{id}") //This is specification, we need this because can't have 2 endpoints with same path.
     //problem with ambiguous endpoints with same URL path "/{can be any other name in here}", that is a placeholder and will bind with our method param 'id'
-    //with annotation PathVariable, means that will be required to have that id and will do correctly binding part
+    //with annotation '@PathVariable', means that will be required to have that id and will do correctly binding part
     //this can be called as a singleton resource, that means is something that is exposed in web
     public ResponseEntity<Kitchen> getKitchen(@PathVariable Long id) { //ResponseEntity represents HTTP response, which can have an instance of object of some type, ResponseEntity<Type>
         return ResponseEntity.ok(kitchenService.findById(id)); //it is a builder, has some methods, it means that we can build our response, like ok() return 200 ok status http.
         //inside (here) is the body response, with that response got payload singleton response or could be a collection resource
     }
 
-    @PostMapping//need to map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
+    @PostMapping
+    //map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
     public ResponseEntity<Kitchen> create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
         //annotation RequestBody means that param 'kitchen' will receive body of request, transformation of body JSON and bind with 'kitchen' instance
         Kitchen kitchen1 = kitchenService.addKitchen(kitchen);
         return ResponseEntity.created(builder.path("/{id}").buildAndExpand(kitchen1.getId()).toUri()).body(kitchen1);
     }
+
+    @PutMapping("/{id}")
+    //map method, PutMapping means that requests with verb http 'PUT' will use this method, will update obj based on id
+    public ResponseEntity<Kitchen> update(@RequestBody Kitchen kitchen, @PathVariable Long id) {
+        return ResponseEntity.ok(kitchenService.updateKitchen(kitchen, id));
+    }
+
 }
