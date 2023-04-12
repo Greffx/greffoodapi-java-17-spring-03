@@ -48,6 +48,11 @@ public class KitchenController {
         return ResponseEntity.ok(kitchenService.findByName(name));
     }
 
+    @GetMapping("/search/exists")
+    public ResponseEntity<Boolean> getKitchenIfExists(@RequestParam String name) {
+        return ResponseEntity.ok(kitchenService.findByIfExistsName(name));
+    }
+
     @PostMapping
     //map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
     public ResponseEntity<Kitchen> create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
