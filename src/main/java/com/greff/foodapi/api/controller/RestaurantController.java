@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,16 @@ public class RestaurantController {
     @GetMapping("/{id}")
     public ResponseEntity<Restaurant> findById(@PathVariable Long id) {
         return ResponseEntity.ok(restaurantService.findById(id));
+    }
+
+    @GetMapping("/search/tax/")
+    public ResponseEntity<List<Restaurant>> findByTax(BigDecimal lower, BigDecimal higher) {
+        return ResponseEntity.ok(restaurantService.findByDeliveryTax(lower, higher));
+    }
+
+    @GetMapping("/search/name/kitchen-id/")
+    public ResponseEntity<List<Restaurant>> findByNameAndKitchen(String name, Long kitchenId) {
+        return ResponseEntity.ok(restaurantService.findByNameAndKitchen(name, kitchenId));
     }
 
     @PostMapping
