@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id).orElseThrow(() ->
                 new NotFoundObjectException(String.format("Restaurant with id %d, not found", id)));
+    }
+
+    @Override
+    public List<Restaurant> findByDeliveryTax(BigDecimal lower, BigDecimal higher) {
+        return restaurantRepository.findByDeliveryTaxGreaterThanEqualAndDeliveryTaxLessThanEqual(lower, higher);
+    }
+
+    @Override
+    public List<Restaurant> findByNameAndKitchen(String name, Long kitchenId) {
+        return restaurantRepository.findByNameContainingAndKitchenId(name, kitchenId);
     }
 
     @Override
