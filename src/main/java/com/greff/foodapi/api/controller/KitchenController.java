@@ -41,6 +41,11 @@ public class KitchenController {
         //inside (here) is the body response, with that response got payload singleton response or could be a collection resource
     }
 
+    @GetMapping("/search/") //Mapping method to getMethod, adding one more path to URI
+    public ResponseEntity<List<Kitchen>> getKitchenByName(@RequestParam String name) { //This param will not be received by Variable path, will come as Query param, can be null, so RequestParam make binding with var, self-explained, like ?name=<nameOfYourChoice>
+        return ResponseEntity.ok(kitchenService.findByName(name));
+    }
+
     @PostMapping
     //map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
     public ResponseEntity<Kitchen> create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
