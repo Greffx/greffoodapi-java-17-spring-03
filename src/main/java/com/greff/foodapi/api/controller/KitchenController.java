@@ -42,7 +42,9 @@ public class KitchenController {
     }
 
     @GetMapping("/search/") //Mapping method to getMethod, adding one more path to URI
-    public ResponseEntity<List<Kitchen>> getKitchenByName(@RequestParam String name) { //This param will not be received by Variable path, will come as Query param, can be null, so RequestParam make binding with var, self-explained, like ?name=<nameOfYourChoice>
+    //This param will not be received by Variable path, will come as Query param, can be null, so RequestParam make binding with var, self-explained, like ?name=<nameOfYourChoice>
+    //RequestParam is optional in here, when is query param bind is auto, you can remove it, if you want it
+    public ResponseEntity<List<Kitchen>> getKitchenByName(@RequestParam String name) {
         return ResponseEntity.ok(kitchenService.findByName(name));
     }
 
