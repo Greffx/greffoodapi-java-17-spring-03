@@ -1,5 +1,6 @@
 package com.greff.foodapi.domain.usecase.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.PaymentMethod;
 import com.greff.foodapi.domain.model.Restaurant;
@@ -9,8 +10,11 @@ import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
@@ -64,5 +68,22 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantToChange.setPaymentMethod(restaurant.getPaymentMethod());
 
         return create(restaurantToChange);
+    }
+
+    @Override
+    public void patchFields(Map<String, Object> fields, Restaurant restaurant) { //this method objective is to substitute restaurant attributes for fields attributes
+        ObjectMapper objectMapper = new ObjectMapper(); //Of JACKSON, Responsible to convert JSON to Java, Java to JSON
+        Restaurant restaurantSource = objectMapper.convertValue(fields, Restaurant.class); //Create of fields(source data), to Restaurant type
+
+        fields.forEach((nameProperty, valueProperty) -> {
+            //imagine passing field at request and this collection will search at first param, which field is equal. Like body request will be 'name', field will find attribute to match
+            Field field = ReflectionUtils.findField(Restaurant.class, nameProperty);
+            field.setAccessible(true); //private fields can be accessed now
+
+            Object newValue = ReflectionUtils.getField(field, restaurantSource); //getting field of restaurantSource and setting field with this get. Get will get value of Field
+
+            //means that will get propertyName and change property value of target, for valueProperty
+            ReflectionUtils.setField(field, restaurant, newValue);
+        });
     }
 }
