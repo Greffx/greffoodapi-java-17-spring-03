@@ -1,9 +1,10 @@
-package com.greff.foodapi.domain.usecase;
+package com.greff.foodapi.domain.usecase.impl;
 
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.repository.CityRepository;
 import com.greff.foodapi.domain.repository.StateRepository;
+import com.greff.foodapi.domain.usecase.CityService;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.springframework.dao.DataIntegrityViolationException;
