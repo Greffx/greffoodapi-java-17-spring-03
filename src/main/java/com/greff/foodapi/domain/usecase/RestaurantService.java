@@ -16,6 +16,10 @@ public interface RestaurantService {
 
     List<Restaurant> findByNameAndKitchen(String name, Long kitchenId);
 
+    List<Restaurant> findTwoRestaurantsByName(String name);
+
+    Restaurant findFirstOneByName(String name);
+
     Restaurant create(Restaurant restaurant);
 
     Restaurant update(Restaurant restaurant, Long id);
