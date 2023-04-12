@@ -52,6 +52,11 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.findTwoRestaurantsByName(name));
     }
 
+    @GetMapping("/search/how-many-restaurants-per-kitchen-id/")
+    public ResponseEntity<Integer> howManyRestaurantsPerKitchen(Long kitchenId) {
+        return ResponseEntity.ok(restaurantService.findHowManyRestaurantsPerKitchen(kitchenId));
+    }
+
     @PostMapping
     public ResponseEntity<?> createRestaurant(@RequestBody Restaurant restaurant, UriComponentsBuilder builder) { //? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
         try {
