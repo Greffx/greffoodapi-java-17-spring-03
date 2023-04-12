@@ -2,13 +2,14 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
- import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurants")
@@ -55,4 +56,17 @@ public class RestaurantController {
         }
     }
 
+    @PatchMapping("/{id}")
+    //map to 'PATCH' endpoint, which means that don't need to update everything, like 'PUT' type, that needs everything
+    public ResponseEntity<?> patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id) {
+        //Map<String, Object> string is key like 'NAME', 'TAX', 'KITCHEN', and Object is value of key, like 'RESTAURANT NAME', 'VALUE OF TAX' and 'KITCHEN NAME'
+        //Will only map values that will come of request body, so user can work with attributes that he wants to alter.This means that he must work only with things that he wants to work
+        Restaurant restaurant = restaurantService.findById(id);
+
+        if (restaurant == null) return ResponseEntity.notFound().build();
+
+        restaurantService.patchFields(fields, restaurant);
+
+        return updateRestaurant(restaurant, id);
+    }
 }
