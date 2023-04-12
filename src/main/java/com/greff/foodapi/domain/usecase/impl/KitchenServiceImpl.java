@@ -51,4 +51,9 @@ public class KitchenServiceImpl implements KitchenService {
             throw new EntityInUseException("Can't remove a kitchen with data attached to it"); //customized exception to treat some specific problems
         }
     }
+
+    @Override
+    public List<Kitchen> findByName(String name) {
+        return kitchenRepository.findByName(name);
+    }
 }

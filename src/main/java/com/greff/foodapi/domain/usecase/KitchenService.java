@@ -15,4 +15,6 @@ public interface KitchenService {
     Kitchen updateKitchen(Kitchen kitchen, Long id);
 
     void deleteById(Long id);
+
+    List<Kitchen> findByName(String name);
 }
