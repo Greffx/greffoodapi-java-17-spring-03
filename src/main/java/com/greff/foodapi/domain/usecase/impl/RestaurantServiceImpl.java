@@ -63,6 +63,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public Integer findHowManyRestaurantsPerKitchen(Long kitchenId) {
+        return restaurantRepository.countByKitchenId(kitchenId);
+    }
+
+    @Override
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
         Long paymentMethodId = restaurant.getPaymentMethod().getId();

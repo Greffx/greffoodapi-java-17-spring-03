@@ -23,5 +23,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     //query of 2 first with name like string 'name'
     List<Restaurant> streamTop2ByNameContaining(String name);
 
+    //query how many restaurants is there with kitchen id
+    Integer countByKitchenId(Long kitchenId);
+
     //can be returned optionals, lists, hashmaps, others collections, but needs to make sense
 }

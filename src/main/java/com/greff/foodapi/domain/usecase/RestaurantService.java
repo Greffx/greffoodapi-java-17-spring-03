@@ -20,6 +20,8 @@ public interface RestaurantService {
 
     Restaurant findFirstOneByName(String name);
 
+    Integer findHowManyRestaurantsPerKitchen(Long kitchenId);
+
     Restaurant create(Restaurant restaurant);
 
     Restaurant update(Restaurant restaurant, Long id);
