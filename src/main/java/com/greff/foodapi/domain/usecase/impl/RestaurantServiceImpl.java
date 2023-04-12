@@ -43,12 +43,12 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public List<Restaurant> findByDeliveryTax(BigDecimal lower, BigDecimal higher) {
-        return restaurantRepository.queryByDeliveryTaxGreaterThanEqualAndDeliveryTaxLessThanEqual(lower, higher);
+        return restaurantRepository.searchTaxByLowerTaxAndHigherTax(lower, higher);
     }
 
     @Override
     public List<Restaurant> findByNameAndKitchen(String name, Long kitchenId) {
-        return restaurantRepository.findByNameContainingAndKitchenId(name, kitchenId);
+        return restaurantRepository.searchByNameKitchenId(name, kitchenId);
     }
 
     @Override
