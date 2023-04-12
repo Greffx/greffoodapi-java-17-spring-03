@@ -30,6 +30,11 @@ public class KitchenServiceImpl implements KitchenService {
     }
 
     @Override
+    public Boolean findByIfExistsName(String name) { //query which returns boolean, can be used for business rules or something that needs validation, very util
+        return kitchenRepository.existsByName(name);
+    }
+
+    @Override
     public Kitchen addKitchen(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
     }

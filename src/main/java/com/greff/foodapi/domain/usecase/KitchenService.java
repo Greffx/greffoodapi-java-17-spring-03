@@ -10,6 +10,8 @@ public interface KitchenService {
 
     Kitchen findById(Long id);
 
+    Boolean findByIfExistsName(String name);
+
     Kitchen addKitchen(Kitchen kitchen);
 
     Kitchen updateKitchen(Kitchen kitchen, Long id);

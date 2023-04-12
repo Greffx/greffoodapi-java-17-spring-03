@@ -16,6 +16,8 @@ public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
     @Query("SELECT k FROM Kitchen k WHERE lower(k.name) LIKE lower(concat( '%', :name, '%')) ORDER BY k.name DESC")
     List<Kitchen> findByName(@Param("name") String name); //@Param makes binding of name with :name up there 'findBy' is prefix, exist other and after is what you want
 
+    //this is with prefix 'EXISTS' which will return boolean
+    boolean existsByName(String name);
 }
 
 //repository is to be in domain level
