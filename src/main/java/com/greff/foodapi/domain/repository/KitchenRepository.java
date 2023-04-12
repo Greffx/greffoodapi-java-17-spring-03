@@ -11,9 +11,10 @@ import java.util.List;
 //This type of repository of SDJ is to resume boilerplate code, boilerplate - repetitive code
 public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
     //LIKE means that contains part of a name, '%' joker character, will complete with that :name, ex: if receive letter 'a' will get a list of kitchens that contain letter 'a'
-    @Query("SELECT k FROM Kitchen k WHERE lower(k.name) LIKE lower(concat( '%', :name, '%')) ORDER BY k.name DESC")
+    //Containing is equal to LIKE, containing would be a flag
     //JPQL java Persistence Query Language
-    List<Kitchen> findByName(@Param("name") String name); //@Param makes binding of name with :name up there findBy is prefix and after is what you want
+    @Query("SELECT k FROM Kitchen k WHERE lower(k.name) LIKE lower(concat( '%', :name, '%')) ORDER BY k.name DESC")
+    List<Kitchen> findByName(@Param("name") String name); //@Param makes binding of name with :name up there 'findBy' is prefix, exist other and after is what you want
 
 }
 
