@@ -25,7 +25,7 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public Kitchen findById(Long id) {
-        return kitchenRepository.findById(id).orElseThrow(() ->
+        return kitchenRepository.findById(id).orElseThrow(() -> //this orElse means like 'if it's empty inside, throw this exception, with lambda and pass only constructor of exception
                 new NotFoundObjectException("This object was not found"));
     }
 
