@@ -6,10 +6,10 @@ import com.greff.foodapi.domain.repository.RestaurantRepositoryCustomizedQueries
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-import static com.greff.foodapi.infrastructure.repository.spec.RestaurantSpecs.withFreeDeliveryTax;
-import static com.greff.foodapi.infrastructure.repository.spec.RestaurantSpecs.withSimilarName;
+import static com.greff.foodapi.infrastructure.repository.spec.RestaurantSpecs.*;
 
 @Repository //bean to validate as a repository too
 //class will inherit this interface and impl methods in there
@@ -33,4 +33,10 @@ public class RestaurantRepositoryImpl /*z*/ implements RestaurantRepositoryCusto
         //'AND' is a specification too, to bind specifications
         return restaurantRepository.findAll(withFreeDeliveryTax().and(withSimilarName(name)));
     }
+
+    @Override
+    public List<Restaurant> searchTaxByLowerTaxAndHigherTax(BigDecimal lower, BigDecimal higher) {
+        return restaurantRepository.findAll(searchTaxByLowerTax(lower).and(searchTaxByHigherTax(higher)));
+    }
+
 }
