@@ -11,9 +11,9 @@ INSERT INTO tb_cities (city_name, state_id) VALUES ('Curitiba', 2);
 INSERT INTO tb_cities (city_name, state_id) VALUES ('Viamão', 1);
 INSERT INTO tb_cities (city_name, state_id) VALUES ('Campo Largo', 2);
 
-INSERT INTO tb_payment_methods (id, description) VALUES (1, 'this method to pay will be like cash');
-INSERT INTO tb_payment_methods (id, description) VALUES (2, 'this method to pay will be like credit card');
-INSERT INTO tb_payment_methods (id, description) VALUES (3, 'this method to pay will be like debit card');
+INSERT INTO tb_payment_methods (id, description) VALUES (1, 'cash');
+INSERT INTO tb_payment_methods (id, description) VALUES (2, 'credit card');
+INSERT INTO tb_payment_methods (id, description) VALUES (3, 'debit card');
 
 INSERT INTO tb_permissions (id, name, description) VALUES (1, 'consult of products', 'this user got permission to see products');
 INSERT INTO tb_permissions (id, name, description) VALUES (2, 'consult of states', 'this user got permission to see states');
