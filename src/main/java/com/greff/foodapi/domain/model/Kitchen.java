@@ -1,5 +1,5 @@
 package com.greff.foodapi.domain.model;
-//DOMAIN LAYER OF DDD pattern - got models/entities, - got repositories interfaces, and - got services with business rules implementations
+//DOMAIN LAYER OF DDD pattern - domain model: got models/entities, - got repositories interfaces, and - got services with business rules implementations
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

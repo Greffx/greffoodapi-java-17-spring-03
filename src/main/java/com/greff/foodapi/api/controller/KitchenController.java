@@ -1,4 +1,5 @@
 package com.greff.foodapi.api.controller; //api package is to controllers and more other types
+//Resource Representation domain
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
