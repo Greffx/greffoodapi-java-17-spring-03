@@ -1,5 +1,6 @@
 package com.greff.foodapi.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,6 +32,7 @@ public class Restaurant {
     //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
 
+    @JsonIgnore
     //many restaurants owns many payment methods
     @ManyToMany
     //@JoinTable(name = "nameOfIntermediateClass") altering name of class that will be needed it in @ManyToMany association
