@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.KitchenRepository;
-import com.greff.foodapi.domain.repository.PaymentMethodRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
@@ -21,12 +20,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final KitchenRepository kitchenRepository;
-    private final PaymentMethodRepository paymentMethodRepository;
 
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, KitchenRepository kitchenRepository, PaymentMethodRepository paymentMethodRepository) {
+    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, KitchenRepository kitchenRepository) {
         this.restaurantRepository = restaurantRepository;
         this.kitchenRepository = kitchenRepository;
-        this.paymentMethodRepository = paymentMethodRepository;
     }
 
     @Override
@@ -91,7 +88,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantToChange.setName(restaurant.getName());
         restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
         restaurantToChange.setKitchen(restaurant.getKitchen());
-        restaurantToChange.setPaymentMethods(restaurant.getPaymentMethods());
 
         return create(restaurantToChange);
     }
