@@ -25,5 +25,14 @@ INSERT INTO tb_permissions (id, name, description) VALUES (1, 'consult of produc
 INSERT INTO tb_permissions (id, name, description) VALUES (2, 'consult of states', 'this user got permission to see states');
 INSERT INTO tb_permissions (id, name, description) VALUES (3, 'consult of restaurants', 'this user got permission to see restaurants');
 
-INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (1,1), (1,2), (1,3), (2,1), (2,2), (3,2), (3,3);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (1,1);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (1,2);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (1,3);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (2,1);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (2,2);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (3,2);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (3,3);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (4,1);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (5,2);
+INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (6,1);
 
