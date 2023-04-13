@@ -22,12 +22,12 @@ public class RestaurantSpecs { //this is a utility class, they call this factory
     }
 
     public static Specification<Restaurant> searchTaxByLowerTax(BigDecimal lower) {
-        return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(DELIVERY_TAX), lower));
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get(DELIVERY_TAX), lower));
 
     }
 
     public static Specification<Restaurant> searchTaxByHigherTax(BigDecimal higher) {
-        return ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(DELIVERY_TAX), higher));
+        return ((root, query, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get(DELIVERY_TAX), higher));
     }
 
 }
