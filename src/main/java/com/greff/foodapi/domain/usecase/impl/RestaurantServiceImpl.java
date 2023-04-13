@@ -2,7 +2,6 @@ package com.greff.foodapi.domain.usecase.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greff.foodapi.domain.model.Kitchen;
-import com.greff.foodapi.domain.model.PaymentMethod;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.PaymentMethodRepository;
@@ -75,17 +74,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
-        Long paymentMethodId = restaurant.getPaymentMethod().getId();
 
         Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
                 new NotFoundObjectException(String.format("kitchen with id %d, not found", kitchenId)));
-        restaurant.setKitchen(kitchen);
-
-        PaymentMethod paymentMethod = paymentMethodRepository.findById(paymentMethodId).orElseThrow(() ->
-                new NotFoundObjectException(String.format("payment method with id %d, not found", paymentMethodId)));
 
         restaurant.setKitchen(kitchen);
-        restaurant.setPaymentMethod(paymentMethod);
+        restaurant.setKitchen(kitchen);
 
         return restaurantRepository.save(restaurant);
     }
@@ -97,7 +91,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantToChange.setName(restaurant.getName());
         restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
         restaurantToChange.setKitchen(restaurant.getKitchen());
-        restaurantToChange.setPaymentMethod(restaurant.getPaymentMethod());
+        restaurantToChange.setPaymentMethods(restaurant.getPaymentMethods());
 
         return create(restaurantToChange);
     }
