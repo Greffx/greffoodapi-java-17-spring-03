@@ -2,14 +2,15 @@ package com.greff.foodapi.domain.repository;
 
 import com.greff.foodapi.domain.model.Restaurant;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
-public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+//JpaSpecificationExecutor<Type of class> it got methods as findAll, findOne, count that receives Specifications<Type of class>
+public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, JpaSpecificationExecutor<Restaurant> {
 
     //will query restaurants like DeliveryTax between lowerT >= and biggestT <=
     //method name is not ok to use it, that expose a lot of attributes and entities, is not conventional.
