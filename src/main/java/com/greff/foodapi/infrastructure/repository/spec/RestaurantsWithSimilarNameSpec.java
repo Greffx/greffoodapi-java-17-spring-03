@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.Specification;
 @AllArgsConstructor
 public class RestaurantsWithSimilarNameSpec implements Specification<Restaurant> { //this class represents a restriction, filter with 'like name', 'similar name'
 
-    private String name;
+    private String name; //we used with constructor to get param name
 
     @Override
     public Predicate toPredicate(Root<Restaurant> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
