@@ -22,6 +22,8 @@ public interface RestaurantService {
 
     Integer findHowManyRestaurantsPerKitchen(Long kitchenId);
 
+    List<Restaurant> findWithFreeDeliveryTaxAndWithSimilarName(String name);
+
     Restaurant create(Restaurant restaurant);
 
     Restaurant update(Restaurant restaurant, Long id);
