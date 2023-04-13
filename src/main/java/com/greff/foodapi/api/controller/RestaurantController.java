@@ -65,10 +65,10 @@ public class RestaurantController {
 
     @GetMapping("/search/restaurants-with-free-delivery-tax/")
     public List<Restaurant> howManyRestaurantsPerKitchen(String name) {
-        var withFreeTax = new FreeDeliveryTaxRestaurantsSpec();
-        var withSimilarName = new RestaurantsWithSimilarNameSpec(name);
+        var withFreeTax = new FreeDeliveryTaxRestaurantsSpec();//class that represents specification
+        var withSimilarName = new RestaurantsWithSimilarNameSpec(name);//class that represents specification
 
-        return restaurantRepository.findAll(withFreeTax.and(withSimilarName));
+        return restaurantRepository.findAll(withFreeTax.and(withSimilarName)); //and is a specification too, to bind specifications
     }
 
     @PostMapping
