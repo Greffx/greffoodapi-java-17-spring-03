@@ -34,7 +34,7 @@ public class Restaurant {
     //many restaurants owns many payment methods
     @ManyToMany
     //@JoinTable(name = "nameOfIntermediateClass") altering name of class that will be needed it in @ManyToMany association
-    //when we do this, intermediate table will be created in db
+    //when we do this, intermediate table will be created in db, that's how manyToMany relationships works. they need this class, table.
     //joinColumns defines columns of foreign key in intermediate class that defines restaurant.
     //like if intermediateClass has attribute like 'restaurantId', we need to define this in joinColumns
     //it needs to know which is the name column of foreign key in intermediateClass that represents restaurant
