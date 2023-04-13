@@ -1,0 +1,36 @@
+package com.greff.foodapi.domain.model;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.Data;
+
+@Data
+@Embeddable //it's an embeddable(incorporável) class, can be embedded to other class.
+//This class is a part of another entity. This class is not an entity itself.
+//ALL attributes of this embedded class will be reflected in table of entity of who embedded this class
+//like to another entity borrowed to use your attributes
+public class Address {
+
+    @Column(name = "cep_address")
+    private String cep;
+
+    @Column(name = "publicArea_address")
+    private String publicArea;
+
+    @Column(name = "number_address")
+    private String number;
+
+    @Column(name = "complement_address")
+    private String complement;
+
+    @Column(name = "street_address")
+    private String street;
+
+    @ManyToOne //many address has one city
+    @JoinColumn(name = "address_city_id")
+    private City city;
+
+
+}
