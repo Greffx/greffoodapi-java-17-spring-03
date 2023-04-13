@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-//JpaSpecificationExecutor<Type of class> it got methods as findAll, findOne, count that receives Specifications<Type of class>
+
+//Repository needs to be prepared to receive specification, interface needs to inherit another class JpaSpecificationExecutor<EntityName>.
+//got methods as 'findAll', 'findOne', 'count' that receives Specifications<EntityName> as param that we need to use.
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, JpaSpecificationExecutor<Restaurant> {
 
     //will query restaurants like DeliveryTax between lowerT >= and biggestT <=
