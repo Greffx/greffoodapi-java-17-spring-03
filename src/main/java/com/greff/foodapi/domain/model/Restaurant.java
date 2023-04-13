@@ -24,6 +24,8 @@ public class Restaurant {
     private BigDecimal deliveryTax;
 
     @ManyToOne //many restaurants own one kitchen
+    //it's the owner of bidirectional relationship with kitchen, because it needs the association.
+    // since kitchen could have more than one restaurant, doesn't make sense to create a column
     @JoinColumn(name = "kitchen_id_code", nullable = false) //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
 
