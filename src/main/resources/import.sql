@@ -24,3 +24,5 @@ INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, paym
 INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, payment_method_id) VALUES ('Haiku_Tales', 5.60, 2, 1);
 INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, payment_method_id) VALUES ('SamuraiSushi', 2.50, 2, 2);
 INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, payment_method_id) VALUES ('Indian_Hero', 3.20, 1, 3);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, payment_method_id) VALUES ('Speed Galeto BR', 0, 3, 3);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, payment_method_id) VALUES ('Marmita Do Zé', 0, 3, 3);
