@@ -1,11 +1,9 @@
 package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.Restaurant;
-import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
-import com.greff.foodapi.infrastructure.repository.spec.FreeDeliveryTaxRestaurantsSpec;
-import com.greff.foodapi.infrastructure.repository.spec.RestaurantsWithSimilarNameSpec;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +13,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/restaurants")
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
-    private final RestaurantRepository restaurantRepository;
-
-    public RestaurantController(RestaurantService restaurantService,
-                                RestaurantRepository restaurantRepository) {
-        this.restaurantService = restaurantService;
-        this.restaurantRepository = restaurantRepository;
-    }
 
     @GetMapping
     public ResponseEntity<List<Restaurant>> findAll() {
@@ -64,15 +56,12 @@ public class RestaurantController {
     }
 
     @GetMapping("/search/restaurants-with-free-delivery-tax/")
-    public List<Restaurant> howManyRestaurantsPerKitchen(String name) {
-        var withFreeTax = new FreeDeliveryTaxRestaurantsSpec();//class that represents specification
-        var withSimilarName = new RestaurantsWithSimilarNameSpec(name);//class that represents specification
-
-        return restaurantRepository.findAll(withFreeTax.and(withSimilarName)); //and is a specification too, to bind specifications
+    public List<Restaurant> findWithFreeDeliveryTaxAndWithSimilarName(String name) {
+        return restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createRestaurant(@RequestBody Restaurant restaurant, UriComponentsBuilder builder) { //? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
+    @PostMapping//? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
+    public ResponseEntity<?> createRestaurant(@RequestBody Restaurant restaurant, UriComponentsBuilder builder) {
         try {
             Restaurant restaurant1 = restaurantService.create(restaurant);
             return ResponseEntity.created(builder.path("/{id}").buildAndExpand(restaurant1.getId()).toUri()).body(restaurant1);
