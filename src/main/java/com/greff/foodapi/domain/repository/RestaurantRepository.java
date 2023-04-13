@@ -13,7 +13,8 @@ import java.util.Optional;
 //inherit RestaurantRepositoryCustomizedQueries where created methods to be impl
 //Repository needs to be prepared to receive specification, interface needs to inherit another class JpaSpecificationExecutor<EntityName>.
 //got methods as 'findAll', 'findOne', 'count' that receives Specifications<EntityName> as param that we need to use.
-public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, RestaurantRepositoryCustomizedQueries, JpaSpecificationExecutor<Restaurant> {
+public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, RestaurantRepositoryCustomizedQueries,
+        JpaSpecificationExecutor<Restaurant> {
 
     //will query restaurants like DeliveryTax between lowerT >= and biggestT <=
     //method name is not ok to use it, that expose a lot of attributes and entities, is not conventional.
