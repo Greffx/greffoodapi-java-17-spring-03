@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -26,10 +27,20 @@ public class Restaurant {
     @ManyToOne //many restaurants own one kitchen
     //it's the owner of bidirectional relationship with kitchen, because it needs the association.
     // since kitchen could have more than one restaurant, doesn't make sense to create a column
-    @JoinColumn(name = "kitchen_id_code", nullable = false) //this is the way to change the mapping name of joined columns, exist NULLABLE here to
+    @JoinColumn(name = "kitchen_id_code", nullable = false)
+    //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
 
-    @ManyToOne
-    @JoinColumn(name = "payment_method_id", nullable = false)
-    private PaymentMethod paymentMethod;
+    //many restaurants owns many payment methods
+    @ManyToMany
+    //@JoinTable(name = "nameOfIntermediateClass") altering name of class that will be needed it in @ManyToMany association
+    //joinColumns defines columns of foreign key in intermediate class that defines restaurant.
+    //like if intermediateClass has attribute like 'restaurantId', we need to define this in joinColumns
+    //it needs to know which is the name column of foreign key in intermediateClass that represents restaurant
+    //inverseJoinColumns defines the same thing, but for the other table that we want to make the association
+    //@JoinColumn is to define the name of foreign key, fk
+    @JoinTable(name = "tb_restaurant__payment_method",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
+    private List<PaymentMethod> paymentMethods; //since can have more than 1 method of payment is a collection
 }
