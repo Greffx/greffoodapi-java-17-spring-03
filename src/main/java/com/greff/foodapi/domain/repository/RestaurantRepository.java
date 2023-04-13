@@ -10,9 +10,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+//inherit RestaurantRepositoryCustomizedQueries where created methods to be impl
 //Repository needs to be prepared to receive specification, interface needs to inherit another class JpaSpecificationExecutor<EntityName>.
 //got methods as 'findAll', 'findOne', 'count' that receives Specifications<EntityName> as param that we need to use.
-public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, JpaSpecificationExecutor<Restaurant> {
+public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, RestaurantRepositoryCustomizedQueries, JpaSpecificationExecutor<Restaurant> {
 
     //will query restaurants like DeliveryTax between lowerT >= and biggestT <=
     //method name is not ok to use it, that expose a lot of attributes and entities, is not conventional.
@@ -35,5 +36,5 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, J
     //query how many restaurants is there with kitchen id
     Integer countByKitchenId(Long kitchenId);
 
-    //can be returned optionals, lists, hashmaps, others collections, but needs to make sense
+    //can be returned optionals, lists, hashmaps, others collections, but needs to make sense, those returns and stuff
 }
