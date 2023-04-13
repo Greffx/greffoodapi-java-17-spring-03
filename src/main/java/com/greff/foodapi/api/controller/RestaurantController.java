@@ -1,8 +1,11 @@
 package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.Restaurant;
+import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import com.greff.foodapi.infrastructure.repository.spec.FreeDeliveryTaxRestaurantsSpec;
+import com.greff.foodapi.infrastructure.repository.spec.RestaurantsWithSimilarNameSpec;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +20,12 @@ import java.util.Map;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+    private final RestaurantRepository restaurantRepository;
 
-    public RestaurantController(RestaurantService restaurantService) {
+    public RestaurantController(RestaurantService restaurantService,
+                                RestaurantRepository restaurantRepository) {
         this.restaurantService = restaurantService;
+        this.restaurantRepository = restaurantRepository;
     }
 
     @GetMapping
@@ -55,6 +61,14 @@ public class RestaurantController {
     @GetMapping("/search/how-many-restaurants-per-kitchen-id/")
     public ResponseEntity<Integer> howManyRestaurantsPerKitchen(Long kitchenId) {
         return ResponseEntity.ok(restaurantService.findHowManyRestaurantsPerKitchen(kitchenId));
+    }
+
+    @GetMapping("/search/restaurants-with-free-delivery-tax/")
+    public List<Restaurant> howManyRestaurantsPerKitchen(String name) {
+        var withFreeTax = new FreeDeliveryTaxRestaurantsSpec();
+        var withSimilarName = new RestaurantsWithSimilarNameSpec(name);
+
+        return restaurantRepository.findAll(withFreeTax.and(withSimilarName));
     }
 
     @PostMapping
