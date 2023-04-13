@@ -68,6 +68,11 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    public List<Restaurant> findWithFreeDeliveryTaxAndWithSimilarName(String name) {
+        return restaurantRepository.findWithFreeTaxDelivery(name);
+    }
+
+    @Override
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
         Long paymentMethodId = restaurant.getPaymentMethod().getId();
