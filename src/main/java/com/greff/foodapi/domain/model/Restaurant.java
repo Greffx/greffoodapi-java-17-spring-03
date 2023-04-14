@@ -56,7 +56,7 @@ public class Restaurant {
     private LocalDateTime updateDate;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant") //collection resource owns this relation
     private List<Product> product = new ArrayList<>();
 
 
