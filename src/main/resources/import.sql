@@ -18,7 +18,6 @@ INSERT INTO tb_cities (city_name, state_id) VALUES ('Campo Largo', 2);
 #one restaurant has one address. Address is a embedded type, that's why as no table, just added
 #utc_timestamp takes hour, date now of your machine
 #UTC is a timezone GMT+0, so add more 3 hours, could use GMT-3
-
 INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, cep_address, public_area_address, number_address, complement_address, street_address, city_address_id, creation_date, update_date) VALUES ('Ganesh_Fast_Food', 3.50, 1, '12345-999', 'Near to the elephant', '95', 'center of india', 'cow street', 4, utc_timestamp, utc_timestamp);
 INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Haiku_Tales', 5.60, 2, utc_timestamp, utc_timestamp);
 INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('SamuraiSushi', 2.50, 2, utc_timestamp, utc_timestamp);
@@ -47,3 +46,7 @@ INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VAL
 INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (5,2);
 INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (6,1);
 
+#Relation many produdcts to one restaurant
+INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'goes with a delicous cream', 'Salad', 15, 1);
+INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'goes with a soda and fries', 'Vegan Burguer', 45.20, 3);
+INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'Most fast and worm food piece', 'Pizza slice', 7.45, 2);
