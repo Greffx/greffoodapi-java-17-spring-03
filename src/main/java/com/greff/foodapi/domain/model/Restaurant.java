@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -53,6 +54,10 @@ public class Restaurant {
     //UpdateTimestamp add, inform updateDate will have a Date.now always when updated
     @Column(name = "update_date", nullable = false, columnDefinition = "datetime")
     private LocalDateTime updateDate;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Product> product = new ArrayList<>();
 
 
     @JsonIgnore
