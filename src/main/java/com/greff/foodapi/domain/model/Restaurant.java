@@ -70,7 +70,7 @@ public class Restaurant {
     //it needs to know which is the name column of foreign key in intermediateClass that represents restaurant
     //inverseJoinColumns defines the same thing, but for the other table that we want to make the association
     //@JoinColumn is to define the name of foreign key, fk
-    @JoinTable(name = "tb_restaurant__payment_method",
+    @JoinTable(name = "tb_restaurants__payment_methods",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
     private List<PaymentMethod> paymentMethods; //since can have more than 1 method of payment is a collection
