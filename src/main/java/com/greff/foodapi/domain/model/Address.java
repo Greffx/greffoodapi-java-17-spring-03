@@ -13,10 +13,10 @@ import lombok.Data;
 //like to another entity borrowed to use your attributes
 public class Address {
 
-    @Column(name = "cep_address")
+    @Column(name = "cep_address") //since this will be embedded in another table, need to change the name of column to better understanding when reading there
     private String cep;
 
-    @Column(name = "publicArea_address")
+    @Column(name = "public_area_address")
     private String publicArea;
 
     @Column(name = "number_address")
@@ -29,7 +29,7 @@ public class Address {
     private String street;
 
     @ManyToOne //many address has one city
-    @JoinColumn(name = "address_city_id")
+    @JoinColumn(name = "city_address_id")
     private City city;
 
 
