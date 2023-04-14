@@ -32,6 +32,7 @@ public class Restaurant {
     //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
 
+    @JsonIgnore
     @Embedded //that indicates that this attribute is embedded('incorporado') type, is a part of entity restaurant
     //saying is a part, not a column. will not create a table about it, but its attributes will be created in restaurant table
     private Address address;
