@@ -46,7 +46,7 @@ INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VAL
 INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (5,2);
 INSERT INTO tb_restaurant__payment_method (restaurant_id, payment_method_id) VALUES (6,1);
 
-#Relation many produdcts to one restaurant
-INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'goes with a delicous cream', 'Salad', 15, 1);
-INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'goes with a soda and fries', 'Vegan Burguer', 45.20, 3);
+#Relation many products to one restaurant
+INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'goes with a delicious cream', 'Salad', 15, 1);
+INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'goes with a soda and fries', 'Vegan Burger', 45.20, 3);
 INSERT INTO tb_product (active, description, name, price, restaurant_id) VALUES (true, 'Most fast and worm food piece', 'Pizza slice', 7.45, 2);
