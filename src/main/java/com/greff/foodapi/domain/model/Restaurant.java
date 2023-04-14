@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -36,6 +39,21 @@ public class Restaurant {
     @Embedded //that indicates that this attribute is embedded('incorporado') type, is a part of entity restaurant
     //saying is a part, not a column. will not create a table about it, but its attributes will be created in restaurant table
     private Address address;
+
+    @JsonIgnore
+    @CreationTimestamp //annotation of 'IMPLEMENTATION Hibernate', not from JPA.
+    //CreationTimestamp add, inform creationDate will have a Date.now when it's created by the first time
+    //columnDefinition is to take it out milliseconds of column
+    //it not is necessary to show it to user, so I took it out
+    @Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime creationDate;
+
+    @JsonIgnore
+    @UpdateTimestamp//also 'IMPLEMENTATION Hibernate', not from JPA.
+    //UpdateTimestamp add, inform updateDate will have a Date.now always when updated
+    @Column(name = "update_date", nullable = false, columnDefinition = "datetime")
+    private LocalDateTime updateDate;
+
 
     @JsonIgnore
     //many restaurants owns many payment methods
