@@ -1,6 +1,7 @@
 package com.greff.foodapi.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,7 +30,10 @@ public class Restaurant {
     @Column(name = "delivery_tax", nullable = false)
     private BigDecimal deliveryTax;
 
-    @ManyToOne //many restaurants own one kitchen
+    //many restaurants own one kitchen
+    @JsonIgnoreProperties( {"hibernateLazyInitializer"} ) //this attribute needs to be serialized, so we ignore this property and shall be fine
+    //lazy type create a subclass 'Kitchen$HibernateProxy$njmLPKPv' in runtime, it's a proxy, when an instance of this attribute is necessary
+    @ManyToOne(fetch = FetchType.LAZY) //if it's not been called, must be lazy, so don't fetch by default because of toOne type (eager load)
     //it's the owner of bidirectional relationship with kitchen, because it needs the association.
     //since kitchen could have more than one restaurant, doesn't make sense to create a column
     //every relation that ends with 'ToOne', it's standard to use 'eager loading', everytime an instance of this entity is called

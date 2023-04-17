@@ -1,9 +1,6 @@
 package com.greff.foodapi.domain.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -28,7 +25,7 @@ public class Address {
     @Column(name = "street_address")
     private String street;
 
-    @ManyToOne //many address has one city
+    @ManyToOne(fetch = FetchType.LAZY) //many address has one city
     @JoinColumn(name = "city_address_id")
     private City city;
 
