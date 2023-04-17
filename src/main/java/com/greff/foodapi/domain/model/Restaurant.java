@@ -65,8 +65,6 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant") //collection resource owns this relation
     private List<Product> product = new ArrayList<>();
 
-
-    @JsonIgnore
     //many restaurants own many payment methods
     //if you needs to be eager here, you can change (fetch = eager), rarely will change to eager, more like change eager to lazy
     @ManyToMany
