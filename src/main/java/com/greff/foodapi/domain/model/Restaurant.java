@@ -67,7 +67,8 @@ public class Restaurant {
 
 
     @JsonIgnore
-    //many restaurants owns many payment methods
+    //many restaurants own many payment methods
+    //if you needs to be eager here, you can change (fetch = eager), rarely will change to eager, more like change eager to lazy
     @ManyToMany
     //every relation that ends with toMany is lazy by default, lazy will load by demand, when requested. like when we call in method or something
     // if we don't call, will not be used because of lazy type
