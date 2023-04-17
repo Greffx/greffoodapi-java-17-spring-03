@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,10 @@ import java.util.Optional;
 //got methods as 'findAll', 'findOne', 'count' that receives Specifications<EntityName> as param that we need to use.
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, RestaurantRepositoryCustomizedQueries,
         JpaSpecificationExecutor<Restaurant> {
+
+    @NonNull
+    @Query("FROM Restaurant r JOIN FETCH r.kitchen LEFT JOIN FETCH r.paymentMethods")
+    List<Restaurant> findAll();
 
     //will query restaurants like DeliveryTax between lowerT >= and biggestT <=
     //method name is not ok to use it, that expose a lot of attributes and entities, is not conventional.
