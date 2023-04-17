@@ -31,7 +31,9 @@ public class Restaurant {
 
     @ManyToOne //many restaurants own one kitchen
     //it's the owner of bidirectional relationship with kitchen, because it needs the association.
-    // since kitchen could have more than one restaurant, doesn't make sense to create a column
+    //since kitchen could have more than one restaurant, doesn't make sense to create a column
+    //every relation that ends with 'ToOne', it's standard to use 'eager loading', everytime an instance of this entity is called
+    //eager load is going to happen too, by default
     @JoinColumn(name = "kitchen_id_code", nullable = false)
     //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
@@ -63,6 +65,8 @@ public class Restaurant {
     @JsonIgnore
     //many restaurants owns many payment methods
     @ManyToMany
+    //every relation that ends with toMany is lazy by default, lazy will load by demand, when requested. like when we call in method or something
+    // if we don't call, will not be used because of lazy type
     //@JoinTable(name = "nameOfIntermediateClass") altering name of class that will be needed it in @ManyToMany association
     //when we do this, intermediate table will be created in db, that's how manyToMany relationships works. they need this class, table.
     //joinColumns defines columns of foreign key in intermediate class that defines restaurant.
