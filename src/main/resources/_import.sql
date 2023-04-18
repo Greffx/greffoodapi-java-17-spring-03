@@ -1,3 +1,4 @@
+#_ underscore means that will not import anymore
 #this file is a SQL script to insert into DB
 
 INSERT INTO tb_kitchens (id, kitchen_name) VALUES (1, 'indian');
