@@ -26,7 +26,7 @@ public class Kitchen {
 
     @JsonProperty("name")
     //this not change at domain model, not change the name of attribute. But the representation in JSON will be another, if we change 'name' value
-    @Column(name = "kitchen_name", nullable = false)
+    //@Column(name = "kitchen_name", nullable = false)
     //column map an attribute, can change name, using nullable = false, attribute will not be accepted as null no more
     private String name;
 
