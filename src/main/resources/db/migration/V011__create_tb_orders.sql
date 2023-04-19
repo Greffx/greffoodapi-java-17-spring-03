@@ -1,13 +1,14 @@
 CREATE TABLE tb_orders
 (
     id                  BIGINT AUTO_INCREMENT NOT NULL,
-    subtotal            DECIMAL(9, 2)         NOT NULL,
+    subtotal_per_item   DECIMAL(9, 2)         NOT NULL,
     delivery_tax        DECIMAL(9, 2)         NOT NULL,
     total               DECIMAL(9, 2)         NOT NULL,
     creation_date       DATETIME              NOT NULL,
     confirmed_date      DATETIME,
     canceled_date       DATETIME,
     delivered_date      DATETIME,
+    status              VARCHAR(10)           NOT NULL,
     restaurant_id       BIGINT                NOT NULL,
     payment_method_id   BIGINT                NOT NULL,
     user_id             BIGINT                NOT NULL,

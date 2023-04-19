@@ -1,9 +1,9 @@
 CREATE TABLE tb_order_items
 (
     id          BIGINT AUTO_INCREMENT NOT NULL,
-    quantity    INT                   NOT NULL,
+    quantity    SMALLINT(6)           NOT NULL,
     unity_price DECIMAL(9, 2)         NOT NULL,
-    total       DECIMAL(9, 2)         NOT NULL,
+    total_price DECIMAL(9, 2)         NOT NULL,
     observation VARCHAR(255),
     order_id    BIGINT                NOT NULL,
     product_id  BIGINT                NOT NULL,

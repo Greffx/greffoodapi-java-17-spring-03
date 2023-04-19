@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -35,27 +35,24 @@ public class Order {
     @Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
     private LocalDateTime creationDate;
 
-    @UpdateTimestamp
     @Column(name = "confirmed_date", columnDefinition = "datetime")
     private LocalDateTime confirmedDate;
 
-    @UpdateTimestamp
     @Column(name = "canceled_date", columnDefinition = "datetime")
     private LocalDateTime canceledDate;
 
-    @UpdateTimestamp
     @Column(name = "delivered_date", columnDefinition = "datetime")
     private LocalDateTime deliveredDate;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(nullable = false)
+    private OrderStatus status;
 
     @Embedded
     private Address address;
 
-    @Column(nullable = false)
-    private OrderStatus status;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
@@ -66,5 +63,5 @@ public class Order {
     private PaymentMethod paymentMethod;
 
     @OneToMany(mappedBy = "order")
-    private List<OrderItem> items;
+    private List<OrderItem> items = new ArrayList<>();
 }
