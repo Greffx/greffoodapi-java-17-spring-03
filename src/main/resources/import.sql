@@ -1,9 +1,9 @@
 #_ underscore means that will not import anymore
 #this file is a SQL script to insert into DB
 
-INSERT INTO tb_kitchens (id, kitchen_name) VALUES (1, 'indian');
-INSERT INTO tb_kitchens (id, kitchen_name) VALUES (2, 'Japanese');
-INSERT INTO tb_kitchens (id, kitchen_name) VALUES (3, 'Brazilian');
+INSERT INTO tb_kitchens (id,name) VALUES (1, 'indian');
+INSERT INTO tb_kitchens (id, name) VALUES (2, 'Japanese');
+INSERT INTO tb_kitchens (id, name) VALUES (3, 'Brazilian');
 
 INSERT INTO tb_states (id, state_name) VALUES (1, 'RS');
 INSERT INTO tb_states (id, state_name) VALUES (2, 'PR');
