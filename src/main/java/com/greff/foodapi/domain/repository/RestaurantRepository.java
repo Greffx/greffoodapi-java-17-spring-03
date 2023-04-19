@@ -17,7 +17,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, R
         JpaSpecificationExecutor<Restaurant> {
 
     @NonNull
-    @Query("FROM Restaurant r JOIN FETCH r.kitchen LEFT JOIN FETCH r.paymentMethods")
+//    @Query("FROM Restaurant r JOIN FETCH r.kitchen LEFT JOIN FETCH r.paymentMethods") took it out because I'll not show this when request a resource about it
+    @Query("FROM Restaurant r JOIN FETCH r.kitchen")
     List<Restaurant> findAll();
 
     //will query restaurants like DeliveryTax between lowerT >= and biggestT <=
