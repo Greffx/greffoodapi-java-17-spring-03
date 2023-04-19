@@ -1,0 +1,2 @@
+ALTER TABLE tb_cities ADD CONSTRAINT fk_tb_cities_tb_states FOREIGN KEY (state_id) REFERENCES tb_states (id);
+#Altering table cities adding constraint (foreign key name), state_id column of cities makes references to id property of tb states
