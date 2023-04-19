@@ -15,7 +15,7 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "city_name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
