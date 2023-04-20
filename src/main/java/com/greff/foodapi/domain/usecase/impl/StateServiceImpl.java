@@ -3,7 +3,9 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.repository.StateRepository;
 import com.greff.foodapi.domain.usecase.StateService;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,6 +44,13 @@ public class StateServiceImpl implements StateService {
 
     @Override
     public void delete(Long id) {
-        if (findById(id) != null) stateRepository.deleteById(id);
+        findById(id);
+
+        try {
+            stateRepository.deleteById(id);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityInUseException(String.format("Can't delete state with id %d with cities on it", id));
+        }
     }
 }
