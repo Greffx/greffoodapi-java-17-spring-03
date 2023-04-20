@@ -36,6 +36,7 @@ public class StateServiceImpl implements StateService {
     public State update(State state, Long id) {
         State stateToChange = findById(id);
         stateToChange.setName(state.getName());
+
         return create(stateToChange);
     }
 
