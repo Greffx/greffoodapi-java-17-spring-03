@@ -6,7 +6,9 @@ import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -107,5 +109,16 @@ public class RestaurantServiceImpl implements RestaurantService {
             //means that will get propertyName and change property value of target, for valueProperty
             ReflectionUtils.setField(field, restaurant, newValue);
         });
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        findById(id);
+
+        try {
+            restaurantRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityInUseException(String.format("Can't delete restaurant with id %d because is been used in another place", id));
+        }
     }
 }

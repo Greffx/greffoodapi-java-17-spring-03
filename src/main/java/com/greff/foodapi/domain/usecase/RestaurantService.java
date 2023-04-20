@@ -29,4 +29,6 @@ public interface RestaurantService {
     Restaurant update(Restaurant restaurant, Long id);
 
     void patchFields(Map<String, Object> fields, Restaurant restaurant);
+
+    void deleteById(Long id);
 }
