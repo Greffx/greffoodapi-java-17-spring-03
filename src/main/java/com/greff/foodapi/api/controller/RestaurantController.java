@@ -2,9 +2,7 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
-import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -60,29 +58,17 @@ public class RestaurantController {
         return restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
     }
 
-    @PostMapping//? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
+    @PostMapping
+//? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
     public ResponseEntity<?> createRestaurant(@RequestBody Restaurant restaurant, UriComponentsBuilder builder) {
-        try {
-            Restaurant restaurant1 = restaurantService.create(restaurant);
-            return ResponseEntity.created(builder.path("/{id}").buildAndExpand(restaurant1.getId()).toUri()).body(restaurant1);
-        } catch (NotFoundObjectException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        Restaurant restaurant1 = restaurantService.create(restaurant);
+        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(restaurant1.getId()).toUri()).body(restaurant1);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable Long id) {
-        try {
-            restaurantService.findById(id);
-        } catch (NotFoundObjectException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-
-        try {
-            return ResponseEntity.ok(restaurantService.update(restaurant, id));
-        } catch (NotFoundObjectException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        restaurantService.findById(id);
+        return ResponseEntity.ok(restaurantService.update(restaurant, id));
     }
 
     @PatchMapping("/{id}")

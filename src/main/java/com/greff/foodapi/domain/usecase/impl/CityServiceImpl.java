@@ -5,9 +5,7 @@ import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.repository.CityRepository;
 import com.greff.foodapi.domain.repository.StateRepository;
 import com.greff.foodapi.domain.usecase.CityService;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,10 +50,6 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public void delete(Long id) {
-        try {
-            if (findById(id) != null) cityRepository.deleteById(id);
-        } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(String.format("City id %d can't be deleted, it's attached to a city", id));
-        }
+        if (findById(id) != null) cityRepository.deleteById(id);
     }
 }

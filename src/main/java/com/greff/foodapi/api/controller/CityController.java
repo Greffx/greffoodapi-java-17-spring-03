@@ -2,9 +2,6 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.usecase.CityService;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -33,28 +30,18 @@ public class CityController {
 
     @PostMapping
     public ResponseEntity<City> createCity(@RequestBody City city, UriComponentsBuilder builder) {
-        City City1 = cityService.create(city);
-        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(City1.getId()).toUri()).body(City1);
+        City city1 = cityService.create(city);
+        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(city1.getId()).toUri()).body(city1);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<City> updateCity(@RequestBody City city, @PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(cityService.update(city, id));
-        } catch (NotFoundObjectException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(cityService.update(city, id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteCity(@PathVariable Long id) {
-        try {
-            cityService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityInUseException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (NotFoundObjectException e) {
-            return ResponseEntity.notFound().build();
-        }
+        cityService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

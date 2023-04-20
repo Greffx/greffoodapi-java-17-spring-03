@@ -3,8 +3,6 @@ package com.greff.foodapi.api.controller; //api package is to controllers and mo
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -71,11 +69,7 @@ public class KitchenController {
     @DeleteMapping("/{id}")
     //map method, DeleteMapping means that requests with verb http 'DELETE' will use this method, will delete obj based on id
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        try {
-            kitchenService.deleteById(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityInUseException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
+        kitchenService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

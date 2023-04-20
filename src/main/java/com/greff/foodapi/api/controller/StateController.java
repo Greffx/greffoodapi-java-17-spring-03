@@ -2,9 +2,6 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.usecase.StateService;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -39,22 +36,12 @@ public class StateController {
 
     @PutMapping("/{id}")
     public ResponseEntity<State> updateState(@RequestBody State state, @PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(stateService.update(state, id));
-        } catch (NotFoundObjectException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(stateService.update(state, id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteState(@PathVariable Long id) {
-        try {
-            stateService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (EntityInUseException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        } catch (NotFoundObjectException e) {
-            return ResponseEntity.notFound().build();
-        }
+        stateService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

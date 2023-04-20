@@ -3,9 +3,7 @@ package com.greff.foodapi.domain.usecase.impl; //service domain is without state
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.usecase.KitchenService;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,12 +47,8 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public void deleteById(Long id) {
-        try {
-            findById(id);
-            kitchenRepository.deleteById(id);
-        } catch (DataIntegrityViolationException e) { //structure exception, can be treated in here, this exception happens when entity object is inserted in another objects entities
-            throw new EntityInUseException("Can't remove a kitchen with data attached to it"); //customized exception to treat some specific problems
-        }
+        findById(id);
+        kitchenRepository.deleteById(id);
     }
 
     @Override
