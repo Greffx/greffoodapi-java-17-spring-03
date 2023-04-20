@@ -40,7 +40,7 @@ public class StateController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteState(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteState(@PathVariable Long id) {
         stateService.delete(id);
         return ResponseEntity.noContent().build();
     }
