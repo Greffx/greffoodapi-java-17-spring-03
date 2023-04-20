@@ -5,7 +5,9 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.usecase.KitchenService;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,8 +27,10 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Override
     public Kitchen findById(Long id) {
-        return kitchenRepository.findById(id).orElseThrow(() -> //this orElse means like 'if it's empty inside, throw this exception, with lambda and pass only constructor of exception
+        return kitchenRepository.findById(id).orElseThrow(() ->
                 new NotFoundObjectException(String.format("This id %d, was not found", id)));
+        //this orElse means like 'if it's empty inside, throw this exception, with lambda and pass only constructor of exception
+        //it's like a little rule, search and find or throw exception, it good to be in service layer
     }
 
     @Override
@@ -35,7 +39,7 @@ public class KitchenServiceImpl implements KitchenService {
     }
 
     @Override
-    public Kitchen addKitchen(Kitchen kitchen) {
+    public Kitchen registerKitchen(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
     }
 
@@ -44,13 +48,19 @@ public class KitchenServiceImpl implements KitchenService {
         Kitchen kitchenToChange = findById(id);
         kitchenToChange.setName(kitchen.getName());
 
-        return addKitchen(kitchenToChange);
+        return registerKitchen(kitchenToChange);
     }
 
     @Override
     public void deleteById(Long id) {
         findById(id);
-        kitchenRepository.deleteById(id);
+
+        try {
+            kitchenRepository.deleteById(id);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityInUseException(String.format("Kitchen with id %d can't be removed because still been used", id));
+        }
     }
 
     @Override
