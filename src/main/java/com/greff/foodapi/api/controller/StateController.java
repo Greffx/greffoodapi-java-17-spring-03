@@ -2,7 +2,7 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.usecase.StateService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -29,19 +29,19 @@ public class StateController {
     }
 
     @PostMapping
-    public ResponseEntity<State> createState(@RequestBody State state, UriComponentsBuilder builder) {
-        State state1 = stateService.create(state);
-        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(state1.getId()).toUri()).body(state1);
+    @ResponseStatus(HttpStatus.CREATED)
+    public State createState(@RequestBody State state, UriComponentsBuilder builder) {
+        return stateService.create(state);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<State> updateState(@RequestBody State state, @PathVariable Long id) {
-        return ResponseEntity.ok(stateService.update(state, id));
+    public State updateState(@RequestBody State state, @PathVariable Long id) {
+        return stateService.update(state, id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteState(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteState(@PathVariable Long id) {
         stateService.delete(id);
-        return ResponseEntity.noContent().build();
     }
 }

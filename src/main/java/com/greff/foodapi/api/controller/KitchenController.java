@@ -3,7 +3,7 @@ package com.greff.foodapi.api.controller; //api package is to controllers and mo
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -25,10 +25,10 @@ public class KitchenController {
 
     @GetMapping
     //need to map method, getMapping means that requests with verb http 'GET' will use this method
-    public ResponseEntity<List<Kitchen>> findAll() { //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
+    public List<Kitchen> findAll() { //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
         //this can be called as a collection of resources, that means is something that is exposed in web
         //resource to be reached, need to be id by a URI, we need a URL to request, using http protocol
-        return ResponseEntity.ok(kitchenService.findAll());
+        return kitchenService.findAll();
     }
 
     @GetMapping("/{id}") //This is specification, we need this because can't have 2 endpoints with same path.
@@ -43,33 +43,33 @@ public class KitchenController {
     @GetMapping("/search/") //Mapping method to getMethod, adding one more path to URI
     //This param will not be received by Variable path, will come as Query param, can be null, so RequestParam make binding with var, self-explained, like ?name=<nameOfYourChoice>
     //RequestParam is optional in here, when is query param bind is auto, you can remove it, if you want it
-    public ResponseEntity<List<Kitchen>> getKitchenByName(@RequestParam String name) {
-        return ResponseEntity.ok(kitchenService.findByName(name));
+    public List<Kitchen> getKitchenByName(@RequestParam String name) {
+        return kitchenService.findByName(name);
     }
 
     @GetMapping("/search/exists")
-    public ResponseEntity<Boolean> getKitchenIfExists(@RequestParam String name) {
-        return ResponseEntity.ok(kitchenService.findByIfExistsName(name));
+    public Boolean getKitchenIfExists(@RequestParam String name) {
+        return kitchenService.findByIfExistsName(name);
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED) //instead of using ResponseEntity, could use this annotation and return without responseEntity
     //map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
-    public ResponseEntity<Kitchen> create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
+    public Kitchen create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
         //annotation RequestBody means that param 'kitchen' will receive body of request, transformation of body JSON and bind with 'kitchen' instance
-        Kitchen kitchen1 = kitchenService.registerKitchen(kitchen);
-        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(kitchen1.getId()).toUri()).body(kitchen1);
+        return kitchenService.registerKitchen(kitchen);
     }
 
     @PutMapping("/{id}")
     //map method, PutMapping means that requests with verb http 'PUT' will use this method, will update obj based on id
-    public ResponseEntity<Kitchen> update(@RequestBody Kitchen kitchen, @PathVariable Long id) {
-        return ResponseEntity.ok(kitchenService.updateKitchen(kitchen, id));
+    public Kitchen update(@RequestBody Kitchen kitchen, @PathVariable Long id) {
+        return kitchenService.updateKitchen(kitchen, id);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     //map method, DeleteMapping means that requests with verb http 'DELETE' will use this method, will delete obj based on id
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         kitchenService.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 }

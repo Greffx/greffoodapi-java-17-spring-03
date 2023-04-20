@@ -3,7 +3,7 @@ package com.greff.foodapi.api.controller;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -19,38 +19,38 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @GetMapping
-    public ResponseEntity<List<Restaurant>> findAll() {
-        return ResponseEntity.ok(restaurantService.findAll());
+    public List<Restaurant> findAll() {
+        return restaurantService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Restaurant> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(restaurantService.findById(id));
+    public Restaurant findById(@PathVariable Long id) {
+        return restaurantService.findById(id);
     }
 
     @GetMapping("/search/tax/")
-    public ResponseEntity<List<Restaurant>> findByTax(BigDecimal lower, BigDecimal higher) {
-        return ResponseEntity.ok(restaurantService.findByDeliveryTax(lower, higher));
+    public List<Restaurant> findByTax(BigDecimal lower, BigDecimal higher) {
+        return restaurantService.findByDeliveryTax(lower, higher);
     }
 
     @GetMapping("/search/name/kitchen-id/")
-    public ResponseEntity<List<Restaurant>> findByNameAndKitchen(String name, Long kitchenId) {
-        return ResponseEntity.ok(restaurantService.findByNameAndKitchen(name, kitchenId));
+    public List<Restaurant> findByNameAndKitchen(String name, Long kitchenId) {
+        return restaurantService.findByNameAndKitchen(name, kitchenId);
     }
 
     @GetMapping("/search/first-by-name/")
-    public ResponseEntity<Restaurant> findFirstOneByName(String name) {
-        return ResponseEntity.ok(restaurantService.findFirstOneByName(name));
+    public Restaurant findFirstOneByName(String name) {
+        return restaurantService.findFirstOneByName(name);
     }
 
     @GetMapping("/search/top-two-by-name/")
-    public ResponseEntity<List<Restaurant>> topTwoRestaurantsByName(String name) {
-        return ResponseEntity.ok(restaurantService.findTwoRestaurantsByName(name));
+    public List<Restaurant> topTwoRestaurantsByName(String name) {
+        return restaurantService.findTwoRestaurantsByName(name);
     }
 
     @GetMapping("/search/how-many-restaurants-per-kitchen-id/")
-    public ResponseEntity<Integer> howManyRestaurantsPerKitchen(Long kitchenId) {
-        return ResponseEntity.ok(restaurantService.findHowManyRestaurantsPerKitchen(kitchenId));
+    public Integer howManyRestaurantsPerKitchen(Long kitchenId) {
+        return restaurantService.findHowManyRestaurantsPerKitchen(kitchenId);
     }
 
     @GetMapping("/search/restaurants-with-free-delivery-tax/")
@@ -59,21 +59,20 @@ public class RestaurantController {
     }
 
     @PostMapping
-//? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
-    public ResponseEntity<Restaurant> createRestaurant(@RequestBody Restaurant restaurant, UriComponentsBuilder builder) {
-        Restaurant restaurant1 = restaurantService.create(restaurant);
-        return ResponseEntity.created(builder.path("/{id}").buildAndExpand(restaurant1.getId()).toUri()).body(restaurant1);
+    @ResponseStatus(HttpStatus.CREATED)
+    //? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
+    public Restaurant createRestaurant(@RequestBody Restaurant restaurant, UriComponentsBuilder builder) {
+        return restaurantService.create(restaurant);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Restaurant> updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable Long id) {
-        restaurantService.findById(id);
-        return ResponseEntity.ok(restaurantService.update(restaurant, id));
+    public Restaurant updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable Long id) {
+        return restaurantService.update(restaurant, id);
     }
 
     @PatchMapping("/{id}")
     //map to 'PATCH' endpoint, which means that don't need to update everything, like 'PUT' type, that needs everything
-    public ResponseEntity<Restaurant> patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id) {
+    public Restaurant patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id) {
         //Map<String, Object> string is key like 'NAME', 'TAX', 'KITCHEN', and Object is value of key, like 'RESTAURANT NAME', 'VALUE OF TAX' and 'KITCHEN NAME'
         //Will only map values that will come of request body, so user can work with attributes that he wants to alter.This means that he must work only with things that he wants to work
         Restaurant restaurant = restaurantService.findById(id);
@@ -84,8 +83,8 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteRestaurant(@PathVariable Long id) {
         restaurantService.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 }
