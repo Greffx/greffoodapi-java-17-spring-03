@@ -1,4 +1,6 @@
-package com.greff.foodapi.domain.usecase.impl; //service domain is without state and do tasks to domain, like behavior of application, business rules and such
+package com.greff.foodapi.domain.usecase.impl;
+//service domain is without state and do tasks to domain, like behavior of application, business rules and such
+//can't have contact with http protocol or such, not cool to use responseStatus in here
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.repository.KitchenRepository;
@@ -24,7 +26,7 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public Kitchen findById(Long id) {
         return kitchenRepository.findById(id).orElseThrow(() -> //this orElse means like 'if it's empty inside, throw this exception, with lambda and pass only constructor of exception
-                new NotFoundObjectException("This object was not found"));
+                new NotFoundObjectException(String.format("This id %d, was not found", id)));
     }
 
     @Override
