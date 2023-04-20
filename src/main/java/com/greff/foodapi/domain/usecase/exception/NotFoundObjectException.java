@@ -15,5 +15,6 @@ public class NotFoundObjectException extends ResponseStatusException {
     public NotFoundObjectException(String message) {
         this(HttpStatus.NOT_FOUND, message); //this will call line 12
         //if this class got instanced and get this constructor right here the status code will be not found by default but can inform another too
+        //it's domain class here, and got http status, but not so hurtful as would be to go inside service layer
     }
 }
