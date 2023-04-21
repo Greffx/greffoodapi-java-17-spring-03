@@ -37,16 +37,17 @@ public class CityServiceImpl implements CityService {
     @Override
     public City create(City city) {
         Long stateId = city.getState().getId();
-        State state = stateRepository.findById(stateId).orElseThrow(() ->
-                new NotFoundObjectException(String.format("City with id %d, not found", stateId)));
-        city.setState(state);
 
         try {
-            return cityRepository.save(city);
+            State state = stateRepository.findById(stateId).orElseThrow(() ->
+                    new NotFoundObjectException(String.format("City with id %d, not found", stateId)));
+            city.setState(state);
 
         } catch (NotFoundObjectException e) {
             throw new BusinessException(e.getMessage());
         }
+
+        return cityRepository.save(city);
     }
 
     @Override
