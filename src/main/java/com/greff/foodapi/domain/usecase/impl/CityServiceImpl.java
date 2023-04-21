@@ -5,6 +5,7 @@ import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.repository.CityRepository;
 import com.greff.foodapi.domain.repository.StateRepository;
 import com.greff.foodapi.domain.usecase.CityService;
+import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,7 +41,12 @@ public class CityServiceImpl implements CityService {
                 new NotFoundObjectException(String.format("City with id %d, not found", stateId)));
         city.setState(state);
 
-        return cityRepository.save(city);
+        try {
+            return cityRepository.save(city);
+
+        } catch (NotFoundObjectException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @Override
@@ -50,7 +56,12 @@ public class CityServiceImpl implements CityService {
         cityToChange.setName(city.getName());
         cityToChange.setState(city.getState());
 
-        return create(cityToChange);
+        try {
+            return create(cityToChange);
+
+        } catch (NotFoundObjectException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @Override
