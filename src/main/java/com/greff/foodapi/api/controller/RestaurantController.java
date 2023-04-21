@@ -5,7 +5,6 @@ import com.greff.foodapi.domain.usecase.RestaurantService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -61,7 +60,7 @@ public class RestaurantController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     //? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
-    public Restaurant createRestaurant(@RequestBody Restaurant restaurant, UriComponentsBuilder builder) {
+    public Restaurant createRestaurant(@RequestBody Restaurant restaurant) {
         return restaurantService.create(restaurant);
     }
 

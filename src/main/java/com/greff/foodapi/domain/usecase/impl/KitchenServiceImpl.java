@@ -39,16 +39,16 @@ public class KitchenServiceImpl implements KitchenService {
     }
 
     @Override
-    public Kitchen registerKitchen(Kitchen kitchen) {
+    public Kitchen create(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
     }
 
     @Override
-    public Kitchen updateKitchen(Kitchen kitchen, Long id) {
+    public Kitchen update(Kitchen kitchen, Long id) {
         Kitchen kitchenToChange = findById(id);
         kitchenToChange.setName(kitchen.getName());
 
-        return registerKitchen(kitchenToChange);
+        return create(kitchenToChange);
     }
 
     @Override

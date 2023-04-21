@@ -57,13 +57,13 @@ public class KitchenController {
     //map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
     public Kitchen create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
         //annotation RequestBody means that param 'kitchen' will receive body of request, transformation of body JSON and bind with 'kitchen' instance
-        return kitchenService.registerKitchen(kitchen);
+        return kitchenService.create(kitchen);
     }
 
     @PutMapping("/{id}")
     //map method, PutMapping means that requests with verb http 'PUT' will use this method, will update obj based on id
     public Kitchen update(@RequestBody Kitchen kitchen, @PathVariable Long id) {
-        return kitchenService.updateKitchen(kitchen, id);
+        return kitchenService.update(kitchen, id);
     }
 
     @DeleteMapping("/{id}")

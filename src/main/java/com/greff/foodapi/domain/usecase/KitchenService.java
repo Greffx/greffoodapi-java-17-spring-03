@@ -12,9 +12,9 @@ public interface KitchenService {
 
     Boolean findByIfExistsName(String name);
 
-    Kitchen registerKitchen(Kitchen kitchen);
+    Kitchen create(Kitchen kitchen);
 
-    Kitchen updateKitchen(Kitchen kitchen, Long id);
+    Kitchen update(Kitchen kitchen, Long id);
 
     void deleteById(Long id);
 
