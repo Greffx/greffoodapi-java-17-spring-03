@@ -26,7 +26,7 @@ public class StateServiceImpl implements StateService {
     @Override
     public State findById(Long id) {
         return stateRepository.findById(id).orElseThrow(() ->
-                new StateNotFoundException(String.format("State with id %d, not found", id)));
+                new StateNotFoundException(id));
     }
 
     @Override
