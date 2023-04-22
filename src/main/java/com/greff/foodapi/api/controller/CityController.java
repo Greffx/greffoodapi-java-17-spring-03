@@ -3,9 +3,7 @@ package com.greff.foodapi.api.controller;
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.usecase.CityService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -31,13 +29,13 @@ public class CityController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public City createCity(@RequestBody City city, UriComponentsBuilder builder) {
+    public City createCity(@RequestBody City city) {
         return cityService.create(city);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<City> updateCity(@RequestBody City city, @PathVariable Long id) {
-        return ResponseEntity.ok(cityService.update(city, id));
+    public City updateCity(@RequestBody City city, @PathVariable Long id) {
+        return cityService.update(city, id);
     }
 
     @DeleteMapping("/{id}")
