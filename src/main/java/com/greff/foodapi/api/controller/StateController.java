@@ -4,7 +4,6 @@ import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.usecase.StateService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class StateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public State createState(@RequestBody State state, UriComponentsBuilder builder) {
+    public State createState(@RequestBody State state) {
         return stateService.create(state);
     }
 

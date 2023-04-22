@@ -5,7 +5,6 @@ import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -55,7 +54,7 @@ public class KitchenController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED) //instead of using ResponseEntity, could use this annotation and return without responseEntity
     //map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
-    public Kitchen create(@RequestBody Kitchen kitchen, UriComponentsBuilder builder) {
+    public Kitchen create(@RequestBody Kitchen kitchen) {
         //annotation RequestBody means that param 'kitchen' will receive body of request, transformation of body JSON and bind with 'kitchen' instance
         return kitchenService.create(kitchen);
     }
