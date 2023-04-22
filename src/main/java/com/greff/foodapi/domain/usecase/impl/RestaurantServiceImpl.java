@@ -78,8 +78,8 @@ public class RestaurantServiceImpl implements RestaurantService {
                     new KitchenNotFoundException(kitchenId));
             restaurant.setKitchen(kitchen);
 
-        } catch (KitchenNotFoundException e) {
-            throw new BusinessException(e.getMessage());
+        } catch (NotFoundObjectException e) {
+            throw new KitchenNotFoundException(kitchenId);
         }
 
         return restaurantRepository.save(restaurant);
