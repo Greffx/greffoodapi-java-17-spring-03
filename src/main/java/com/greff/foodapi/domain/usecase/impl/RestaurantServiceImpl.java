@@ -76,24 +76,25 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
                     new KitchenNotFoundException(kitchenId));
+
             restaurant.setKitchen(kitchen);
+
+            return restaurantRepository.save(restaurant);
 
         } catch (NotFoundObjectException e) {
             throw new KitchenNotFoundException(kitchenId);
         }
-
-        return restaurantRepository.save(restaurant);
     }
 
     @Override
     public Restaurant update(Restaurant restaurant, Long id) {
-        Restaurant restaurantToChange = findById(id);
-
-        restaurantToChange.setName(restaurant.getName());
-        restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
-        restaurantToChange.setKitchen(restaurant.getKitchen());
-
         try {
+            Restaurant restaurantToChange = findById(id);
+
+            restaurantToChange.setName(restaurant.getName());
+            restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
+            restaurantToChange.setKitchen(restaurant.getKitchen());
+
             return create(restaurantToChange);
 
         } catch (KitchenNotFoundException e) {
