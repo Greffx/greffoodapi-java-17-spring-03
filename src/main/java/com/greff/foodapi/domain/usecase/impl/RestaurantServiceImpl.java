@@ -6,6 +6,7 @@ import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
+import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -74,11 +75,14 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
 
-        Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
-                new NotFoundObjectException(String.format("kitchen with id %d, not found", kitchenId)));
+        try {
+            Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
+                    new NotFoundObjectException(String.format("kitchen with id %d, not found", kitchenId)));
+            restaurant.setKitchen(kitchen);
 
-        restaurant.setKitchen(kitchen);
-        restaurant.setKitchen(kitchen);
+        } catch (NotFoundObjectException e) {
+            throw new BusinessException(e.getMessage());
+        }
 
         return restaurantRepository.save(restaurant);
     }
@@ -90,8 +94,12 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantToChange.setName(restaurant.getName());
         restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
         restaurantToChange.setKitchen(restaurant.getKitchen());
+        try {
+            return create(restaurantToChange);
 
-        return create(restaurantToChange);
+        } catch (NotFoundObjectException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @Override
