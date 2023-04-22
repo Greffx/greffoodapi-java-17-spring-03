@@ -10,4 +10,8 @@ public class BusinessException extends RuntimeException {
     public BusinessException(String message) {
         super(message);
     }
+
+    public BusinessException(String message, Throwable cause) { //Throwable first of all exceptions, big parent one here
+        super(message, cause);
+    }
 }
