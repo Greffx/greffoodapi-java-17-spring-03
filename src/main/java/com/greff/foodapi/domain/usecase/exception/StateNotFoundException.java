@@ -8,4 +8,8 @@ public class StateNotFoundException extends NotFoundObjectException {
     public StateNotFoundException(String message) { //receive msg into constructor type and pass to super constructor, parent that got extended
         super(message);
     }
+
+    public StateNotFoundException(Long id) {
+        this(String.format("State with id %d, not found", id)); //using this to not pass to parent constructor
+    }
 }
