@@ -4,7 +4,7 @@ import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.repository.StateRepository;
 import com.greff.foodapi.domain.usecase.StateService;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import com.greff.foodapi.domain.usecase.exception.StateNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,7 @@ public class StateServiceImpl implements StateService {
     @Override
     public State findById(Long id) {
         return stateRepository.findById(id).orElseThrow(() ->
-                new NotFoundObjectException(String.format("State with id %d, not found", id)));
+                new StateNotFoundException(String.format("State with id %d, not found", id)));
     }
 
     @Override
