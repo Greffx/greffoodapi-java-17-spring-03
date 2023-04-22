@@ -94,6 +94,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         restaurantToChange.setName(restaurant.getName());
         restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
         restaurantToChange.setKitchen(restaurant.getKitchen());
+
         try {
             return create(restaurantToChange);
 
