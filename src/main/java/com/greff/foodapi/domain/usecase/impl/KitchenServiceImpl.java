@@ -6,7 +6,7 @@ import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.usecase.KitchenService;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import com.greff.foodapi.domain.usecase.exception.KitchenNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class KitchenServiceImpl implements KitchenService {
     @Override
     public Kitchen findById(Long id) {
         return kitchenRepository.findById(id).orElseThrow(() ->
-                new NotFoundObjectException(String.format("This id %d, was not found", id)));
+                new KitchenNotFoundException(id));
         //this orElse means like 'if it's empty inside, throw this exception, with lambda and pass only constructor of exception
         //it's like a little rule, search and find or throw exception, it good to be in service layer
     }

@@ -6,9 +6,7 @@ import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
-import com.greff.foodapi.domain.usecase.exception.BusinessException;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import com.greff.foodapi.domain.usecase.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -37,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant findById(Long id) {
         return restaurantRepository.findById(id).orElseThrow(() ->
-                new NotFoundObjectException(String.format("Restaurant with id %d, not found", id)));
+                new RestaurantNotFoundException(id));
     }
 
     @Override
@@ -58,7 +56,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant findFirstOneByName(String name) {
         return restaurantRepository.getFirstRestaurantByNameContaining(name).orElseThrow(() ->
-                new NotFoundObjectException(String.format("Restaurant with name %s, not found", name)));
+                new RestaurantNotFoundException(String.format("Restaurant with name %s, not found", name)));
     }
 
     @Override
@@ -77,10 +75,10 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         try {
             Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
-                    new NotFoundObjectException(String.format("kitchen with id %d, not found", kitchenId)));
+                    new KitchenNotFoundException(kitchenId));
             restaurant.setKitchen(kitchen);
 
-        } catch (NotFoundObjectException e) {
+        } catch (KitchenNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
 
@@ -98,7 +96,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             return create(restaurantToChange);
 
-        } catch (NotFoundObjectException e) {
+        } catch (KitchenNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
     }

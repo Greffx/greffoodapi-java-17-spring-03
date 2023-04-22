@@ -5,10 +5,7 @@ import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.repository.CityRepository;
 import com.greff.foodapi.domain.repository.StateRepository;
 import com.greff.foodapi.domain.usecase.CityService;
-import com.greff.foodapi.domain.usecase.exception.BusinessException;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
-import com.greff.foodapi.domain.usecase.exception.StateNotFoundException;
+import com.greff.foodapi.domain.usecase.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +29,7 @@ public class CityServiceImpl implements CityService {
     @Override
     public City findById(Long id) {
         return cityRepository.findById(id).orElseThrow(() ->
-                new NotFoundObjectException(String.format("City with id %d, not found", id)));
+                new CityNotFoundException(String.format("City with id %d, not found", id)));
     }
 
     @Override
