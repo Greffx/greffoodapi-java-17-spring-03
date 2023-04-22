@@ -60,7 +60,7 @@ public class CityServiceImpl implements CityService {
             return create(cityToChange);
 
         } catch (StateNotFoundException e) {
-            throw new BusinessException(e.getMessage(), e);
+            throw new BusinessException(e.getMessage());
         }
     }
 
