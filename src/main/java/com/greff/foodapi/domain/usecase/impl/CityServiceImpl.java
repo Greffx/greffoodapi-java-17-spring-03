@@ -40,9 +40,10 @@ public class CityServiceImpl implements CityService {
 
         try {
             State state = stateRepository.findById(stateId).orElseThrow(() ->
-                    new NotFoundObjectException(String.format("City with id %d, not found", stateId)));
+                    new NotFoundObjectException(String.format("State with id %d, not found", stateId)));
             city.setState(state);
-
+            //when request body of create or update is necessary and user put a state id that doesn't exist it's better to give a 400 bad request
+            //because there's states, but user used the wrong id
         } catch (NotFoundObjectException e) {
             throw new BusinessException(e.getMessage());
         }
