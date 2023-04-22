@@ -29,7 +29,7 @@ public class CityServiceImpl implements CityService {
     @Override
     public City findById(Long id) {
         return cityRepository.findById(id).orElseThrow(() ->
-                new CityNotFoundException(String.format("City with id %d, not found", id)));
+                new CityNotFoundException(id));
     }
 
     @Override
