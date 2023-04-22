@@ -42,8 +42,8 @@ public class CityServiceImpl implements CityService {
             city.setState(state);
             //when request body of create or update is necessary and user put a state id that doesn't exist it's better to give a 400 bad request
             //because there's states, but user used the wrong id
-        } catch (StateNotFoundException e) {
-            throw new BusinessException(e.getMessage(), e);
+        } catch (NotFoundObjectException e) {
+            throw new StateNotFoundException(stateId);
         }
 
         return cityRepository.save(city);
