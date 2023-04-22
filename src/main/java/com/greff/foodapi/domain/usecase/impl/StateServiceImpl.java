@@ -50,7 +50,7 @@ public class StateServiceImpl implements StateService {
             stateRepository.deleteById(id);
 
         } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(String.format("Can't delete state with id %d with cities on it", id));
+            throw new EntityInUseException("State", id);
         }
     }
 }

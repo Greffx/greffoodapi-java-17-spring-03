@@ -59,7 +59,7 @@ public class KitchenServiceImpl implements KitchenService {
             kitchenRepository.deleteById(id);
 
         } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(String.format("Kitchen with id %d can't be removed because still been used", id));
+            throw new EntityInUseException("Kitchen", id);
         }
     }
 

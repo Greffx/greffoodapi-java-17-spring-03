@@ -71,7 +71,7 @@ public class CityServiceImpl implements CityService {
             cityRepository.deleteById(id);
 
         } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(String.format("Can't remove city with id %d when it's been used in another place", id));
+            throw new EntityInUseException("City", id);
         }
     }
 }

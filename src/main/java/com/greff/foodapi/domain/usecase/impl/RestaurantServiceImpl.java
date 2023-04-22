@@ -125,7 +125,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             restaurantRepository.deleteById(id);
         } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException(String.format("Can't delete restaurant with id %d because is been used in another place", id));
+            throw new EntityInUseException("Restaurant", id);
         }
     }
 }
