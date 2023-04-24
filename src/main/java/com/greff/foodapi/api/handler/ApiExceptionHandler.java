@@ -34,29 +34,44 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
 
-        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
         //ideal to all methods, handlers return something like this, handleExceptionInternal is a center point to return customized response
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.INVALID_DATA;
+        String detail = ex.getMessage();
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(EntityInUseException.class)
     public ResponseEntity<Object> handleEntityInUseException(EntityInUseException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+
+        HttpStatus status = HttpStatus.CONFLICT;
+        ProblemType problemType = ProblemType.ENTITY_IN_USE;
+        String detail = ex.getMessage();
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
-    @Override //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
+    @Override
+    //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+
         if (body == null) { //to not substitute personalized message that I did in each exception, created by me
             body = ProblemDetails.builder()
                     .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase()) //describes little about statusCode, here is substituting that customized exception message
                     .status(statusCode.value()) //getting value of http status
                     .build(); //customizing body
-        }
-        else if (body instanceof String bodyString) { //checking if body is an instance of bodyString
+        } else if (body instanceof String bodyString) { //checking if body is an instance of bodyString
             body = ProblemDetails.builder()
                     .title(bodyString) //taking string that exception returned and changing into an exception default message
                     .status(statusCode.value())
@@ -68,7 +83,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ProblemDetails.ProblemDetailsBuilder createProblemDetailsBuilder(HttpStatus status, ProblemType problemType, String detail) { //method to instance a builder
         //will not instance a build(); only builder of problemDetails, build must be done in method, case that need something else, can add in there
-
         return ProblemDetails.builder()
                 .status(status.value())
                 .type(problemType.getUri())
