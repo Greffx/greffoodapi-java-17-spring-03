@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
-
 @RestControllerAdvice
 //this annotation means that can add exception handlers which all project exceptions will be treated in here
 //center point to treat them will be this class
@@ -25,12 +23,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     //treat this exception, captures with this annotation
     //when capture this one, will get all of them, like cityNotFound, state, restaurant, because of hierarchy chain, gets all subclasses
     @ExceptionHandler(NotFoundObjectException.class)
-    public ResponseEntity<Object> handleNotFoundObjectException(NotFoundObjectException ex, WebRequest request) {
+    public ResponseEntity<Object> handleNotFoundObjectException(NotFoundObjectException ex, WebRequest request) { //start with 'handle'  exceptions method name, to follow pattern
         // WebRequest can be received as param method, that way request come auto and spring passes which request it was
         //when capture with annotation, this method will be called auto, passing exception thrown like a param
         //we can use responseEntity to customize response, body, headers with it
 
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ProblemType problemType = ProblemType.ENTITY_NOT_FOUND;
+        String detail = ex.getMessage();
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
         //ideal to all methods, handlers return something like this, handleExceptionInternal is a center point to return customized response
     }
 
@@ -46,21 +50,30 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-
         if (body == null) { //to not substitute personalized message that I did in each exception, created by me
-            body = StandardProblem.builder()
-                    .message(HttpStatus.valueOf(statusCode.value()).getReasonPhrase()) //describes little about statusCode, here is substituting that customized exception message
-                    .dateTime(LocalDateTime.now())
+            body = ProblemDetails.builder()
+                    .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase()) //describes little about statusCode, here is substituting that customized exception message
+                    .status(statusCode.value()) //getting value of http status
                     .build(); //customizing body
-
-        } else if (body instanceof String bodyString) { //cheking if body is an instance of bodyString
-            body = StandardProblem.builder()
-                    .message(bodyString) //taking string that exception returned and changing into an exception default message
-                    .dateTime(LocalDateTime.now())
+        }
+        else if (body instanceof String bodyString) { //checking if body is an instance of bodyString
+            body = ProblemDetails.builder()
+                    .title(bodyString) //taking string that exception returned and changing into an exception default message
+                    .status(statusCode.value())
                     .build(); //if body is an instance of string, will build a problem and turn into a standard exception
         }
 
         return super.handleExceptionInternal(ex, body, headers, statusCode, request);
+    }
+
+    private ProblemDetails.ProblemDetailsBuilder createProblemDetailsBuilder(HttpStatus status, ProblemType problemType, String detail) { //method to instance a builder
+        //will not instance a build(); only builder of problemDetails, build must be done in method, case that need something else, can add in there
+
+        return ProblemDetails.builder()
+                .status(status.value())
+                .type(problemType.getUri())
+                .title(problemType.getTitle())
+                .detail(detail);
     }
 
 
