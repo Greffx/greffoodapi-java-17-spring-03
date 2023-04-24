@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -59,7 +60,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
 
-        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), HttpStatus.CONFLICT, request);
+        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
+    }
+
+    @Override //type of error when JSON got something wrong, like a ',() {}' in wrong place or something like that or string instead of integer when needed an integer
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.INVALID_MESSAGE;
+        String detail = "Response body is invalid, verify sintaxe error"; // ex.getMessage() got many sensitive data, means that's better that I create another one
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
     }
 
     @Override
