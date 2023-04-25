@@ -1,8 +1,11 @@
 package com.greff.foodapi.api.handler;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 //this annotation means that can add exception handlers which all project exceptions will be treated in here
@@ -65,13 +70,46 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override //type of error when JSON got something wrong, like a ',() {}' in wrong place or something like that or string instead of integer when needed an integer
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        Throwable rootCause = ExceptionUtils.getRootCause(ex); //goes through entire exception stack and get root exception, root cause
+
+        //if root cause is an instance of invalidFormat... will return another method
+        if (rootCause instanceof InvalidFormatException exception) return handleInvalidFormatException(exception, headers, status, request);
+        if (rootCause instanceof PropertyBindingException exception) return handlePropertyBindingException(exception, headers, status, request);
 
         ProblemType problemType = ProblemType.INVALID_MESSAGE;
-        String detail = "Response body is invalid, verify sintaxe error"; // ex.getMessage() got many sensitive data, means that's better that I create another one
+        String detail = "Response body is invalid, verify syntax error"; // ex.getMessage() got many sensitive data, means that's better that I create another one
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
 
-        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
+        return handleExceptionInternal(ex, problemDetails, headers, status, request);
+    }
+
+    private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        String path = ex.getPath().stream().map(reference -> reference.getFieldName())
+                .collect(Collectors.joining("."));
+
+        ProblemType problemType = ProblemType.INVALID_MESSAGE;
+        String detail = String.format("Property '%s' is not allowed to be used", path);
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, headers, status, request);
+    }
+
+    //type of error when JSON got something wrong, like string type instead of integer type, string id instead of long id
+    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        String path = ex.getPath().stream().map(reference -> reference.getFieldName()) //JsonMappingException using this one to use getFieldName method
+                .collect(Collectors.joining(".")); //reduce to a string, would be like 'kitchen.id', you got something like kitchen id and join them
+
+        ProblemType problemType = ProblemType.INVALID_MESSAGE;
+        String detail = String.format("Property '%s', received value '%s', which is invalid type. Try again and use value that is equal to %s",
+                path, ex.getValue(), ex.getTargetType().getSimpleName());
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
 
     @Override
