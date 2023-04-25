@@ -105,7 +105,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemType problemType = ProblemType.INVALID_MESSAGE;
         String detail = String.format("Property '%s', received value '%s', which is invalid type. Try again and use value that is equal to %s",
-                path, ex.getValue(), ex.getTargetType().getSimpleName());
+                path, ex.getValue(), ex.getTargetType().getSimpleName()); //altering this detail because it could have sensitve data, if I use default by exception type
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
 
