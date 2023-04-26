@@ -14,8 +14,10 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -68,6 +70,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
     }
 
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
+
+        ProblemType problemType = ProblemType.INVALID_PARAMETER;
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        String detail = String.format("URL parameter '%s', with value '%s' is a invalid type. Try again using %s type", ex.getParameter().getParameterName(),
+                ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName());
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
+    }
+
     @Override //type of error when JSON got something wrong, like a ',() {}' in wrong place or something like that or string instead of integer when needed an integer
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Throwable rootCause = ExceptionUtils.getRootCause(ex); //goes through entire exception stack and get root exception, root cause
@@ -96,8 +111,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
-
     //type of error when JSON got something wrong, like string type instead of integer type, string id instead of long id
+
     private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         String path = ex.getPath().stream().map(reference -> reference.getFieldName()) //JsonMappingException using this one to use getFieldName method
@@ -105,12 +120,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemType problemType = ProblemType.INVALID_MESSAGE;
         String detail = String.format("Property '%s', received value '%s', which is invalid type. Try again and use value that is equal to %s",
-                path, ex.getValue(), ex.getTargetType().getSimpleName()); //altering this detail because it could have sensitve data, if I use default by exception type
+                path, ex.getValue(), ex.getTargetType().getSimpleName()); //altering this detail because it could have sensitive data, if I use default by exception type
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
+
+
 
     @Override
     //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
