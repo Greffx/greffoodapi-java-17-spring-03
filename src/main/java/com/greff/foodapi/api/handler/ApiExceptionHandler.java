@@ -6,6 +6,7 @@ import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -70,26 +71,42 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(
+            TypeMismatchException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        if (ex instanceof MethodArgumentTypeMismatchException subEx)
+            return handleMethodArgumentTypeMismatchException(subEx, headers, status, request);
 
         ProblemType problemType = ProblemType.INVALID_PARAMETER;
-        HttpStatus status = HttpStatus.BAD_REQUEST;
-        String detail = String.format("URL parameter '%s', with value '%s' is a invalid type. Try again using %s type", ex.getParameter().getParameterName(),
-                ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName());
+        String detail = "URL param is invalid, verify syntax error";
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
 
-        return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
+        return handleExceptionInternal(ex, problemDetails, headers, status, request);
+    }
+
+    private ResponseEntity<Object> handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException subEx, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.INVALID_PARAMETER;
+            String detail = String.format("URL parameter '%s', with value '%s' is a invalid type. Try again using %s type", subEx.getParameter().getParameterName(),
+                    subEx.getValue(), Objects.requireNonNull(subEx.getRequiredType()).getSimpleName());
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+
+        return handleExceptionInternal(subEx, problemDetails, headers, status, request);
+
     }
 
     @Override //type of error when JSON got something wrong, like a ',() {}' in wrong place or something like that or string instead of integer when needed an integer
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Throwable rootCause = ExceptionUtils.getRootCause(ex); //goes through entire exception stack and get root exception, root cause
 
         //if root cause is an instance of invalidFormat... will return another method
-        if (rootCause instanceof InvalidFormatException exception) return handleInvalidFormatException(exception, headers, status, request);
-        if (rootCause instanceof PropertyBindingException exception) return handlePropertyBindingException(exception, headers, status, request);
+        if (rootCause instanceof InvalidFormatException subEx) return handleInvalidFormatException(subEx, headers, status, request);
+        if (rootCause instanceof PropertyBindingException subEx) return handlePropertyBindingException(subEx, headers, status, request);
 
         ProblemType problemType = ProblemType.INVALID_MESSAGE;
         String detail = "Response body is invalid, verify syntax error"; // ex.getMessage() got many sensitive data, means that's better that I create another one
@@ -99,7 +116,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
 
-    private ResponseEntity<Object> handlePropertyBindingException(PropertyBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    private ResponseEntity<Object> handlePropertyBindingException(
+            PropertyBindingException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         String path = ex.getPath().stream().map(reference -> reference.getFieldName())
                 .collect(Collectors.joining("."));
@@ -113,7 +131,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
     //type of error when JSON got something wrong, like string type instead of integer type, string id instead of long id
 
-    private ResponseEntity<Object> handleInvalidFormatException(InvalidFormatException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    private ResponseEntity<Object> handleInvalidFormatException(
+            InvalidFormatException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         String path = ex.getPath().stream().map(reference -> reference.getFieldName()) //JsonMappingException using this one to use getFieldName method
                 .collect(Collectors.joining(".")); //reduce to a string, would be like 'kitchen.id', you got something like kitchen id and join them
@@ -131,7 +150,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
 
         if (body == null) { //to not substitute personalized message that I did in each exception, created by me
             body = ProblemDetails.builder()
@@ -148,7 +168,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleExceptionInternal(ex, body, headers, statusCode, request);
     }
 
-    private ProblemDetails.ProblemDetailsBuilder createProblemDetailsBuilder(HttpStatus status, ProblemType problemType, String detail) { //method to instance a builder
+    private ProblemDetails.ProblemDetailsBuilder createProblemDetailsBuilder(
+            HttpStatus status, ProblemType problemType, String detail) { //method to instance a builder
         //will not instance a build(); only builder of problemDetails, build must be done in method, case that need something else, can add in there
         return ProblemDetails.builder()
                 .status(status.value())
