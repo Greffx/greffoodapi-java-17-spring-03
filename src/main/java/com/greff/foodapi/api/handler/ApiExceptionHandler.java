@@ -72,7 +72,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
     }
 
-    //method to treat every exception that got no treat in another method
+    //method to treat every exception that got no treat in another method, since exception is parent of them, we can use this way
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaughtException(Exception ex, WebRequest request) {
 
