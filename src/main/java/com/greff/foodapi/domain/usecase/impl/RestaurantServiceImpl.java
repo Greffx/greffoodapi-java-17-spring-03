@@ -108,11 +108,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurantSource = objectMapper.convertValue(fields, Restaurant.class); //Create of fields(source data), to Restaurant type
 
         fields.forEach((nameProperty, valueProperty) -> {
-            //imagine passing field at request and this collection will search at first param, which field is equal. Like body request will be 'name', field will find attribute to match
+            //imagine passing field at request and this collection will search at first param, which field is equal.
+            // Like body request will be 'name', field will find attribute to match
             Field field = ReflectionUtils.findField(Restaurant.class, nameProperty);
             field.setAccessible(true); //private fields can be accessed now
 
-            Object newValue = ReflectionUtils.getField(field, restaurantSource); //getting field of restaurantSource and setting field with this get. Get will get value of Field
+            //getting field of restaurantSource and setting field with this get. Get will get value of Field
+            Object newValue = ReflectionUtils.getField(field, restaurantSource);
 
             //means that will get propertyName and change property value of target, for valueProperty
             ReflectionUtils.setField(field, restaurant, newValue);
