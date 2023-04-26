@@ -10,7 +10,8 @@ public enum ProblemType {
     ENTITY_IN_USE("/entity-in-use", "Entity is been used"),
     INVALID_DATA("/invalid-data", "Invalid data"),
     INVALID_MESSAGE("/invalid-message", "Invalid message"),
-    INVALID_PARAMETER("/invalid-parameter", "Invalid parameter");
+    INVALID_PARAMETER("/invalid-parameter", "Invalid parameter"),
+    INTERNAL_ERROR("/internal-error", "Internal error");
 
     private final String title; //type of problem title
     private final String uri; //type of problem uri
