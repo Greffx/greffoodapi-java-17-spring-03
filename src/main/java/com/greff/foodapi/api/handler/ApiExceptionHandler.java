@@ -19,6 +19,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,10 @@ import java.util.stream.Collectors;
 //this annotation means that can add exception handlers which all project exceptions will be treated in here
 //center point to treat them will be this class
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    public static final String GENERAL_ERROR_MESSAGE_FINAL_USER =
+            "Internal error unexpected, try again and if happens the same problem, contact system administrator.";
+
     //don't need to treat all internal exceptions spring MVC
     // springResponseEntityExceptionHandler this class already do that for us, can be inherited by exception global classes like mine
     //and treat all internal exceptions spring MVC
@@ -42,7 +47,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = ex.getMessage();
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
         //ideal to all methods, handlers return something like this, handleExceptionInternal is a center point to return customized response
@@ -55,7 +63,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.INVALID_DATA;
         String detail = ex.getMessage();
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
     }
@@ -67,7 +78,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.ENTITY_IN_USE;
         String detail = ex.getMessage();
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
     }
@@ -78,16 +92,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ProblemType problemType = ProblemType.INTERNAL_ERROR;
-        String detail = "Internal error unexpected, try again and if happens the same problem, contact system administrator.";
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
 
     }
 
-
-        //type of error when JSON got something wrong, like a 'localhost/restaurant/1s' using an id long as a string
+    //type of error when JSON got something wrong, like a 'localhost/restaurant/1s' using an id long as a string
     //but this is a general method, if is an instance of a child class, will throw others classes
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(
@@ -99,7 +113,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.INVALID_PARAMETER;
         String detail = "URL param is invalid, verify syntax error";
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
@@ -112,7 +129,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             String detail = String.format("Parameter '%s', with value '%s' is a invalid type. Try again using %s type", subEx.getParameter().getParameterName(),
                     subEx.getValue(), Objects.requireNonNull(subEx.getRequiredType()).getSimpleName());
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(subEx, problemDetails, headers, status, request);
 
@@ -132,7 +152,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.INVALID_MESSAGE;
         String detail = "Response body is invalid, verify syntax error"; // ex.getMessage() got many sensitive data, means that's better that I create another one
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
@@ -147,7 +170,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.INVALID_MESSAGE;
         String detail = String.format("Property '%s' is not allowed to be used", path);
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
@@ -163,7 +189,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("Property '%s', received value '%s', which is invalid type. Try again and use value that is equal to %s",
                 path, ex.getValue(), ex.getTargetType().getSimpleName()); //altering this detail because it could have sensitive data, if I use default by exception type
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER) //since this one is not standard, that how's going to be passed in builder, it's more for user
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
@@ -174,7 +203,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = String.format("Resource %s is a invalid, don't exist", ex.getRequestURL());
 
-        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()),problemType, detail).build();
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .timestamp(LocalDateTime.now())
+                .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
@@ -182,17 +214,19 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
     protected ResponseEntity<Object> handleExceptionInternal(
-            Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+        Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
 
         if (body == null) { //to not substitute personalized message that I did in each exception, created by me
             body = ProblemDetails.builder()
-                    .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase()) //describes little about statusCode, here is substituting that customized exception message
+                    .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase())//statusCode title, here is substituting that customized exception message, like 'Not found'
                     .status(statusCode.value()) //getting value of http status
+                    .timestamp(LocalDateTime.now())
                     .build(); //customizing body
         } else if (body instanceof String bodyString) { //checking if body is an instance of bodyString
             body = ProblemDetails.builder()
                     .title(bodyString) //taking string that exception returned and changing into an exception default message
                     .status(statusCode.value())
+                    .timestamp(LocalDateTime.now())
                     .build(); //if body is an instance of string, will build a problem and turn into a standard exception
         }
 
@@ -210,7 +244,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .detail(detail);
     }
 
-
 //    @ExceptionHandler(HttpMediaTypeNotSupportedException.class) internal exception spring MVC
 //    public ResponseEntity<Object> handleHttpMediaTypeNotSupportedException()
 //        var standardProblem = StandardProblem.builder()
@@ -218,5 +251,4 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 //                .dateTime(LocalDateTime.now()).build()
 //
 //        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(standardProblem)
-
 }
