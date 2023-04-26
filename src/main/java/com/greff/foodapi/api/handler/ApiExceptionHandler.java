@@ -49,7 +49,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
@@ -65,7 +64,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
@@ -80,7 +78,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
@@ -94,7 +91,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.INTERNAL_ERROR;
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, GENERAL_ERROR_MESSAGE_FINAL_USER)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, new HttpHeaders(), status, request);
@@ -115,7 +111,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
@@ -131,7 +126,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(subEx, problemDetails, headers, status, request);
@@ -154,7 +148,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
@@ -172,7 +165,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
@@ -191,7 +183,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER) //since this one is not standard, that how's going to be passed in builder, it's more for user
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
@@ -205,7 +196,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
-                .timestamp(LocalDateTime.now())
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
@@ -241,6 +231,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(status.value())
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
+                .timestamp(LocalDateTime.now())
                 .detail(detail);
     }
 
