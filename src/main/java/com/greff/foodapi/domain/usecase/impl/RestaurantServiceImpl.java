@@ -1,5 +1,6 @@
 package com.greff.foodapi.domain.usecase.impl;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.Restaurant;
@@ -7,7 +8,11 @@ import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import com.greff.foodapi.domain.usecase.exception.*;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
@@ -103,22 +108,32 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public void patchFields(Map<String, Object> fields, Restaurant restaurant) { //this method objective is to substitute restaurant attributes for fields attributes
-        ObjectMapper objectMapper = new ObjectMapper(); //Of JACKSON, Responsible to convert JSON to Java, Java to JSON
-        Restaurant restaurantSource = objectMapper.convertValue(fields, Restaurant.class); //Create of fields(source data), to Restaurant type
+    public void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request) { //this method objective is to substitute restaurant attributes for fields attributes
+        ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
 
-        fields.forEach((nameProperty, valueProperty) -> {
-            //imagine passing field at request and this collection will search at first param, which field is equal.
-            // Like body request will be 'name', field will find attribute to match
-            Field field = ReflectionUtils.findField(Restaurant.class, nameProperty);
-            field.setAccessible(true); //private fields can be accessed now
+        try {
+            ObjectMapper objectMapper = new ObjectMapper(); //Of JACKSON, Responsible to convert JSON to Java, Java to JSON
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true); //setting object mapper to fail when using ignored properties
 
-            //getting field of restaurantSource and setting newValue with this get. Get will get value of Field
-            Object newValue = ReflectionUtils.getField(field, restaurantSource);
+            Restaurant restaurantSource = objectMapper.convertValue(fields, Restaurant.class); //Create of fields(source data), to Restaurant type
 
-            //means that will get propertyName and change property value of target, for valueProperty
-            ReflectionUtils.setField(field, restaurant, newValue);
-        });
+            fields.forEach((nameProperty, valueProperty) -> {
+                //imagine passing field at request and this collection will search at first param, which field is equal.
+                // Like body request will be 'name', field will find attribute to match
+                Field field = ReflectionUtils.findField(Restaurant.class, nameProperty);
+                field.setAccessible(true); //private fields can be accessed now
+
+                //getting field of restaurantSource and setting newValue with this get. Get will get value of Field
+                Object newValue = ReflectionUtils.getField(field, restaurantSource);
+
+                //means that will get propertyName and change property value of target, for valueProperty
+                ReflectionUtils.setField(field, restaurant, newValue);
+            });
+
+        } catch (IllegalArgumentException e) {
+            Throwable rootCause = ExceptionUtils.getRootCause(e);
+            throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+        }
     }
 
     @Override

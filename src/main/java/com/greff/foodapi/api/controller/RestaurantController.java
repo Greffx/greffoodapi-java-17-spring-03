@@ -2,6 +2,7 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -71,12 +72,12 @@ public class RestaurantController {
 
     @PatchMapping("/{id}")
     //map to 'PATCH' endpoint, which means that don't need to update everything, like 'PUT' type, that needs everything
-    public Restaurant patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id) {
+    public Restaurant patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id, HttpServletRequest request) {
         //Map<String, Object> string is key like 'NAME', 'TAX', 'KITCHEN', and Object is value of key, like 'RESTAURANT NAME', 'VALUE OF TAX' and 'KITCHEN NAME'
         //Will only map values that will come of request body, so user can work with attributes that he wants to alter.This means that he must work only with things that he wants to work
         Restaurant restaurant = restaurantService.findById(id);
 
-        restaurantService.patchFields(fields, restaurant);
+        restaurantService.patchFields(fields, restaurant, request);
 
         return updateRestaurant(restaurant, id);
     }

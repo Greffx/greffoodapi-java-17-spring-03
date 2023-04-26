@@ -1,6 +1,7 @@
 package com.greff.foodapi.domain.usecase;
 
 import com.greff.foodapi.domain.model.Restaurant;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,7 +29,7 @@ public interface RestaurantService {
 
     Restaurant update(Restaurant restaurant, Long id);
 
-    void patchFields(Map<String, Object> fields, Restaurant restaurant);
+    void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request);
 
     void deleteById(Long id);
 }
