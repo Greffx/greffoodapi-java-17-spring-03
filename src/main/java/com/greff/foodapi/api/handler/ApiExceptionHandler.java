@@ -39,7 +39,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     //when capture this one, will get all of them, like cityNotFound, state, restaurant, because of hierarchy chain, gets all subclasses
     @ExceptionHandler(NotFoundObjectException.class)
     public ResponseEntity<Object> handleNotFoundObjectException(NotFoundObjectException ex, WebRequest request) { //start with 'handle'  exceptions method name, to follow pattern
-        // WebRequest can be received as param method, that way request come auto and spring passes which request it was
+        // WebRequest can be received as param method, that way request come auto and spring passes which request it was, represents web request, like get, post and such
         //when capture with annotation, this method will be called auto, passing exception thrown like a param
         //we can use responseEntity to customize response, body, headers with it
 
@@ -203,16 +203,18 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
+    //ideal to all handlers to use this one to return something, like a center point to return, where can customize body response
     protected ResponseEntity<Object> handleExceptionInternal(
         Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
 
-        if (body == null) { //to not substitute personalized message that I did in each exception, created by me
+        if (body == null) { //if body comes null, because some exceptions don't get body, it will create one, to return something in response body
             body = ProblemDetails.builder()
-                    .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase())//statusCode title, here is substituting that customized exception message, like 'Not found'
+                    .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase())//statusCode title,  like 'Not found', here is substituting that customized exception message
                     .status(statusCode.value()) //getting value of http status
                     .timestamp(LocalDateTime.now())
                     .build(); //customizing body
-        } else if (body instanceof String bodyString) { //checking if body is an instance of bodyString
+        } else if (body instanceof String bodyString) { //checking if body is an instance of bodyString, because it could be only a string like, if body would be 'ex.getMessage()', that body is only a string
+            //this is because it's not good to return only a string, needs to be a complete body
             body = ProblemDetails.builder()
                     .title(bodyString) //taking string that exception returned and changing into an exception default message
                     .status(statusCode.value())
