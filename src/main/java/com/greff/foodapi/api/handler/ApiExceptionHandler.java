@@ -1,4 +1,4 @@
-package com.greff.foodapi.api.handler;
+package com.greff.foodapi.api.handler; //in this class I'm going to use ProblemDetails specifications to better handle some exceptions
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         //we can use responseEntity to customize response, body, headers with it
 
         HttpStatus status = HttpStatus.NOT_FOUND;
-        ProblemType problemType = ProblemType.ENTITY_NOT_FOUND;
+        ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = ex.getMessage();
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(status, problemType, detail).build();
@@ -146,7 +147,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
+        ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
+        String detail = String.format("Resource %s is a invalid, don't exist", ex.getRequestURL());
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()),problemType, detail).build();
+
+        return handleExceptionInternal(ex, problemDetails, headers, status, request);
+    }
 
     @Override
     //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
