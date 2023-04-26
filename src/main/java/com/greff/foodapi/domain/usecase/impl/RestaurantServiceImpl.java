@@ -113,7 +113,7 @@ public class RestaurantServiceImpl implements RestaurantService {
             Field field = ReflectionUtils.findField(Restaurant.class, nameProperty);
             field.setAccessible(true); //private fields can be accessed now
 
-            //getting field of restaurantSource and setting field with this get. Get will get value of Field
+            //getting field of restaurantSource and setting newValue with this get. Get will get value of Field
             Object newValue = ReflectionUtils.getField(field, restaurantSource);
 
             //means that will get propertyName and change property value of target, for valueProperty
