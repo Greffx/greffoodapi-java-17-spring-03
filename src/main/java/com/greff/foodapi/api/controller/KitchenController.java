@@ -62,7 +62,7 @@ public class KitchenController {
 
     @PutMapping("/{id}")
     //map method, PutMapping means that requests with verb http 'PUT' will use this method, will update obj based on id
-    public Kitchen update(@RequestBody Kitchen kitchen, @PathVariable Long id) {
+    public Kitchen update(@RequestBody @Valid Kitchen kitchen, @PathVariable Long id) {
         return kitchenService.update(kitchen, id);
     }
 

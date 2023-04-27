@@ -72,7 +72,7 @@ public class RestaurantController {
     }
 
     @PutMapping("/{id}")
-    public Restaurant updateRestaurant(@RequestBody Restaurant restaurant, @PathVariable Long id) {
+    public Restaurant updateRestaurant(@RequestBody @Valid Restaurant restaurant, @PathVariable Long id) {
         return restaurantService.update(restaurant, id);
     }
 
