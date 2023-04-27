@@ -4,6 +4,7 @@ package com.greff.foodapi.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Table(name = "tb_kitchens") //that's how to change name of table
 public class Kitchen {
 
+    @NotNull //saying like when trying to post a restaurant, id of kitchen of that restaurant can't be null
     @EqualsAndHashCode.Include //that is how we choose an attribute to be used in hashcode and equals
     @Id //id of kitchen, say this attribute will represent id of entity
     @GeneratedValue(strategy = GenerationType.IDENTITY)
