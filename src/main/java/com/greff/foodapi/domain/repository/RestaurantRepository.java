@@ -10,8 +10,12 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 import java.util.Optional;
 
+//JPA is a SPECIFICATION of JAVA EE(enterprise edition) and Bean Validation as well, so both of them talk together well, good relation
+//so when an entity got bean validation, they check those validations before persisting object
+//Hibernate is an IMPLEMENTATION
 //inherit RestaurantRepositoryCustomizedQueries where created methods to be impl
 //Repository needs to be prepared to receive specification, interface needs to inherit another class JpaSpecificationExecutor<EntityName>.
+//and is an Interface to allow execution of Specification.
 //got methods as 'findAll', 'findOne', 'count' that receives Specifications<EntityName> as param that we need to use.
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, RestaurantRepositoryCustomizedQueries,
         JpaSpecificationExecutor<Restaurant> {
