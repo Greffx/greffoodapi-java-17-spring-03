@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.groups.ConvertGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -33,17 +34,20 @@ public class Restaurant {
     //validation happen in JPA repository, so don't try to do insert, will stop early at preInsert
     //@NotEmpty means that don't accept null or ""(means empty)
     //verifies not null, not empty "" and can't be only whitespace without nothing, like "   "
-    @NotBlank(groups = Groups.RestaurantRegister.class)
+    @NotBlank
     @Column(name = "restaurant_name", nullable = false)
     private String name;
 
     //@DecimalMin("1") minimum string value, can see in class why, because bigDecimal representation is string
-    @PositiveOrZero(groups = Groups.RestaurantRegister.class) //another annotation that say the same thing
+    @PositiveOrZero //another annotation that say the same thing
     @Column(name = "delivery_tax", nullable = false)
     private BigDecimal deliveryTax;
 
+    @ConvertGroup(to = Groups.KitchenId.class) //converting group Default.class to group that I created, better than saying each annotation group
+    //if had more than 10 groups would be way too much hardcode, this way is converting this instance to my group
+    //would be like, in time to validate kitchen convert to another group and do the validation
     //(groups = Default.class) that's standard and everyone, that's why we change, if necessary
-    @NotNull(groups = Groups.RestaurantRegister.class)
+    @NotNull
     //this one is saying that an instance of kitchen is need it, but need to validate its properties to,
     //because this one only check instance of object's there
     @Valid //using valid in Kitchen type says that don't want only to check an instance of kitchen is null, but its properties too, can't be null either
