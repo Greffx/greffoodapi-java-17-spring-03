@@ -67,6 +67,7 @@ public class RestaurantController {
     //better to do this here instead of JPA doing it
     //@Validated accept another group, because @Valid by default is a Default.class group and can't change
     //to be able to use another group in validations annotations we need to use this and choose which group it's
+    //@Validated(Default.class) that is how work, but with @Valid
     public Restaurant createRestaurant(@RequestBody @Validated(Groups.RestaurantRegister.class) Restaurant restaurant) {
         return restaurantService.create(restaurant);
     }

@@ -42,6 +42,7 @@ public class Restaurant {
     @Column(name = "delivery_tax", nullable = false)
     private BigDecimal deliveryTax;
 
+    //(groups = Default.class) that's standard and everyone, that's why we change, if necessary
     @NotNull(groups = Groups.RestaurantRegister.class)
     //this one is saying that an instance of kitchen is need it, but need to validate its properties to,
     //because this one only check instance of object's there
