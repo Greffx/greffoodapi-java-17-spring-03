@@ -1,11 +1,12 @@
 package com.greff.foodapi.api.controller;
 
+import com.greff.foodapi.core.Groups;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -64,7 +65,9 @@ public class RestaurantController {
     //? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
     //@valid means that before calling this method will have a validation check of restaurant instance
     //better to do this here instead of JPA doing it
-    public Restaurant createRestaurant(@RequestBody @Valid Restaurant restaurant) {
+    //@Validated accept another group, because @Valid by default is a Default.class group and can't change
+    //to be able to use another group in validations annotations we need to use this and choose which group it's
+    public Restaurant createRestaurant(@RequestBody @Validated(Groups.RestaurantRegister.class) Restaurant restaurant) {
         return restaurantService.create(restaurant);
     }
 
