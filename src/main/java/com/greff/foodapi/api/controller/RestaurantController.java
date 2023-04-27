@@ -1,12 +1,11 @@
 package com.greff.foodapi.api.controller;
 
-import com.greff.foodapi.core.Groups;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -68,7 +67,7 @@ public class RestaurantController {
     //@Validated accept another group, because @Valid by default is a Default.class group and can't change
     //to be able to use another group in validations annotations we need to use this and choose which group it's
     //@Valid(Default.class) that is how work, @Valid don't show, just do it
-    public Restaurant createRestaurant(@RequestBody @Validated(Groups.RestaurantRegister.class) Restaurant restaurant) {
+    public Restaurant createRestaurant(@RequestBody @Valid Restaurant restaurant) {
         return restaurantService.create(restaurant);
     }
 
