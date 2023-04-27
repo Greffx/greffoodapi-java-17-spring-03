@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -122,8 +124,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             MethodArgumentTypeMismatchException subEx, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.INVALID_PARAMETER;
-            String detail = String.format("Parameter '%s', with value '%s' is a invalid type. Try again using %s type", subEx.getParameter().getParameterName(),
-                    subEx.getValue(), Objects.requireNonNull(subEx.getRequiredType()).getSimpleName());
+        String detail = String.format("Parameter '%s', with value '%s' is a invalid type. Try again using %s type", subEx.getParameter().getParameterName(),
+                subEx.getValue(), Objects.requireNonNull(subEx.getRequiredType()).getSimpleName());
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
@@ -141,8 +143,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Throwable rootCause = ExceptionUtils.getRootCause(ex); //goes through entire exception stack and get root exception, root cause
 
         //if root cause is an instance of invalidFormat... will return another method
-        if (rootCause instanceof InvalidFormatException subEx) return handleInvalidFormatException(subEx, headers, status, request);
-        if (rootCause instanceof PropertyBindingException subEx) return handlePropertyBindingException(subEx, headers, status, request);
+        if (rootCause instanceof InvalidFormatException subEx)
+            return handleInvalidFormatException(subEx, headers, status, request);
+        if (rootCause instanceof PropertyBindingException subEx)
+            return handlePropertyBindingException(subEx, headers, status, request);
 
         ProblemType problemType = ProblemType.INVALID_MESSAGE;
         String detail = "Response body is invalid, verify syntax error"; // ex.getMessage() got many sensitive data, means that's better that I create another one
@@ -189,7 +193,8 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
 
-    @Override //exception when there's no exception to handle, like when there's a URL error, throw nothing, so this one will handle this situation
+    @Override
+    //exception when there's no exception to handle, like when there's a URL error, throw nothing, so this one will handle this situation
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
@@ -209,9 +214,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.INVALID_DATA;
         String detail = "One or more invalid fields, try again";
 
+        //inside MethodArgumentNotValidException there's getBindingResult holds constraints violations of bean validation, which means
+        //gather fields, properties was violated
+        BindingResult bindingResult = ex.getBindingResult();
+
+        //this is how to instance a list of inner class, nested class
+        //this is mapping each fieldError type and building an Inner class Field type and returning a list of it
+        //builder receives a property name and default message
+        List<ProblemDetails.Field> fields = bindingResult.getFieldErrors().stream()
+                .map(fieldError -> ProblemDetails.Field.builder()
+                        .fieldName(fieldError.getField())
+                        .defaultMessage(fieldError.getDefaultMessage())
+                        .build())
+                .toList();
+
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .timestamp(LocalDateTime.now())
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .fields(fields)
                 .build();
 
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
@@ -221,7 +241,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     //protected method of abstract class ResponseEntityExceptionHandler, to return something to every spring MVC exception
     //ideal to all handlers to use this one to return something, like a center point to return, where can customize body response
     protected ResponseEntity<Object> handleExceptionInternal(
-        Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
+            Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
 
         if (body == null) { //if body comes null, because some exceptions don't get body, it will create one, to return something in response body
             body = ProblemDetails.builder()
