@@ -3,7 +3,9 @@ package com.greff.foodapi.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.greff.foodapi.core.Groups;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,7 +20,9 @@ import java.util.List;
 @Table(name = "tb_kitchens") //that's how to change name of table
 public class Kitchen {
 
-    @NotNull //saying like when trying to post a restaurant, id of kitchen of that restaurant can't be null
+    @NotNull(groups = Groups.RestaurantRegister.class)
+    //when registering a restaurant, validate an object restaurant that contains a (groups = Groups.RestaurantRegister.class) constraints
+    //saying like when trying to post a restaurant, id of kitchen of that restaurant can't be null
     @EqualsAndHashCode.Include //that is how we choose an attribute to be used in hashcode and equals
     @Id //id of kitchen, say this attribute will represent id of entity
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +30,7 @@ public class Kitchen {
     //Using IDENTITY, given responsibility to SQL to be the provider, it will do id generation for us
     private Long id;
 
+    @NotBlank
     @JsonProperty("name")
     //this not change at domain model, not change the name of attribute. But the representation in JSON will be another, if we change 'name' value
     //@Column(name = "kitchen_name", nullable = false)
