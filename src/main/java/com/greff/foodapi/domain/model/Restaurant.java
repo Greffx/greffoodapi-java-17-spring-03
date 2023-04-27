@@ -3,6 +3,7 @@ package com.greff.foodapi.domain.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -24,6 +25,10 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    //validation rule, restriction, this annotation says that doesn't accept null values, instead of database validate, our application does it
+    //validation happen in JPA repository, so don't try to do insert, will stop early at preInsert
+
+    @NotNull
     @Column(name = "restaurant_name", nullable = false)
     private String name;
 
