@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -188,13 +189,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problemDetails, headers, status, request);
     }
 
-    @Override //exception when there's no exception to handle
+    @Override //exception when there's no exception to handle, like when there's a URL error, throw nothing, so this one will handle this situation
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = String.format("Resource %s is a invalid, don't exist", ex.getRequestURL());
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
+                .build();
+
+        return handleExceptionInternal(ex, problemDetails, headers, status, request);
+    }
+
+    @Override//exception when a field is null or is missing a field
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        ProblemType problemType = ProblemType.INVALID_DATA;
+        String detail = "One or more invalid fields, try again";
+
+        ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
+                .timestamp(LocalDateTime.now())
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
                 .build();
 
@@ -209,9 +225,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (body == null) { //if body comes null, because some exceptions don't get body, it will create one, to return something in response body
             body = ProblemDetails.builder()
-                    .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase())//statusCode title,  like 'Not found', here is substituting that customized exception message
+                    //statusCode title,  like 'Not found', here is substituting that customized exception message
+                    .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase())
                     .status(statusCode.value()) //getting value of http status
                     .timestamp(LocalDateTime.now())
+                    .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
                     .build(); //customizing body
         } else if (body instanceof String bodyString) { //checking if body is an instance of bodyString, because it could be only a string like, if body would be 'ex.getMessage()', that body is only a string
             //this is because it's not good to return only a string, needs to be a complete body
@@ -219,6 +237,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     .title(bodyString) //taking string that exception returned and changing into an exception default message
                     .status(statusCode.value())
                     .timestamp(LocalDateTime.now())
+                    .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
                     .build(); //if body is an instance of string, will build a problem and turn into a standard exception
         }
 
