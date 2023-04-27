@@ -3,6 +3,7 @@ package com.greff.foodapi.api.controller;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +62,9 @@ public class RestaurantController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     //? is a wildcard, means that can return anything, because of the 38 line, that's a string type, só ? will help with that
-    public Restaurant createRestaurant(@RequestBody Restaurant restaurant) {
+    //@valid means that before calling this method will have a validation check of restaurant instance
+    //better to do this here instead of JPA doing it
+    public Restaurant createRestaurant(@RequestBody @Valid Restaurant restaurant) {
         return restaurantService.create(restaurant);
     }
 
