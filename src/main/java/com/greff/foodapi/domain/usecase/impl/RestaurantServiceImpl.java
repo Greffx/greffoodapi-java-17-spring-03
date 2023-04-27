@@ -78,17 +78,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
 
-        try {
-            Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
-                    new KitchenNotFoundException(kitchenId));
+        Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
+                new KitchenNotFoundException(kitchenId));
 
-            restaurant.setKitchen(kitchen);
+        restaurant.setKitchen(kitchen);
 
-            return restaurantRepository.save(restaurant);
-
-        } catch (NotFoundObjectException e) {
-            throw new KitchenNotFoundException(kitchenId);
-        }
+        return restaurantRepository.save(restaurant);
     }
 
     @Override
