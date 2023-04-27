@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "tb_kitchens") //that's how to change name of table
 public class Kitchen {
 
-    @NotNull(groups = Groups.RestaurantRegister.class)
+    @NotNull(groups = Groups.KitchenId.class)
     //when registering a restaurant, validate an object restaurant that contains a (groups = Groups.RestaurantRegister.class) constraints
     //saying like when trying to post a restaurant, id of kitchen of that restaurant can't be null
     @EqualsAndHashCode.Include //that is how we choose an attribute to be used in hashcode and equals
