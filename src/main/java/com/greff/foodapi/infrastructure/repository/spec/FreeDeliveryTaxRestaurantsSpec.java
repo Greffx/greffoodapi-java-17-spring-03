@@ -3,8 +3,9 @@
 ////THERE IS NOTHING TO DO WITH business of restaurants. Infrastructure manages: how to send an email, how to connect to DB
 ////So how implementation of repositories is lower level code compared with business rules code, it goes here, makes more sense to be infrastructure business
 ////It is in spec because we're using specifications interface
-////goes inside infrastructure because 'SPECIFICATION' interface implementation got code that makes directly communication with JPA API, and we're considering this like infrastructure
-//
+////goes inside infrastructure because 'SPECIFICATION' interface implementation got code that makes directly communication with JPA API,
+// and we're considering this like infrastructure
+
 //import com.greff.foodapi.domain.model.Restaurant;
 //import jakarta.persistence.criteria.CriteriaBuilder;
 //import jakarta.persistence.criteria.CriteriaQuery;
