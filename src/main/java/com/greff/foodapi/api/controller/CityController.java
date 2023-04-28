@@ -2,6 +2,7 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.usecase.CityService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,12 +30,12 @@ public class CityController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public City createCity(@RequestBody City city) {
+    public City createCity(@RequestBody @Valid City city) {
         return cityService.create(city);
     }
 
     @PutMapping("/{id}")
-    public City updateCity(@RequestBody City city, @PathVariable Long id) {
+    public City updateCity(@RequestBody @Valid City city, @PathVariable Long id) {
         return cityService.update(city, id);
     }
 

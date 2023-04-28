@@ -2,6 +2,7 @@ package com.greff.foodapi.api.controller;
 
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.usecase.StateService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,12 +30,12 @@ public class StateController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public State createState(@RequestBody State state) {
+    public State createState(@RequestBody @Valid State state) {
         return stateService.create(state);
     }
 
     @PutMapping("/{id}")
-    public State updateState(@RequestBody State state, @PathVariable Long id) {
+    public State updateState(@RequestBody @Valid State state, @PathVariable Long id) {
         return stateService.update(state, id);
     }
 
