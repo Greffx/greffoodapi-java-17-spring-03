@@ -7,6 +7,8 @@ import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -33,6 +35,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String GENERAL_ERROR_MESSAGE_FINAL_USER =
             "Internal error unexpected, try again and if happens the same problem, contact system administrator.";
+
+    private MessageSource messageSource; //interface to fix messages
+
+    public ApiExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     //don't need to treat all internal exceptions spring MVC
     // springResponseEntityExceptionHandler this class already do that for us, can be inherited by exception global classes like mine
@@ -222,10 +230,17 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         //this is mapping each fieldError type and building an Inner class Field type and returning a list of it
         //builder receives a property name and default message
         List<ProblemDetails.Field> fields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> ProblemDetails.Field.builder()
-                        .fieldName(fieldError.getField())
-                        .defaultMessage(fieldError.getDefaultMessage())
-                        .build())
+                .map(fieldError -> { //create this code block {} because of message var, returning bundle resource message type of messages.properties
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    //MessageSourceResolvable is the first param and bindingResult.getFieldErrors() is a type of that first param, comes from FieldError class that's an implementation of it
+                    //second param is a locale, which is an object that represents a region like portuguese, english or etc.
+                    //LocaleContextHolder.getLocale() takes a locale from operational system that you use as default
+
+                    return ProblemDetails.Field.builder()
+                            .fieldName(fieldError.getField())
+                            .defaultMessage(message)
+                            .build();
+                })
                 .toList();
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
