@@ -4,4 +4,6 @@ public interface Groups { //validation group, receives an array os types, like c
     //could be a class, just need to be a type
 
     interface KitchenId {} //marking type
+
+    interface StateId {}
 }
