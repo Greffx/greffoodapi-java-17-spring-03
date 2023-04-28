@@ -16,14 +16,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD, METHOD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE}) //can use in method, attribute, constructor, that's what target annotation means
 @Retention(RUNTIME) //this one means that will readed in runtime
-@Constraint(validatedBy = {}) //constraint, that means that will be a bean validation
+@Constraint(validatedBy = {}) //constraint, that means that which class that implements this validation
 @PositiveOrZero //will receive rules of this annotation
 public @interface DeliveryTax { //creating personalized annotation
 
     @OverridesAttribute(constraint = PositiveOrZero.class, name = "message") //override 'message' of constraint and need to know parameter like 'message'
-    String message() default "{Invalid.DeliveryTax}"; //message key, where will get the message, which var
+    String message() default "{Invalid.DeliveryTax}"; //message key, which message will throw if constraint is necessary, which var
 
-    Class<?>[] groups() default { };
+    Class<?>[] groups() default { }; //this annotation enable to who's going to use this annotation, change group
 
-    Class<? extends Payload>[] payload() default { };
+    Class<? extends Payload>[] payload() default { }; //payload is used for pass metadata
 }
