@@ -2,7 +2,7 @@ package com.greff.foodapi.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.greff.foodapi.core.Groups;
+import com.greff.foodapi.core.validation.Groups;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -40,6 +40,7 @@ public class Restaurant {
 
     @NotNull
     //@DecimalMin("1") minimum string value, can see in class why, because bigDecimal representation is string
+    //@DeliveryTax //personalized annotation
     @PositiveOrZero //another annotation that say the same thing
     @Column(name = "delivery_tax", nullable = false)
     private BigDecimal deliveryTax;
