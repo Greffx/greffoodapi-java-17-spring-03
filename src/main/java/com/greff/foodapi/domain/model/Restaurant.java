@@ -38,6 +38,7 @@ public class Restaurant {
     @Column(name = "restaurant_name", nullable = false)
     private String name;
 
+    @NotNull
     //@DecimalMin("1") minimum string value, can see in class why, because bigDecimal representation is string
     @PositiveOrZero //another annotation that say the same thing
     @Column(name = "delivery_tax", nullable = false)
