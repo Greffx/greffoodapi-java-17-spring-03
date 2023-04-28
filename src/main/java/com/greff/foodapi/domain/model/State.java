@@ -1,6 +1,6 @@
 package com.greff.foodapi.domain.model;
 
-import com.greff.foodapi.core.Groups;
+import com.greff.foodapi.core.validation.Groups;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
