@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class KitchenServiceTests {
+class KitchenServiceTests { //this is a integration test, but not API type, don't test like get endpoint for instance
 
     @Autowired
     private KitchenService kitchenService; //can't have an injection by constructor in here, just with annotation type
