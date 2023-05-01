@@ -2,6 +2,8 @@ package com.greff.foodapi;
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
+import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class KitchenServiceTests { //this is a integration test, but not API type, don't test like get endpoint for instance
+class KitchenServiceTests {
+    //this is an integration test, but not API type, don't test like get endpoint for instance
+    //difference between integration test and unit test is unit only test a class, integration tests class with injections
 
     @Autowired
     private KitchenService kitchenService; //can't have an injection by constructor in here, just with annotation type
 
     @Test
-    void shouldCreateKitchenWithSuccessTest() { //always follow a pattern, like start method name with 'should'
+    void shouldCreateKitchenWithSuccess() { //always follow a pattern, like start method name with 'should'
         //this one is more like a happy path to validate, when all go alright
         //it's good for tests to follow like:
         //situation
@@ -27,8 +31,8 @@ class KitchenServiceTests { //this is a integration test, but not API type, don'
         //action
         kitchen = kitchenService.create(kitchen); //going throw action of creation method
 
+        //validation is good to check 1 function, ok to do more than 1 when got relation
         //validation
-        //validation is good to check 1 function, ok to do more than 1 when is vinculated
         assertThat(kitchen).isNotNull(); //validation if is null or not
         assertThat(kitchen.getId()).isNotNull();
     }
@@ -46,5 +50,15 @@ class KitchenServiceTests { //this is a integration test, but not API type, don'
         assertThrows(ConstraintViolationException.class, () ->
                 kitchenService.create(kitchen)
         );
+    }
+
+    @Test
+    void shouldFailWhenTryToDeleteAKitchenInUse() {
+        assertThrows(EntityInUseException.class, () -> kitchenService.deleteById(1L));
+    }
+
+    @Test
+    void shouldFailWhenTryToDeleteAKitchenThatDoNotExist() {
+        assertThrows(NotFoundObjectException.class, () -> kitchenService.deleteById(123L));
     }
 }
