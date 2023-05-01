@@ -28,6 +28,7 @@ class KitchenServiceTests { //this is a integration test, but not API type, don'
         kitchen = kitchenService.create(kitchen); //going throw action of creation method
 
         //validation
+        //validation is good to check 1 function, ok to do more than 1 when is vinculated
         assertThat(kitchen).isNotNull(); //validation if is null or not
         assertThat(kitchen.getId()).isNotNull();
     }
