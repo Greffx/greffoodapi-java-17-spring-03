@@ -5,22 +5,23 @@ import com.greff.foodapi.domain.usecase.KitchenService;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import jakarta.validation.ConstraintViolationException;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test; //Junit is a simple library to execute test code, can write API and integration tests too
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-class KitchenServiceTests {
+@SpringBootTest //supply with spring boot functions for tests
+class KitchenServiceIT {
     //this is an integration test, but not API type, don't test like get endpoint for instance
     //difference between integration test and unit test is unit only test a class, integration tests class with injections
+    //changing naming, saying that's another category of tests IT, integration type
 
     @Autowired
     private KitchenService kitchenService; //can't have an injection by constructor in here, just with annotation type
 
-    @Test
+    @Test //every test method has this annotation, that's how is recognized as a test method
     void shouldCreateKitchenWithSuccess() { //always follow a pattern, like start method name with 'should'
         //this one is more like a happy path to validate, when all go alright
         //it's good for tests to follow like:
