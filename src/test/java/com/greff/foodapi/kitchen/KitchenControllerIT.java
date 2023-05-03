@@ -1,5 +1,7 @@
-package com.greff.foodapi;
+package com.greff.foodapi.kitchen;
 
+import com.greff.foodapi.dummies.KitchenDummy;
+import com.greff.foodapi.helpers.ReadFileJSONTest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.flywaydb.core.Flyway;
@@ -11,16 +13,18 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //need to connect to web server, this annotation 'webEnvironment' raise a web server just for those tests
 //RANDOM_PORT raises a real web server, but with random port
 @TestPropertySource("/application-test.properties") //will use those properties instead of normal application properties
-class KitchenServiceIT {
+class KitchenControllerIT {
 
+    public static final int KITCHEN_ID_NONEXISTENT = 100;
     @LocalServerPort //since port will be random, this annotation helps to get that and use the right way
     private int port;
 
@@ -61,15 +65,40 @@ class KitchenServiceIT {
     }
 
     @Test
-    void shouldReturn201StatusWhenRegisterAKitchen() {
+    void shouldReturn201StatusWhenRegisterAKitchen() throws IOException {
+        var kitchenRequest = ReadFileJSONTest.kitchenJsonFileReader();
+
         given()
-                .body("{ \"name\": \"Chinese \" }") //passing a JSON, so need to be "name", that's why "\name\", to accept this ""
+                .body(kitchenRequest) //passing a JSON, so need to be "name", that's why "\name\", to accept this ""
                 .contentType(ContentType.JSON) //which type of content is passing, like JSON or XML, similar to accept, but this one is requesting, it's given to us
                 .accept(ContentType.JSON).
         when()
                 .post().
         then()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    void shouldReturn200StatusWhenGettingAKitchenById() {
+        given()
+                .pathParam("kitchenId", KitchenDummy.instanceOfKitchenDummy().getId()) //dummy is like a clone, to not use static param
+                .accept(ContentType.JSON).
+        when()
+                .get("{kitchenId}").
+        then()
+                .statusCode(HttpStatus.OK.value())
+                .body("name", equalTo(KitchenDummy.instanceOfKitchenDummy().getName())); // or name
+    }
+
+    @Test
+    void shouldReturn404StatusWhenGettingAKitchenByIdThatDontExist() {
+        given()
+                .pathParam("kitchenId", KITCHEN_ID_NONEXISTENT) //constant to failer test, better to understant
+                .accept(ContentType.JSON).
+        when()
+                .get("{kitchenId}").
+        then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
 }
