@@ -25,7 +25,7 @@ ALTER TABLE tb_permissions AUTO_INCREMENT = 1;
 ALTER TABLE tb_products AUTO_INCREMENT = 1;
 ALTER TABLE tb_restaurants AUTO_INCREMENT = 1;
 
-INSERT IGNORE INTO tb_kitchens (id, name) VALUES (1, 'indian');
+INSERT IGNORE INTO tb_kitchens (id, name) VALUES (1, 'Indian');
 INSERT IGNORE INTO tb_kitchens (id, name) VALUES (2, 'Japanese');
 INSERT IGNORE INTO tb_kitchens (id, name) VALUES (3, 'Brazilian');
 
