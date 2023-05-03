@@ -1,0 +1,7 @@
+{
+  "name":"Ganesh_Fast_Food",
+  "deliveryTax": 3.50,
+  "kitchen": {
+    "id": 1
+  }
+}
