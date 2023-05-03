@@ -1,4 +1,4 @@
-package com.greff.foodapi;
+package com.greff.foodapi.kitchen;
 
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.usecase.KitchenService;
