@@ -57,7 +57,7 @@ public class Restaurant {
     @ManyToOne(fetch = FetchType.LAZY) //if it's not been called, must be lazy, so don't fetch by default because of toOne type (eager load)
     //it's the owner of bidirectional relationship with kitchen, because it needs the association.
     //since kitchen could have more than one restaurant, doesn't make sense to create a column
-    //every relation that ends with 'ToOne', it's standard to use 'eager loading', everytime an instance of this entity is called
+    //every relation that ends with 'ToOne', it's standard to use 'eager loading', everytime an instance of this entity 'restaurant' is requested
     //eager load is going to happen too, by default
     @JoinColumn(name = "kitchen_id_code", nullable = false)
     //this is the way to change the mapping name of joined columns, exist NULLABLE here to
