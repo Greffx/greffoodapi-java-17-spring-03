@@ -37,12 +37,12 @@ INSERT INTO tb_cities (name, state_id) VALUES ('Curitiba', 2);
 INSERT INTO tb_cities (name, state_id) VALUES ('Viamão', 1);
 INSERT INTO tb_cities (name, state_id) VALUES ('Campo Largo', 2);
 
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, cep_address, public_area_address, number_address, complement_address, street_address, city_address_id, creation_date, update_date) VALUES ('Ganesh_Fast_Food', 3.50, 1, '12345999', 'Near to the elephant', '95', 'center of india', 'cow street', 4, current_timestamp, current_timestamp);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Haiku_Tales', 5.60, 2, current_timestamp, current_timestamp);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('SamuraiSushi', 2.50, 2, current_timestamp, current_timestamp);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Indian_Hero', 3.20, 1, current_timestamp, current_timestamp);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Speed Galeto BR', 0, 3, current_timestamp, current_timestamp);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Marmita Do Zé', 0, 3, current_timestamp, current_timestamp);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, cep_address, public_area_address, number_address, complement_address, street_address, city_address_id, creation_date, update_date) VALUES ('Ganesh_Fast_Food', 3.50, 1, '12345999', 'Near to the elephant', '95', 'center of india', 'cow street', 4, utc_timestamp, utc_timestamp);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Haiku_Tales', 5.60, 2, utc_timestamp, utc_timestamp);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('SamuraiSushi', 2.50, 2, utc_timestamp, utc_timestamp);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Indian_Hero', 3.20, 1, utc_timestamp, utc_timestamp);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Speed Galeto BR', 0, 3, utc_timestamp, utc_timestamp);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date) VALUES ('Marmita Do Zé', 0, 3, utc_timestamp, utc_timestamp);
 
 INSERT INTO tb_payment_methods (id, description) VALUES (1, 'cash');
 INSERT INTO tb_payment_methods (id, description) VALUES (2, 'credit card');
@@ -67,10 +67,10 @@ INSERT INTO tb_permissions (id, name, description) VALUES (1, 'consult of produc
 INSERT INTO tb_permissions (id, name, description) VALUES (2, 'consult of states', 'this user got permission to see states');
 INSERT INTO tb_permissions (id, name, description) VALUES (3, 'consult of restaurants', 'this user got permission to see restaurants');
 
-INSERT INTO tb_users(email, name, password, register_date) VALUES ('bob23@gmail.com', 'bob', '1234', current_timestamp);
-INSERT INTO tb_users(email, name, password, register_date) VALUES ('alex24@gmail.com', 'alex', '1232', current_timestamp);
-INSERT INTO tb_users(email, name, password, register_date) VALUES ('john25@gmail.com', 'john', '1235', current_timestamp);
-INSERT INTO tb_users(email, name, password, register_date) VALUES ('hawk26@gmail.com', 'hawk', '1231', current_timestamp);
+INSERT INTO tb_users(email, name, password, register_date) VALUES ('bob23@gmail.com', 'bob', '1234', utc_timestamp);
+INSERT INTO tb_users(email, name, password, register_date) VALUES ('alex24@gmail.com', 'alex', '1232', utc_timestamp);
+INSERT INTO tb_users(email, name, password, register_date) VALUES ('john25@gmail.com', 'john', '1235', utc_timestamp);
+INSERT INTO tb_users(email, name, password, register_date) VALUES ('hawk26@gmail.com', 'hawk', '1231', utc_timestamp);
 
 INSERT INTO tb_groups(id, description) VALUES (1, 'adm');
 INSERT INTO tb_groups(id, description) VALUES (2, 'user');
@@ -102,5 +102,5 @@ INSERT INTO tb_users_groups(user_id, group_id) VALUES (4, 2);
 #because
 
 #TIMESTAMP
-#current_timestamp use local date time of your computer system
+#utc_timestamp use local date time of your computer system
 #utc_timestamp use date time changed with UTC pattern
