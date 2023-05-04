@@ -13,7 +13,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,13 +71,15 @@ public class Restaurant {
     //CreationTimestamp add, inform creationDate will have a Date.now when it's created by the first time
     //columnDefinition is to take it out milliseconds of column
     //it not is necessary to show it to user, so I took it out
+    //LocalDateTime doesn't have offset
+    //OffsetDateTime has, offset is like -03:00 or -10:00, saying which difference it has comparing with GMT
     @Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
-    private LocalDateTime creationDate;
+    private OffsetDateTime creationDate;
 
     @UpdateTimestamp//also 'IMPLEMENTATION Hibernate', not from JPA.
     //UpdateTimestamp add, inform updateDate will have a Date.now always when updated
     @Column(name = "update_date", nullable = false, columnDefinition = "datetime")
-    private LocalDateTime updateDate;
+    private OffsetDateTime updateDate;
 
     @OneToMany(mappedBy = "restaurant") //collection resource owns this relation
     private List<Product> product = new ArrayList<>();
