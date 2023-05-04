@@ -20,18 +20,16 @@ public class RestaurantMixin {
     //can be added many things here, like annotations, methods, attributes and more
     //going into api package because it's more related
 
-    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "name"}, allowGetters = true)
-    //this attribute 'hibernateLazyInitializer' need to be serialized, so we ignore this property and shall be fine
-    //allowGetters is allowing to when is just requesting to get, it's ok to be serialized
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "name"} )
+    //this attribute 'hibernateLazyInitializer' need to be serialized, so we ignore this property and shall not throw another exception about proxy again
+    //allowGetters = true is allowing to when is just requesting to get, it's ok to be serialized, but it's bugging with 'hibernateLazyInitializer' so I took out
     private Kitchen kitchen;
 
     @JsonIgnore
     private Address address;
 
-    @JsonIgnore
     private LocalDateTime creationDate;
 
-    @JsonIgnore
     private LocalDateTime updateDate;
 
     @JsonIgnore
