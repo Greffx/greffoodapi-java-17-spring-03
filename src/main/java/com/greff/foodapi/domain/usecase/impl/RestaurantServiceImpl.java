@@ -14,6 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -74,6 +75,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantRepository.findWithFreeTaxDelivery(name);
     }
 
+    @Transactional //good practice
     @Override
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
@@ -86,6 +88,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+    @Transactional
     @Override
     public Restaurant update(Restaurant restaurant, Long id) {
         try {
@@ -102,6 +105,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
     }
 
+    @Transactional
     @Override
     public void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request) { //this method objective is to substitute restaurant attributes for fields attributes
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
@@ -131,6 +135,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         }
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         findById(id);

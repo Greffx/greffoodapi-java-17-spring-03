@@ -9,6 +9,7 @@ import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.KitchenNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,11 +39,13 @@ public class KitchenServiceImpl implements KitchenService {
         return kitchenRepository.existsByName(name);
     }
 
+    @Transactional
     @Override
     public Kitchen create(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
     }
 
+    @Transactional
     @Override
     public Kitchen update(Kitchen kitchen, Long id) {
         Kitchen kitchenToChange = findById(id);
@@ -51,6 +54,7 @@ public class KitchenServiceImpl implements KitchenService {
         return create(kitchenToChange);
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         findById(id);
