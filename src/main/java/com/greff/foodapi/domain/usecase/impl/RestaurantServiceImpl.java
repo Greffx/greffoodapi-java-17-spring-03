@@ -75,7 +75,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantRepository.findWithFreeTaxDelivery(name);
     }
 
-    @Transactional //good practice
+    @Transactional
     @Override
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
