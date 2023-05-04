@@ -36,7 +36,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String GENERAL_ERROR_MESSAGE_FINAL_USER =
             "Internal error unexpected, try again and if happens the same problem, contact system administrator.";
 
-    private MessageSource messageSource; //interface to fix messages
+    private final MessageSource messageSource; //interface to fix messages
 
     public ApiExceptionHandler(MessageSource messageSource) {
         this.messageSource = messageSource;
@@ -244,7 +244,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .toList();
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
-                .timestamp(OffsetDateTime.now())
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
                 .fields(fields)
                 .build();
