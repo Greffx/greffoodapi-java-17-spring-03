@@ -9,7 +9,7 @@ import java.util.TimeZone;
 public class GreffoodApiApplication {
 
     public static void main(String[] args) {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC")); //changing timezone of application to UTC type
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC")); //changing timezone of application to UTC type, offset here will be Z, that means +00:00
         SpringApplication.run(GreffoodApiApplication.class, args);
     }
 }
