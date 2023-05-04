@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Getter //will have all methods getters for attributes, like getMessage
@@ -24,7 +24,7 @@ public class ProblemDetails { //this is RFC 7807 format, problem details for HTT
 
     //we can expand to more personalized properties, like a specification
     private String userMessage; //similar to detail, but easiest to user understanding
-    private LocalDateTime timestamp;
+    private OffsetDateTime timestamp;
 
     private List<Field> fields;
 

@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,16 +33,16 @@ public class Order {
 
     @CreationTimestamp
     @Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
-    private LocalDateTime creationDate;
+    private OffsetDateTime creationDate;
 
     @Column(name = "confirmed_date", columnDefinition = "datetime")
-    private LocalDateTime confirmedDate;
+    private OffsetDateTime confirmedDate;
 
     @Column(name = "canceled_date", columnDefinition = "datetime")
-    private LocalDateTime canceledDate;
+    private OffsetDateTime canceledDate;
 
     @Column(name = "delivered_date", columnDefinition = "datetime")
-    private LocalDateTime deliveredDate;
+    private OffsetDateTime deliveredDate;
 
     @Column(nullable = false)
     private OrderStatus status;

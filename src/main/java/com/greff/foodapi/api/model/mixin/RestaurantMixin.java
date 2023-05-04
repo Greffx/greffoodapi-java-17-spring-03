@@ -7,7 +7,7 @@ import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.PaymentMethod;
 import com.greff.foodapi.domain.model.Product;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +28,9 @@ public class RestaurantMixin {
     @JsonIgnore
     private Address address;
 
-    private LocalDateTime creationDate;
+    private OffsetDateTime creationDate;
 
-    private LocalDateTime updateDate;
+    private OffsetDateTime updateDate;
 
     @JsonIgnore
     private List<Product> product = new ArrayList<>();

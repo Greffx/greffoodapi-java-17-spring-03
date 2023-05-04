@@ -23,7 +23,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -244,7 +244,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .toList();
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
-                .timestamp(LocalDateTime.now())
+                .timestamp(OffsetDateTime.now())
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
                 .fields(fields)
                 .build();
@@ -263,7 +263,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                     //statusCode title,  like 'Not found', here is substituting that customized exception message
                     .title(HttpStatus.valueOf(statusCode.value()).getReasonPhrase())
                     .status(statusCode.value()) //getting value of http status
-                    .timestamp(LocalDateTime.now())
+                    .timestamp(OffsetDateTime.now())
                     .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
                     .build(); //customizing body
         } else if (body instanceof String bodyString) { //checking if body is an instance of bodyString, because it could be only a string like, if body would be 'ex.getMessage()', that body is only a string
@@ -271,7 +271,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             body = ProblemDetails.builder()
                     .title(bodyString) //taking string that exception returned and changing into an exception default message
                     .status(statusCode.value())
-                    .timestamp(LocalDateTime.now())
+                    .timestamp(OffsetDateTime.now())
                     .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
                     .build(); //if body is an instance of string, will build a problem and turn into a standard exception
         }
@@ -287,7 +287,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(status.value())
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
-                .timestamp(LocalDateTime.now())
+                .timestamp(OffsetDateTime.now())
                 .detail(detail);
     }
 
