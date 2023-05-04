@@ -40,6 +40,10 @@ public class KitchenServiceImpl implements KitchenService {
     }
 
     @Transactional
+    //good practice, because if had some rule or logic about removing or creating with another repository, could have problems in the future
+    //because it could open two commits, because save, update, delete, methods that alter data function with transactional commits
+    //if this one had remove kitchen then save kitchen, probably would have opened 2 commits and will not work right
+    //that's why, in resume, I used this annotation @Transactional
     @Override
     public Kitchen create(Kitchen kitchen) {
         return kitchenRepository.save(kitchen);
