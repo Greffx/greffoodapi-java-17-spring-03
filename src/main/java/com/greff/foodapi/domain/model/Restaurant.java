@@ -1,7 +1,5 @@
 package com.greff.foodapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.greff.foodapi.core.validation.Groups;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -55,7 +53,6 @@ public class Restaurant {
     @Valid //using valid in Kitchen type says that don't want only to check an instance of kitchen is null, but its properties too, can't be null either
     //this is a cascade validation type
     //many restaurants own one kitchen
-    @JsonIgnoreProperties( {"hibernateLazyInitializer"} ) //this attribute needs to be serialized, so we ignore this property and shall be fine
     //lazy type create a subclass 'Kitchen$HibernateProxy$njmLPKPv' in runtime, it's a proxy, when an instance of this attribute is necessary
     @ManyToOne(fetch = FetchType.LAZY) //if it's not been called, must be lazy, so don't fetch by default because of toOne type (eager load)
     //it's the owner of bidirectional relationship with kitchen, because it needs the association.
@@ -66,12 +63,10 @@ public class Restaurant {
     //this is the way to change the mapping name of joined columns, exist NULLABLE here to
     private Kitchen kitchen; //Restaurant owns a kitchen, in db will be a column
 
-    @JsonIgnore
     @Embedded //that indicates that this attribute is embedded('incorporado') type, is a part of entity restaurant
     //saying is a part, not a column. will not create a table about it, but its attributes will be created in restaurant table
     private Address address;
 
-    @JsonIgnore
     @CreationTimestamp //annotation of 'IMPLEMENTATION Hibernate', not from JPA.
     //CreationTimestamp add, inform creationDate will have a Date.now when it's created by the first time
     //columnDefinition is to take it out milliseconds of column
@@ -79,17 +74,14 @@ public class Restaurant {
     @Column(name = "creation_date", nullable = false, columnDefinition = "datetime")
     private LocalDateTime creationDate;
 
-    @JsonIgnore
     @UpdateTimestamp//also 'IMPLEMENTATION Hibernate', not from JPA.
     //UpdateTimestamp add, inform updateDate will have a Date.now always when updated
     @Column(name = "update_date", nullable = false, columnDefinition = "datetime")
     private LocalDateTime updateDate;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurant") //collection resource owns this relation
     private List<Product> product = new ArrayList<>();
 
-    @JsonIgnore
     //many restaurants own many payment methods
     //if you needs to be eager here, you can change (fetch = eager), rarely will change to eager, more like change eager to lazy
     @ManyToMany
