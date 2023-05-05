@@ -2,8 +2,10 @@ package com.greff.foodapi.core.jackson;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.greff.foodapi.api.model.mixin.CityMixin;
+import com.greff.foodapi.api.model.mixin.KitchenMixin;
 import com.greff.foodapi.api.model.mixin.RestaurantMixin;
 import com.greff.foodapi.domain.model.City;
+import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.Restaurant;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,5 +16,6 @@ public class JacksonMixinModule extends SimpleModule { //since I'm using module 
         //this method is to say that entity class has a mix-in configuration class
         setMixInAnnotation(Restaurant.class, RestaurantMixin.class);
         setMixInAnnotation(City.class, CityMixin.class);
+        setMixInAnnotation(Kitchen.class, KitchenMixin.class);
     }
 }
