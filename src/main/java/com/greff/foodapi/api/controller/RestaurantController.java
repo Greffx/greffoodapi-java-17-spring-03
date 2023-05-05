@@ -24,32 +24,44 @@ public class RestaurantController {
 
     @GetMapping
     public List<RestaurantResponse> findAll() {
-        return restaurantService.findAll().stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        var  listOfrestaurnts = restaurantService.findAll();
+
+        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/{id}")
     public RestaurantResponse findById(@PathVariable Long id) {
-         return restaurantMapper.fromRestaurantToRestaurantResponse(restaurantService.findById(id));
+        var restaurant = restaurantService.findById(id);
+
+        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
     }
 
     @GetMapping("/search/tax/")
-    public List<Restaurant> findByTax(BigDecimal lower, BigDecimal higher) {
-        return restaurantService.findByDeliveryTax(lower, higher);
+    public List<RestaurantResponse> findByTax(BigDecimal lower, BigDecimal higher) {
+        var  listOfrestaurnts = restaurantService.findByDeliveryTax(lower, higher);
+
+        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/search/name/kitchen-id/")
-    public List<Restaurant> findByNameAndKitchen(String name, Long kitchenId) {
-        return restaurantService.findByNameAndKitchen(name, kitchenId);
+    public List<RestaurantResponse> findByNameAndKitchen(String name, Long kitchenId) {
+        var  listOfrestaurnts = restaurantService.findByNameAndKitchen(name, kitchenId);
+
+        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/search/first-by-name/")
-    public Restaurant findFirstOneByName(String name) {
-        return restaurantService.findFirstOneByName(name);
+    public RestaurantResponse findFirstOneByName(String name) {
+        var restaurnt = restaurantService.findFirstOneByName(name);
+
+        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurnt);
     }
 
     @GetMapping("/search/top-two-by-name/")
-    public List<Restaurant> topTwoRestaurantsByName(String name) {
-        return restaurantService.findTwoRestaurantsByName(name);
+    public List<RestaurantResponse> topTwoRestaurantsByName(String name) {
+        var  listOfrestaurnts = restaurantService.findTwoRestaurantsByName(name);
+
+        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/search/how-many-restaurants-per-kitchen-id/")
@@ -58,8 +70,10 @@ public class RestaurantController {
     }
 
     @GetMapping("/search/restaurants-with-free-delivery-tax/")
-    public List<Restaurant> findWithFreeDeliveryTaxAndWithSimilarName(String name) {
-        return restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
+    public List<RestaurantResponse> findWithFreeDeliveryTaxAndWithSimilarName(String name) {
+        var listOfrestaurnts = restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
+
+        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @PostMapping
@@ -71,18 +85,22 @@ public class RestaurantController {
     //@Validated accept another group, because @Valid by default is a Default.class group and can't change
     //to be able to use another group in validations annotations we need to use this and choose which group it's
     //@Valid(Default.class) that is how work, @Valid don't show, just do it
-    public Restaurant createRestaurant(@RequestBody @Valid Restaurant restaurant) {
-        return restaurantService.create(restaurant);
+    public RestaurantResponse createRestaurant(@RequestBody @Valid Restaurant restaurantRequest) {
+        var restaurant = restaurantService.create(restaurantRequest);
+
+        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
     }
 
     @PutMapping("/{id}")
-    public Restaurant updateRestaurant(@RequestBody @Valid Restaurant restaurant, @PathVariable Long id) {
-        return restaurantService.update(restaurant, id);
+    public RestaurantResponse updateRestaurant(@RequestBody @Valid Restaurant restaurntRequest, @PathVariable Long id) {
+        var restaurant = restaurantService.update(restaurntRequest, id);
+
+        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
     }
 
     @PatchMapping("/{id}")
     //map to 'PATCH' endpoint, which means that don't need to update everything, like 'PUT' type, that needs everything
-    public Restaurant patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id, HttpServletRequest request) {
+    public RestaurantResponse patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id, HttpServletRequest request) {
         //Map<String, Object> string is key like 'NAME', 'TAX', 'KITCHEN',
         //and Object is value of key, like 'RESTAURANT NAME', 'VALUE OF TAX' and 'KITCHEN NAME'
         //Will only map values that will come of request body, so user can work with attributes that he wants to alter.
