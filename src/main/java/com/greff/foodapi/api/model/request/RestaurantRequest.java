@@ -22,6 +22,7 @@ public class RestaurantRequest {
 
     //@DecimalMin("1") minimum string value, can see in class why, because bigDecimal representation is string
     @PositiveOrZero //another annotation that say the same thing
+    //don't change the name of attribute. But the representation in JSON will be changed
     @JsonProperty("delivery_tax")
     private BigDecimal deliveryTax;
 
