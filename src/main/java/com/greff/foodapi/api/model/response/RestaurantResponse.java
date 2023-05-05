@@ -18,6 +18,8 @@ public class RestaurantResponse {
 
     private Long id;
     private String name;
+
+    @JsonProperty("delivery_tax")
     private BigDecimal deliveryTax;
 
     @JsonProperty("kitchen")
