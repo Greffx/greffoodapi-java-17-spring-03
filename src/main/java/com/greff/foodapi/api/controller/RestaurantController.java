@@ -1,5 +1,6 @@
 package com.greff.foodapi.api.controller;
 
+import com.greff.foodapi.api.model.request.RestaurantRequest;
 import com.greff.foodapi.api.model.response.RestaurantResponse;
 import com.greff.foodapi.domain.mapper.RestaurantMapper;
 import com.greff.foodapi.domain.model.Restaurant;
@@ -24,7 +25,7 @@ public class RestaurantController {
 
     @GetMapping
     public List<RestaurantResponse> findAll() {
-        var  listOfrestaurnts = restaurantService.findAll();
+        var listOfrestaurnts = restaurantService.findAll();
 
         return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
@@ -38,14 +39,14 @@ public class RestaurantController {
 
     @GetMapping("/search/tax/")
     public List<RestaurantResponse> findByTax(BigDecimal lower, BigDecimal higher) {
-        var  listOfrestaurnts = restaurantService.findByDeliveryTax(lower, higher);
+        var listOfrestaurnts = restaurantService.findByDeliveryTax(lower, higher);
 
         return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/search/name/kitchen-id/")
     public List<RestaurantResponse> findByNameAndKitchen(String name, Long kitchenId) {
-        var  listOfrestaurnts = restaurantService.findByNameAndKitchen(name, kitchenId);
+        var listOfrestaurnts = restaurantService.findByNameAndKitchen(name, kitchenId);
 
         return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
@@ -59,7 +60,7 @@ public class RestaurantController {
 
     @GetMapping("/search/top-two-by-name/")
     public List<RestaurantResponse> topTwoRestaurantsByName(String name) {
-        var  listOfrestaurnts = restaurantService.findTwoRestaurantsByName(name);
+        var listOfrestaurnts = restaurantService.findTwoRestaurantsByName(name);
 
         return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
@@ -85,10 +86,11 @@ public class RestaurantController {
     //@Validated accept another group, because @Valid by default is a Default.class group and can't change
     //to be able to use another group in validations annotations we need to use this and choose which group it's
     //@Valid(Default.class) that is how work, @Valid don't show, just do it
-    public RestaurantResponse createRestaurant(@RequestBody @Valid Restaurant restaurantRequest) {
-        var restaurant = restaurantService.create(restaurantRequest);
+    public RestaurantResponse createRestaurant(@RequestBody @Valid RestaurantRequest restaurantRequest) {
+        var restaurant = restaurantMapper.fromRestaurantRequestToRestaurant(restaurantRequest);
+        var restaurantResponse = restaurantService.create(restaurant);
 
-        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
+        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurantResponse);
     }
 
     @PutMapping("/{id}")
