@@ -1,4 +1,4 @@
-package com.greff.foodapi.api.handler;
+package com.greff.foodapi.api.model.response;
 
 import lombok.Getter;
 

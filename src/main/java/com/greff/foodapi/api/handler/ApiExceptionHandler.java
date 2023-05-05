@@ -2,6 +2,8 @@ package com.greff.foodapi.api.handler; //in this class I'm going to use ProblemD
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import com.greff.foodapi.api.model.response.ProblemDetails;
+import com.greff.foodapi.api.model.response.ProblemType;
 import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;

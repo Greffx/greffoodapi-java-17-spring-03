@@ -1,4 +1,4 @@
-package com.greff.foodapi.api.handler;
+package com.greff.foodapi.api.model.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
@@ -11,8 +11,10 @@ import java.util.List;
 @Builder //project standard, can't be instanced like new ClassName(), needs to use another way to build object
 //would be like StandardProblem.something().something().builder(), still will be a constructor
 @JsonInclude(JsonInclude.Include.NON_NULL) //annotation to not add if field is null
-public class ProblemDetails { //this is RFC 7807 format, problem details for HTTP APIS
+public class ProblemDetails {
+    //this is RFC 7807 format, problem details for HTTP APIS
     //this an outer class
+    //this class is more like a response API, that's why a changed package
 
     //STANDARD properties of specifications from problem details RFC 7807
 
