@@ -21,6 +21,11 @@
         <java.version>17</java.version>
         <jpa-hibernate.version>3.0.5</jpa-hibernate.version>
         <mysql-connector.version>8.0.32</mysql-connector.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <mapstruct-processor.version>1.4.2.Final</mapstruct-processor.version>
+        <compiler-plugin.version>3.8.1</compiler-plugin.version>
+        <lombok.mapstruct.binding.version>0.2.0</lombok.mapstruct.binding.version>
+        <lombok.version>1.18.22</lombok.version>
     </properties>
 
     <dependencies>
@@ -95,6 +100,12 @@
             <scope>test</scope> <!-- that means that only be instanced in test classes -->
         </dependency>
 
+        <dependency>
+            <groupId>org.mapstruct</groupId> <!-- dependency for mapstruct mapper -->
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            <groupId>com.fasterxml.jackson.dataformat</groupId> extension to xml format -->
 <!--            <artifactId>jackson-dataformat-xml</artifactId>-->
@@ -107,9 +118,39 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
+                <configuration>
+                    <showWarnings>true</showWarnings>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId> <!-- This annotation processor is necessary for using Lombok annotations in your code. -->
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>  <!-- provides integration between Lombok and MapStruct
+                            allowing you to use Lombok annotations in conjunction with MapStruct-generated code.  -->
+                            <version>${lombok.mapstruct.binding.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${mapstruct-processor.version}</version>
+                            <!-- this configuration tells the Maven compiler plugin
+                           to use the MapStruct annotation processor to generate mapper implementations during compilation.
+                           This ensures that the mappers are available at runtime and can be used to map between objects in the application.  -->
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
             </plugin>
         </plugins>
     </build>
