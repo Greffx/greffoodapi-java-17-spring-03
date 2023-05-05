@@ -1,12 +1,7 @@
 package com.greff.foodapi.domain.model;
 //DOMAIN LAYER OF DDD pattern - domain model: got models/entities, - got repositories interfaces, and - got services with business rules implementations
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.greff.foodapi.core.validation.Groups;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,7 +15,7 @@ import java.util.List;
 @Table(name = "tb_kitchens") //that's how to change name of table
 public class Kitchen {
 
-    @NotNull(groups = Groups.KitchenId.class)
+    //@NotNull(groups = Groups.KitchenId.class)
     //when registering a restaurant, validate an object restaurant that contains a (groups = Groups.RestaurantRegister.class) constraints
     //saying like when trying to post a restaurant, id of kitchen of that restaurant can't be null
     @EqualsAndHashCode.Include //that is how we choose an attribute to be used in hashcode and equals
@@ -30,14 +25,10 @@ public class Kitchen {
     //Using IDENTITY, given responsibility to SQL to be the provider, it will do id generation for us
     private Long id;
 
-    @NotBlank
-    @JsonProperty("name")
-    //this not change at domain model, not change the name of attribute. But the representation in JSON will be another, if we change 'name' value
     //@Column(name = "kitchen_name", nullable = false)
     //column map an attribute, can change name, using nullable = false, attribute will not be accepted as null no more
     private String name;
 
-    @JsonIgnore //means to ignore this property when serializing kitchen in responses
     //1 kitchen has many restaurants, that's why the collection. 0...* means in diagram that kitchen can have none of many restaurants
     //OneToMany is inverse of ManyToOne mapping, that it's called bidirectional. When is Many is a collection
     @OneToMany(mappedBy = "kitchen")
