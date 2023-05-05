@@ -1,5 +1,7 @@
 package com.greff.foodapi.api.controller;
 
+import com.greff.foodapi.api.model.response.RestaurantResponse;
+import com.greff.foodapi.domain.mapper.RestaurantMapper;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import java.util.Map;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
+    private final RestaurantMapper restaurantMapper;
 
     @GetMapping
     public List<Restaurant> findAll() {
@@ -25,8 +28,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public Restaurant findById(@PathVariable Long id) {
-        return restaurantService.findById(id);
+    public RestaurantResponse findById(@PathVariable Long id) {
+         return restaurantMapper.fromRestaurantToRestaurantResponse(restaurantService.findById(id));
     }
 
     @GetMapping("/search/tax/")
