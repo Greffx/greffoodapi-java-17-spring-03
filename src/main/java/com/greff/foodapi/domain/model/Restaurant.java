@@ -1,12 +1,6 @@
 package com.greff.foodapi.domain.model;
 
-import com.greff.foodapi.core.validation.Groups;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.groups.ConvertGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,33 +22,25 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //validation rule, restriction, this annotation says that doesn't accept null values, instead of database validate, our application does it
-    //validation happen in JPA repository, so don't try to do insert, will stop early at preInsert
-    //@NotEmpty means that don't accept null or ""(means empty)
-    //verifies not null, not empty "" and can't be only whitespace without nothing, like "   "
-    @NotBlank
     @Column(name = "restaurant_name", nullable = false)
     private String name;
 
-    @NotNull
-    //@DecimalMin("1") minimum string value, can see in class why, because bigDecimal representation is string
-    //@DeliveryTax //personalized annotation
-    @PositiveOrZero //another annotation that say the same thing
     @Column(name = "delivery_tax", nullable = false)
     private BigDecimal deliveryTax;
 
-    @ConvertGroup(to = Groups.KitchenId.class) //converting group Default.class to group that I created, better than saying each annotation group
-    //if had more than 10 groups would be way too much hardcode, this way is converting this instance to my group
-    //would be like, in time to validate kitchen convert to another group and do the validation
-    //(groups = Default.class) that's standard and everyone, that's why we change, if necessary
-    @NotNull
-    //this one is saying that an instance of kitchen is need it, but need to validate its properties to,
-    //because this one only check instance of object's there
-    @Valid //using valid in Kitchen type says that don't want only to check an instance of kitchen is null, but its properties too, can't be null either
-    //this is a cascade validation type
+    //    @ConvertGroup(to = Groups.KitchenId.class) //converting group Default.class to group that I created, better than saying each annotation group
+//    if had more than 10 groups would be way too much hardcode, this way is converting this instance to my group
+//    would be like, in time to validate kitchen convert to another group and do the validation
+//    (groups = Default.class) that's standard and everyone, that's why we change, if necessary
+//    @NotNull
+//    this one is saying that an instance of kitchen is need it, but need to validate its properties to,
+//    because this one only check instance of object's there
+//    @Valid //using valid in Kitchen type says that don't want only to check an instance of kitchen is null, but its properties too, can't be null either
+//    this is a cascade validation type
     //many restaurants own one kitchen
     //lazy type create a subclass 'Kitchen$HibernateProxy$njmLPKPv' in runtime, it's a proxy, when an instance of this attribute is necessary
-    @ManyToOne(fetch = FetchType.LAZY) //if it's not been called, must be lazy, so don't fetch by default because of toOne type (eager load)
+    @ManyToOne(fetch = FetchType.LAZY)
+    //if it's not been called, must be lazy, so don't fetch by default because of toOne type (eager load)
     //it's the owner of bidirectional relationship with kitchen, because it needs the association.
     //since kitchen could have more than one restaurant, doesn't make sense to create a column
     //every relation that ends with 'ToOne', it's standard to use 'eager loading', everytime an instance of this entity 'restaurant' is requested
