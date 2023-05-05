@@ -25,9 +25,9 @@ public class RestaurantController {
 
     @GetMapping
     public List<RestaurantResponse> findAll() {
-        var listOfrestaurnts = restaurantService.findAll();
+        var listRestaurants = restaurantService.findAll();
 
-        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/{id}")
@@ -39,30 +39,30 @@ public class RestaurantController {
 
     @GetMapping("/search/tax/")
     public List<RestaurantResponse> findByTax(BigDecimal lower, BigDecimal higher) {
-        var listOfrestaurnts = restaurantService.findByDeliveryTax(lower, higher);
+        var listRestaurants = restaurantService.findByDeliveryTax(lower, higher);
 
-        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/search/name/kitchen-id/")
     public List<RestaurantResponse> findByNameAndKitchen(String name, Long kitchenId) {
-        var listOfrestaurnts = restaurantService.findByNameAndKitchen(name, kitchenId);
+        var listRestaurants = restaurantService.findByNameAndKitchen(name, kitchenId);
 
-        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/search/first-by-name/")
     public RestaurantResponse findFirstOneByName(String name) {
-        var restaurnt = restaurantService.findFirstOneByName(name);
+        var restaurant = restaurantService.findFirstOneByName(name);
 
-        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurnt);
+        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
     }
 
     @GetMapping("/search/top-two-by-name/")
     public List<RestaurantResponse> topTwoRestaurantsByName(String name) {
-        var listOfrestaurnts = restaurantService.findTwoRestaurantsByName(name);
+        var listRestaurants = restaurantService.findTwoRestaurantsByName(name);
 
-        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @GetMapping("/search/how-many-restaurants-per-kitchen-id/")
@@ -72,9 +72,9 @@ public class RestaurantController {
 
     @GetMapping("/search/restaurants-with-free-delivery-tax/")
     public List<RestaurantResponse> findWithFreeDeliveryTaxAndWithSimilarName(String name) {
-        var listOfrestaurnts = restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
+        var listRestaurants = restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
 
-        return listOfrestaurnts.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
     }
 
     @PostMapping
@@ -87,6 +87,8 @@ public class RestaurantController {
     //to be able to use another group in validations annotations we need to use this and choose which group it's
     //@Valid(Default.class) that is how work, @Valid don't show, just do it
     public RestaurantResponse createRestaurant(@RequestBody @Valid RestaurantRequest restaurantRequest) {
+        //since user-case is a service class of domain layer, can't know or use restaurantRequest or response DTOs classes
+        //that job is for API layer, representation layer, that's why conversion happens in this layer
         var restaurant = restaurantMapper.fromRestaurantRequestToRestaurant(restaurantRequest);
         var restaurantResponse = restaurantService.create(restaurant);
 
@@ -94,8 +96,8 @@ public class RestaurantController {
     }
 
     @PutMapping("/{id}")
-    public RestaurantResponse updateRestaurant(@RequestBody @Valid Restaurant restaurntRequest, @PathVariable Long id) {
-        var restaurant = restaurantService.update(restaurntRequest, id);
+    public RestaurantResponse updateRestaurant(@RequestBody @Valid Restaurant restaurantRequest, @PathVariable Long id) {
+        var restaurant = restaurantService.update(restaurantRequest, id);
 
         return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
     }
