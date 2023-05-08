@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 public class RestaurantRequestDisassembler {
-    //class used to transform model representation to domain object
+    //class used to transform model representation to domain object, that's why disassembler name, revert assembler
 
     private final RestaurantMapper restaurantMapper;
 
