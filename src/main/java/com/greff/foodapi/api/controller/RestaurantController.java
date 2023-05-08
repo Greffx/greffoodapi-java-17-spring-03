@@ -1,8 +1,9 @@
 package com.greff.foodapi.api.controller;
 
+import com.greff.foodapi.api.assembler.RestaurantAssembler;
+import com.greff.foodapi.api.assembler.RestaurantRequestDisassembler;
 import com.greff.foodapi.api.model.request.RestaurantRequest;
 import com.greff.foodapi.api.model.response.RestaurantResponse;
-import com.greff.foodapi.domain.mapper.RestaurantMapper;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,48 +22,49 @@ import java.util.Map;
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
-    private final RestaurantMapper restaurantMapper;
+    private final RestaurantAssembler restaurantAssembler;
+    private final RestaurantRequestDisassembler restaurantRequestDisassembler;
 
     @GetMapping
     public List<RestaurantResponse> findAll() {
         var listRestaurants = restaurantService.findAll();
 
-        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
     }
 
     @GetMapping("/{id}")
     public RestaurantResponse findById(@PathVariable Long id) {
         var restaurant = restaurantService.findById(id);
 
-        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
+        return restaurantAssembler.toModel(restaurant);
     }
 
     @GetMapping("/search/tax/")
     public List<RestaurantResponse> findByTax(BigDecimal lower, BigDecimal higher) {
         var listRestaurants = restaurantService.findByDeliveryTax(lower, higher);
 
-        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
     }
 
     @GetMapping("/search/name/kitchen-id/")
     public List<RestaurantResponse> findByNameAndKitchen(String name, Long kitchenId) {
         var listRestaurants = restaurantService.findByNameAndKitchen(name, kitchenId);
 
-        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
     }
 
     @GetMapping("/search/first-by-name/")
     public RestaurantResponse findFirstOneByName(String name) {
         var restaurant = restaurantService.findFirstOneByName(name);
 
-        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
+        return restaurantAssembler.toModel(restaurant);
     }
 
     @GetMapping("/search/top-two-by-name/")
     public List<RestaurantResponse> topTwoRestaurantsByName(String name) {
         var listRestaurants = restaurantService.findTwoRestaurantsByName(name);
 
-        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
     }
 
     @GetMapping("/search/how-many-restaurants-per-kitchen-id/")
@@ -74,7 +76,7 @@ public class RestaurantController {
     public List<RestaurantResponse> findWithFreeDeliveryTaxAndWithSimilarName(String name) {
         var listRestaurants = restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
 
-        return listRestaurants.stream().map(restaurantMapper::fromRestaurantToRestaurantResponse).toList();
+        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
     }
 
     @PostMapping
@@ -89,17 +91,17 @@ public class RestaurantController {
     public RestaurantResponse createRestaurant(@RequestBody @Valid RestaurantRequest restaurantRequest) {
         //since user-case is a service class of domain layer, can't know or use restaurantRequest or response DTOs classes
         //that job is for API layer, representation layer, that's why conversion happens in this layer
-        var restaurant = restaurantMapper.fromRestaurantRequestToRestaurant(restaurantRequest);
+        var restaurant = restaurantRequestDisassembler.toDomainObject(restaurantRequest);
         var restaurantResponse = restaurantService.create(restaurant);
 
-        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurantResponse);
+        return restaurantAssembler.toModel(restaurantResponse);
     }
 
     @PutMapping("/{id}")
     public RestaurantResponse updateRestaurant(@RequestBody @Valid Restaurant restaurantRequest, @PathVariable Long id) {
         var restaurant = restaurantService.update(restaurantRequest, id);
 
-        return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
+        return restaurantAssembler.toModel(restaurant);
     }
 
     @PatchMapping("/{id}")
