@@ -4,7 +4,6 @@ import com.greff.foodapi.api.assembler.RestaurantAssembler;
 import com.greff.foodapi.api.assembler.RestaurantRequestDisassembler;
 import com.greff.foodapi.api.model.request.RestaurantRequest;
 import com.greff.foodapi.api.model.response.RestaurantResponse;
-import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -98,8 +97,12 @@ public class RestaurantController {
     }
 
     @PutMapping("/{id}")
-    public RestaurantResponse updateRestaurant(@RequestBody @Valid Restaurant restaurantRequest, @PathVariable Long id) {
-        var restaurant = restaurantService.update(restaurantRequest, id);
+    public RestaurantResponse updateRestaurant(@RequestBody @Valid RestaurantRequest restaurantRequest, @PathVariable Long id) {
+        var restaurant = restaurantService.findById(id);
+
+        restaurantRequestDisassembler.copyToDomainObject(restaurantRequest, restaurant); //this is the conversion
+
+        restaurantService.update(restaurant);
 
         return restaurantAssembler.toModel(restaurant);
     }
@@ -111,11 +114,11 @@ public class RestaurantController {
         //and Object is value of key, like 'RESTAURANT NAME', 'VALUE OF TAX' and 'KITCHEN NAME'
         //Will only map values that will come of request body, so user can work with attributes that he wants to alter.
         // This means that he must work only with things that he wants to work
-        Restaurant restaurant = restaurantService.findById(id);
+        var restaurant = restaurantService.findById(id);
 
         restaurantService.patchFields(fields, restaurant, request);
 
-        return updateRestaurant(restaurant, id);
+        return restaurantAssembler.toModel(restaurant);
     }
 
     @DeleteMapping("/{id}")
