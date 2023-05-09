@@ -43,14 +43,14 @@ public class RestaurantController {
     public List<RestaurantResponse> findByTax(BigDecimal lower, BigDecimal higher) {
         var listRestaurants = restaurantService.findByDeliveryTax(lower, higher);
 
-        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
+        return restaurantAssembler.toCollectionModel(listRestaurants);
     }
 
     @GetMapping("/search/name/kitchen-id/")
     public List<RestaurantResponse> findByNameAndKitchen(String name, Long kitchenId) {
         var listRestaurants = restaurantService.findByNameAndKitchen(name, kitchenId);
 
-        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
+        return restaurantAssembler.toCollectionModel(listRestaurants);
     }
 
     @GetMapping("/search/first-by-name/")
@@ -64,7 +64,7 @@ public class RestaurantController {
     public List<RestaurantResponse> topTwoRestaurantsByName(String name) {
         var listRestaurants = restaurantService.findTwoRestaurantsByName(name);
 
-        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
+        return restaurantAssembler.toCollectionModel(listRestaurants);
     }
 
     @GetMapping("/search/how-many-restaurants-per-kitchen-id/")
@@ -76,7 +76,7 @@ public class RestaurantController {
     public List<RestaurantResponse> findWithFreeDeliveryTaxAndWithSimilarName(String name) {
         var listRestaurants = restaurantService.findWithFreeDeliveryTaxAndWithSimilarName(name);
 
-        return listRestaurants.stream().map(restaurantAssembler::toModel).toList();
+        return restaurantAssembler.toCollectionModel(listRestaurants);
     }
 
     @PostMapping
