@@ -28,8 +28,10 @@ public class CityController {
     }
 
     @GetMapping("/{id}")
-    public City findById(@PathVariable Long id) {
-        return cityService.findById(id);
+    public CityResponse findById(@PathVariable Long id) {
+        var city =  cityService.findById(id);
+
+        return cityAssembler.toModel(city);
     }
 
     @PostMapping
