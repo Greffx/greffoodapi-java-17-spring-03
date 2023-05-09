@@ -5,6 +5,7 @@ import com.greff.foodapi.api.model.response.RestaurantResponse;
 import com.greff.foodapi.domain.model.Restaurant;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.springframework.stereotype.Service;
 
 @Mapper(componentModel = "spring") //@Mapper - annotation tha marks interface as mapping interface to spring
@@ -17,4 +18,9 @@ public interface RestaurantMapper {
 
     @Mapping(target = "kitchen.id", source = "kitchenIdRefRequest.id")
     Restaurant fromRestaurantRequestToRestaurant(RestaurantRequest restaurant);
+
+    @Mapping(target = "kitchen.id", source = "kitchenIdRefRequest.id")
+    Restaurant updateDomainObejct(RestaurantRequest restaurantRequest, @MappingTarget Restaurant restaurant);
+    //Declares a parameter of a mapping method to be the target of the mapping.
+    //Not more than one parameter can be declared as MappingTarget.
 }
