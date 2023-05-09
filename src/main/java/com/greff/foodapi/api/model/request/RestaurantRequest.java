@@ -20,6 +20,7 @@ public class RestaurantRequest {
     @NotBlank //verifies not null, not empty "" and can't be only whitespace without nothing, like "   "
     private String name;
 
+    @NotNull
     //@DecimalMin("1") minimum string value, can see in class why, because bigDecimal representation is string
     @PositiveOrZero //another annotation that say the same thing
     //don't change the name of attribute. But the representation in JSON will be changed
