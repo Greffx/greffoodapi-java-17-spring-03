@@ -7,8 +7,12 @@ import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
-import com.greff.foodapi.domain.usecase.exception.*;
+import com.greff.foodapi.domain.usecase.exception.BusinessException;
+import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
+import com.greff.foodapi.domain.usecase.exception.KitchenNotFoundException;
+import com.greff.foodapi.domain.usecase.exception.RestaurantNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -22,16 +26,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
 @Service
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final KitchenRepository kitchenRepository;
-
-    public RestaurantServiceImpl(RestaurantRepository restaurantRepository, KitchenRepository kitchenRepository) {
-        this.restaurantRepository = restaurantRepository;
-        this.kitchenRepository = kitchenRepository;
-    }
 
     @Override
     public List<Restaurant> findAll() {
@@ -90,15 +90,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public Restaurant update(Restaurant restaurant, Long id) {
+    public Restaurant update(Restaurant restaurant) {
         try {
-            Restaurant restaurantToChange = findById(id);
-
-            restaurantToChange.setName(restaurant.getName());
-            restaurantToChange.setDeliveryTax(restaurant.getDeliveryTax());
-            restaurantToChange.setKitchen(restaurant.getKitchen());
-
-            return create(restaurantToChange);
+            return create(restaurant);
 
         } catch (KitchenNotFoundException e) {
             throw new BusinessException(e.getMessage());
@@ -107,7 +101,8 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request) { //this method objective is to substitute restaurant attributes for fields attributes
+    public void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request) {
+        //this method objective is to substitute restaurant attributes for fields attributes
         ServletServerHttpRequest serverHttpRequest = new ServletServerHttpRequest(request);
 
         try {
@@ -129,9 +124,12 @@ public class RestaurantServiceImpl implements RestaurantService {
                 ReflectionUtils.setField(field, restaurant, newValue);
             });
 
+            restaurantRepository.save(restaurant);
+
         } catch (IllegalArgumentException e) {
             Throwable rootCause = ExceptionUtils.getRootCause(e);
             throw new HttpMessageNotReadableException(e.getMessage(), rootCause, serverHttpRequest);
+            //need it to use one with throwable, so this method wasn't deprecated, that's why need it serverHttpRequest
         }
     }
 
