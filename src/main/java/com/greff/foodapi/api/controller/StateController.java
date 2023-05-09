@@ -1,42 +1,55 @@
 package com.greff.foodapi.api.controller;
 
-import com.greff.foodapi.domain.model.State;
+import com.greff.foodapi.api.assembler.StateAssembler;
+import com.greff.foodapi.api.assembler.StateRequestDisassembler;
+import com.greff.foodapi.api.model.request.StateRequest;
+import com.greff.foodapi.api.model.response.StateResponse;
 import com.greff.foodapi.domain.usecase.StateService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/states")
 public class StateController {
 
     private final StateService stateService;
-
-    public StateController(StateService stateService) {
-        this.stateService = stateService;
-    }
+    private final StateAssembler stateAssembler;
+    private final StateRequestDisassembler stateRequestDisassembler;
 
     @GetMapping
-    public List<State> findAll() {
-        return stateService.findAll();
+    public List<StateResponse> findAll() {
+        var states = stateService.findAll();
+
+        return stateAssembler.toCollectionModel(states);
     }
 
     @GetMapping("/{id}")
-    public State findById(@PathVariable Long id) {
-        return stateService.findById(id);
+    public StateResponse findById(@PathVariable Long id) {
+        var state = stateService.findById(id);
+
+        return stateAssembler.toModel(state);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public State createState(@RequestBody @Valid State state) {
-        return stateService.create(state);
+    public StateResponse createState(@RequestBody @Valid StateRequest stateRequest) {
+        var state = stateRequestDisassembler.toDomainObject(stateRequest);
+        var stateResponse = stateService.create(state);
+
+        return stateAssembler.toModel(stateResponse);
     }
 
     @PutMapping("/{id}")
-    public State updateState(@RequestBody @Valid State state, @PathVariable Long id) {
-        return stateService.update(state, id);
+    public StateResponse updateState(@RequestBody @Valid StateRequest stateRequest, @PathVariable Long id) {
+        var state = stateRequestDisassembler.toDomainObject(stateRequest);
+        var stateResponse = stateService.update(state, id);
+
+        return stateAssembler.toModel(stateResponse);
     }
 
     @DeleteMapping("/{id}")
