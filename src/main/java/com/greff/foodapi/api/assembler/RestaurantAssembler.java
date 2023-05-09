@@ -7,6 +7,8 @@ import com.greff.foodapi.domain.model.Restaurant;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Component //to work, needs to be a spring component
 public class RestaurantAssembler {
@@ -15,5 +17,9 @@ public class RestaurantAssembler {
 
     public RestaurantResponse toModel(Restaurant restaurant) {
         return restaurantMapper.fromRestaurantToRestaurantResponse(restaurant);
+    }
+
+    public List<RestaurantResponse> toCollectionModel(List<Restaurant> restaurants) {
+        return restaurants.stream().map(this::toModel).toList();
     }
 }

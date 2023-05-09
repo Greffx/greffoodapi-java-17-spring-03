@@ -7,6 +7,8 @@ import com.greff.foodapi.domain.model.City;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Component //to work, needs to be a spring component
 public class CityAssembler {
@@ -15,5 +17,9 @@ public class CityAssembler {
 
     public CityResponse toModel(City city) {
         return cityMapper.fromCityToCityResponse(city);
+    }
+
+    public List<CityResponse> toCollectionModel(List<City> cities) {
+        return cities.stream().map(this::toModel).toList();
     }
 }
