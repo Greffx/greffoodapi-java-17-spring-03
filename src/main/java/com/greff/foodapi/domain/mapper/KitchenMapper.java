@@ -6,7 +6,7 @@ import com.greff.foodapi.domain.model.Kitchen;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Service;
 
-@Mapper(componentModel = "spring") //@Mapper - annotation tha marks interface as mapping interface to spring
+@Mapper(componentModel = "spring")
 @Service
 public interface KitchenMapper {
 
