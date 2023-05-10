@@ -53,6 +53,8 @@ public class Restaurant {
     //saying is a part, not a column. will not create a table about it, but its attributes will be created in restaurant table
     private Address address;
 
+    private Boolean active = Boolean.TRUE; //new attribute, when a restaurant is instanced, will always start as active true
+
     @CreationTimestamp //annotation of 'IMPLEMENTATION Hibernate', not from JPA.
     //CreationTimestamp add, inform creationDate will have a Date.now when it's created by the first time
     //columnDefinition is to take it out milliseconds of column
