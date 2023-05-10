@@ -27,6 +27,10 @@ public interface RestaurantService {
 
     Restaurant create(Restaurant restaurant);
 
+    void activation(Long id);
+
+    void deactivation(Long id);
+
     Restaurant update(Restaurant restaurant);
 
     void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request);
