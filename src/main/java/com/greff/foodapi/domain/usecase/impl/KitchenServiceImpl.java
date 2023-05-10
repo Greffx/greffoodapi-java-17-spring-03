@@ -58,13 +58,23 @@ public class KitchenServiceImpl implements KitchenService {
         return create(kitchenToChange);
     }
 
-    @Transactional
+    @Transactional //spring that manager this transaction, that annotation indicate that
     @Override
     public void deleteById(Long id) {
         findById(id);
 
         try {
-            kitchenRepository.deleteById(id);
+            kitchenRepository.deleteById(id); //when make update, insert, delete alteration, JPA entity manager don't do it right all
+            //will go in a queue ('fila de espera'), when a function that alters database is called, JPA entity manager wait to do all at the same time
+            kitchenRepository.flush(); //Flushes all pending changes to the database.
+            //flush method forces JPA to discharge NOW all requests in queue, like operations on hold
+            //like execute operation on database, like delete by id, BUT THIS IS NOT a commit yet
+
+            //so, flushes forces JPA entity manager to make that function first
+            //fazemos isso pq quando a anotação @Transactional esta no método, e a funcionalidade do JPA entity manager é para fazer
+            //as ações de métodos q alteram o banco como salvar, deletar ou atualizar depois, ele não faz logo de primeira, vai parar em uma espécie de fila
+            //ele irá sair desse bloco try catch e ir para a realização do commit e assim o JPA irá fazer as suas ações caso tenha exception,
+            //então flush método é para ele relizar primeiro as funções em Banco de dados e assim o bloco try catch pega
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException("Kitchen", id);
