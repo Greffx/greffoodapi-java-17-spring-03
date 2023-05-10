@@ -12,9 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public interface RestaurantMapper {
 
-    //since those objects got different names, need to map target and source to change values
     @Mapping(target = "kitchenResponse", source = "kitchen")
+    @Mapping(target = "active", source = "active")
     RestaurantResponse fromRestaurantToRestaurantResponse(Restaurant restaurant); //method to transform entity to DTO representation
+    //since those objects got different names, need to map target and source to change values
 
     @Mapping(target = "kitchen.id", source = "kitchenIdRefRequest.id")
     Restaurant fromRestaurantRequestToRestaurant(RestaurantRequest restaurant);
