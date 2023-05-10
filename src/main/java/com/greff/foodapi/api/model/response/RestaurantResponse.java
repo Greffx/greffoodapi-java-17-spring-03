@@ -24,4 +24,6 @@ public class RestaurantResponse {
 
     @JsonProperty("kitchen")
     private KitchenResponse kitchenResponse;
+
+    private Boolean active;
 }
