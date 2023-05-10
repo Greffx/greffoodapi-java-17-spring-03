@@ -88,6 +88,25 @@ public class RestaurantServiceImpl implements RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
+    @Transactional //need it to be transactional, since will alter a data of a column in database
+    @Override
+    public void activation(Long id) {
+        Restaurant restaurant = findById(id);
+        //since method findById of simpleJPARepository makes instance object managed/monitored
+        //any modification to this instance when it's managed by
+        //JPA context will be synchronized with database, so if anyone alters like
+        //setActive, setName or any of that, don't need to be saved
+        //JPA understands the instance got new attributes, synchronize with database and makes UPDATE function
+        restaurant.activate(); //method in restaurant class that makes easiest to read, but it's the same as setActive(true)
+    }
+
+    @Transactional
+    @Override
+    public void deactivation(Long id) {
+        Restaurant restaurant = findById(id);
+        restaurant.deactivate();
+    }
+
     @Transactional
     @Override
     public Restaurant update(Restaurant restaurant) {
