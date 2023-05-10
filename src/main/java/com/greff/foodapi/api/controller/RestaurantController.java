@@ -107,6 +107,22 @@ public class RestaurantController {
         return restaurantAssembler.toModel(restaurant);
     }
 
+    //singleton resource with a sub-resource that is no-crud action, like an abstract business rule that need it to be implemented
+    //something more concept, but good to be implemented, turning more real, concrete
+    @PutMapping("/{id}/activate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void restaurantActivation(@PathVariable Long id) {
+        restaurantService.activation(id);
+    }
+
+    //this is like a logical delete, still exist at database
+    @DeleteMapping("/{id}/deactivate")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void restaurantDeactivation(@PathVariable Long id) {
+        restaurantService.deactivation(id);
+    }
+
+
     @PatchMapping("/{id}")
     //map to 'PATCH' endpoint, which means that don't need to update everything, like 'PUT' type, that needs everything
     public RestaurantResponse patchRestaurant(@RequestBody Map<String, Object> fields, @PathVariable Long id, HttpServletRequest request) {
