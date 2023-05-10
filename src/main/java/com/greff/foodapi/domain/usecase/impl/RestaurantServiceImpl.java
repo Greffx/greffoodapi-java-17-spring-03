@@ -140,6 +140,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         try {
             restaurantRepository.deleteById(id);
+            restaurantRepository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException("Restaurant", id);
         }

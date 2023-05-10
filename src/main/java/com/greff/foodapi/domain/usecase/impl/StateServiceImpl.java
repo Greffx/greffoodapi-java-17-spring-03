@@ -48,6 +48,7 @@ public class StateServiceImpl implements StateService {
 
         try {
             stateRepository.deleteById(id);
+            stateRepository.flush();
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException("State", id);

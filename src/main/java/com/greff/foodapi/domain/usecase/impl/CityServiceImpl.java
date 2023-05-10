@@ -66,9 +66,11 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public void delete(Long id) {
+        findById(id);
+
         try {
-            findById(id);
             cityRepository.deleteById(id);
+            cityRepository.flush();
 
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException("City", id);
