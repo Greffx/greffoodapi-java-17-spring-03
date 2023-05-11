@@ -2,7 +2,6 @@ package com.greff.foodapi.domain.usecase.impl;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.greff.foodapi.domain.mapper.RestaurantMapper;
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.Restaurant;
@@ -33,7 +32,6 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final KitchenRepository kitchenRepository;
     private final CityRepository cityRepository;
-    private final RestaurantMapper restaurantMapper;
 
     @Override
     public List<Restaurant> findAll() {
@@ -116,20 +114,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public Restaurant update(Restaurant restaurantToCopy, Long id) {
-        var restaurant = findById(id);
-        //Resolved [org.springframework.orm.jpa.JpaSystemException: identifier of an instance of com.greff.foodapi.domain.model.Kitchen was altered from 2 to 1]
-        //this problem happens when trying to copy something, JPA understands that we are trying to transform kitchen instance id 1 to id 2.
-        //but we're only trying to change instance reference of kitchen in restaurant
-        //solution can be a new instance of kitchen, clean one, JPA never managed this one, can change their id, because this instance id don't exist
-        restaurant.setKitchen(new Kitchen());
-
-        var updatedRestaurant = restaurantMapper.updateDomainObjectByCopying(restaurantToCopy, restaurant); //this is the conversion
-
+    public Restaurant update(Restaurant restaurant) {
         try {
-            create(updatedRestaurant);
-
-            return updatedRestaurant;
+            return create(restaurant);
 
         } catch (KitchenNotFoundException | CityNotFoundException e) {
             throw new BusinessException(e.getMessage());
