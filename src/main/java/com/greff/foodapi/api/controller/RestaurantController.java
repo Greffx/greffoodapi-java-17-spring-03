@@ -98,11 +98,8 @@ public class RestaurantController {
 
     @PutMapping("/{id}")
     public RestaurantResponse updateRestaurant(@RequestBody @Valid RestaurantRequest restaurantRequest, @PathVariable Long id) {
-        var restaurant = restaurantService.findById(id);
-
-        restaurantRequestDisassembler.copyToDomainObject(restaurantRequest, restaurant); //this is the conversion
-
-        restaurantService.update(restaurant);
+        var restaurantToCopy = restaurantRequestDisassembler.toDomainObject(restaurantRequest);
+        var restaurant = restaurantService.update(restaurantToCopy, id);
 
         return restaurantAssembler.toModel(restaurant);
     }
