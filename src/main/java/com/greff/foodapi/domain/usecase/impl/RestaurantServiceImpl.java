@@ -124,8 +124,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         try {
             create(updatedRestaurant);
 
-            restaurantRepository.flush();
-
             return updatedRestaurant;
 
         } catch (KitchenNotFoundException e) {
