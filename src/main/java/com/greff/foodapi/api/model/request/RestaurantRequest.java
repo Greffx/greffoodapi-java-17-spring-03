@@ -34,4 +34,9 @@ public class RestaurantRequest {
     //this is a cascade validation type
     @JsonProperty("kitchen")
     private KitchenIdRefRequest kitchenIdRefRequest;
+
+    @NotNull
+    @Valid
+    @JsonProperty("address")
+    private AddressRequest addressRequest;
 }

@@ -18,12 +18,12 @@ public class RestaurantResponse {
 
     private Long id;
     private String name;
-
-    @JsonProperty("delivery_tax")
     private BigDecimal deliveryTax;
+    private Boolean active;
 
     @JsonProperty("kitchen")
     private KitchenResponse kitchenResponse;
 
-    private Boolean active;
+    @JsonProperty("address")
+    private AddressResponse addressResponse;
 }
