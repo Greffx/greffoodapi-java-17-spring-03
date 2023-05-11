@@ -4,7 +4,7 @@ public abstract class NotFoundObjectException extends BusinessException {
     //we can not instance more this type of exception, serves to help others
     //but can be used in catch, so if needed to catch something more general, can use this
 
-    public NotFoundObjectException(String message) {
+    protected NotFoundObjectException(String message) {
         super(message);
     }
 
