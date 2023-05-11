@@ -28,6 +28,4 @@ public class Address {
     @ManyToOne(fetch = FetchType.LAZY) //many address has one city
     @JoinColumn(name = "city_address_id")
     private City city;
-
-
 }
