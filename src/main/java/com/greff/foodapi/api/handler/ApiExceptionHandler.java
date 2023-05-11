@@ -134,7 +134,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             MethodArgumentTypeMismatchException subEx, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.INVALID_PARAMETER;
-        String detail = String.format("Parameter '%s', with value '%s' is a invalid type. Try again using %s type", subEx.getParameter().getParameterName(),
+        String detail = String.format("Parameter '%s', with value '%s' is invalid type. Try again using %s type", subEx.getParameter().getParameterName(),
                 subEx.getValue(), Objects.requireNonNull(subEx.getRequiredType()).getSimpleName());
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
@@ -208,7 +208,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
-        String detail = String.format("Resource %s is a invalid, don't exist", ex.getRequestURL());
+        String detail = String.format("Resource %s is invalid, don't exist", ex.getRequestURL());
 
         ProblemDetails problemDetails = createProblemDetailsBuilder(HttpStatus.valueOf(status.value()), problemType, detail)
                 .userMessage(GENERAL_ERROR_MESSAGE_FINAL_USER)
