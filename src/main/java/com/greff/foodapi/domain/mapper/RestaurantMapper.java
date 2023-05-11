@@ -29,7 +29,6 @@ public interface RestaurantMapper {
     @Mapping(target = "kitchen.id", source = "kitchenIdRefRequest.id")
     Restaurant fromRestaurantRequestToRestaurant(RestaurantRequest restaurant);
 
-    @Mapping(target = "kitchen.id", source = "kitchen.id")
     @Mapping(target = "id", ignore = true) //need to ignore, because it will try to change instance id
     @Mapping(target = "creationDate", ignore = true) //will try to change this property to null
     Restaurant updateDomainObjectByCopying(Restaurant restaurantToCopy, @MappingTarget Restaurant restaurant);
