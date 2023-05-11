@@ -3,15 +3,14 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greff.foodapi.domain.mapper.RestaurantMapper;
+import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.Restaurant;
+import com.greff.foodapi.domain.repository.CityRepository;
 import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.RestaurantService;
-import com.greff.foodapi.domain.usecase.exception.BusinessException;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.KitchenNotFoundException;
-import com.greff.foodapi.domain.usecase.exception.RestaurantNotFoundException;
+import com.greff.foodapi.domain.usecase.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -33,6 +32,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final KitchenRepository kitchenRepository;
+    private final CityRepository cityRepository;
     private final RestaurantMapper restaurantMapper;
 
     @Override
@@ -81,11 +81,16 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant create(Restaurant restaurant) {
         Long kitchenId = restaurant.getKitchen().getId();
+        Long cityId = restaurant.getAddress().getCity().getId();
+
+        City city = cityRepository.findById(cityId).orElseThrow(() ->
+                new CityNotFoundException(cityId));
 
         Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
                 new KitchenNotFoundException(kitchenId));
 
         restaurant.setKitchen(kitchen);
+        restaurant.getAddress().setCity(city);
 
         return restaurantRepository.save(restaurant);
     }
@@ -126,7 +131,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
             return updatedRestaurant;
 
-        } catch (KitchenNotFoundException e) {
+        } catch (KitchenNotFoundException | CityNotFoundException e) {
             throw new BusinessException(e.getMessage());
         }
     }
