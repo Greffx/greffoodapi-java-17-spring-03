@@ -11,9 +11,11 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",
         uses = {KitchenMapper.class, CityMapper.class, PaymentMethodMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
-//unmappedTargetPolicy = ReportingPolicy.IGNORE, that means policy to just ignore target properties that got null, empty mapping or are not mapped
 //The componentModel = "spring" attribute indicates that the generated mapper implementation class
 //should be registered as a Spring component and can be autowired into other Spring components.
+//'uses' This tells to include the EntityMapper.class in the generated code for the ThisMapper interface,
+//so that the implementation of the method can be found and used by this class.
+//unmappedTargetPolicy = ReportingPolicy.IGNORE, that means policy to just ignore target properties that got null, empty mapping or are not mapped
 public interface RestaurantMapper {
 
     @Mapping(target = "addressResponse", source = "address")
