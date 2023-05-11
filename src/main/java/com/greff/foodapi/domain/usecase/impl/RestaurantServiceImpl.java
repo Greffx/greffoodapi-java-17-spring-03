@@ -62,7 +62,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public Restaurant findFirstOneByName(String name) {
         return restaurantRepository.getFirstRestaurantByNameContaining(name).orElseThrow(() ->
-                new RestaurantNotFoundException(String.format("Restaurant with name %s, not found", name)));
+                new RestaurantNotFoundException(name));
     }
 
     @Override
