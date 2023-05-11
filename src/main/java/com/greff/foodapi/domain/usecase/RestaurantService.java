@@ -31,7 +31,7 @@ public interface RestaurantService {
 
     void deactivation(Long id);
 
-    Restaurant update(Restaurant restaurant);
+    Restaurant update(Restaurant restaurant, Long id);
 
     void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request);
 
