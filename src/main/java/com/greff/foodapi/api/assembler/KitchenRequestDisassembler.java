@@ -13,6 +13,6 @@ public class KitchenRequestDisassembler {
     private final KitchenMapper kitchenMapper;
 
     public Kitchen toDomainObject(KitchenRequest kitchenRequest) {
-        return kitchenMapper.fromKitchenRequestToKithcen(kitchenRequest);
+        return kitchenMapper.fromKitchenRequestToKitchen(kitchenRequest);
     }
 }

@@ -12,5 +12,5 @@ public interface KitchenMapper {
 
     KitchenResponse fromKitchenToKitchenResponse(Kitchen kitchen);
 
-    Kitchen fromKitchenRequestToKithcen(KitchenRequest kitchenRequest);
+    Kitchen fromKitchenRequestToKitchen(KitchenRequest kitchenRequest);
 }

@@ -32,7 +32,7 @@ public class ProblemDetails {
 
     @Builder
     @Getter
-    public static class Field { //Nested classe, this an inner class
+    public static class Field { //Nested class, this an inner class
 
         private String fieldName;
         private String defaultMessage;

@@ -93,7 +93,7 @@ class KitchenControllerIT {
     @Test
     void shouldReturn404StatusWhenGettingAKitchenByIdThatDontExist() {
         given()
-                .pathParam("kitchenId", KITCHEN_ID_NONEXISTENT) //constant to failer test, better to understant
+                .pathParam("kitchenId", KITCHEN_ID_NONEXISTENT) //constant to test fail, better to understand
                 .accept(ContentType.JSON).
         when()
                 .get("{kitchenId}").

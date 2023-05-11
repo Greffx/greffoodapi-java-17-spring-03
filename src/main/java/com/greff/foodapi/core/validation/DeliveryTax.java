@@ -15,7 +15,7 @@
 //import static java.lang.annotation.RetentionPolicy.RUNTIME;
 //
 //@Target({FIELD, METHOD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE}) //can use in method, attribute, constructor, that's what target annotation means
-//@Retention(RUNTIME) //this one means that will readed in runtime
+//@Retention(RUNTIME) //this one means that will read in runtime
 //@Constraint(validatedBy = {}) //constraint, that means that which class that implements this validation
 //@PositiveOrZero //will receive rules of this annotation
 //public @interface DeliveryTax { //creating personalized annotation
