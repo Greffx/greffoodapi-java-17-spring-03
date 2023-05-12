@@ -7,8 +7,6 @@ import com.greff.foodapi.api.model.request.UserRequest;
 import com.greff.foodapi.api.model.request.UserUpdateRequest;
 import com.greff.foodapi.api.model.response.UserResponse;
 import com.greff.foodapi.domain.usecase.UserService;
-import com.greff.foodapi.domain.usecase.exception.BusinessException;
-import com.greff.foodapi.domain.usecase.exception.InvalidUserPasswordException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -50,19 +48,12 @@ public class UserController {
     public void passwordUpdate(@RequestBody @Valid UserPasswordUpdateRequest userPasswordUpdateRequest, @PathVariable Long id) {
         var user = userService.findById(id);
         var password = userPasswordUpdateRequest.getCurrentPassword();
+        var passwordVerification = user.currentPasswordIsSimilarTo(password);
 
-        try {
-            if (user.currentPasswordIsNotSimilarTo(password))
-                throw new InvalidUserPasswordException("Wrong password, try again");
+        if (passwordVerification)
+            userRequestDisassembler.updateUserPasswordDomainObject(userPasswordUpdateRequest, user);
 
-            if (user.currentPasswordIsSimilarTo(password)) userRequestDisassembler
-                    .updateUserPasswordDomainObject(userPasswordUpdateRequest, user);
-
-            userService.update(user);
-
-        } catch (InvalidUserPasswordException e) {
-            throw new BusinessException(e.getMessage());
-        }
+        userService.updatePassword(user, passwordVerification);
     }
 
     @GetMapping

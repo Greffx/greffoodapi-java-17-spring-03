@@ -10,6 +10,8 @@ public interface UserService {
 
     User update(User user);
 
+    void updatePassword(User user, boolean passwordVerification);
+
     User findById(Long id);
 
     List<User> findAll();

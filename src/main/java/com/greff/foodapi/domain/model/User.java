@@ -39,9 +39,9 @@ public class User {
         return getPassword().equals(password);
     }
 
-    public boolean currentPasswordIsNotSimilarTo(String password) { //if method at line 38 is true, return false, if it's false, return true
-        return !currentPasswordIsSimilarTo(password);
-    }
+//    public boolean currentPasswordIsNotSimilarTo(String password) { if method at line 38 is true, return false, if it's false, return true
+//        return !currentPasswordIsSimilarTo(password); //i'm doing by myself, other way
+//    }
 
 
 }

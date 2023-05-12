@@ -5,6 +5,7 @@ import com.greff.foodapi.domain.repository.UserRepository;
 import com.greff.foodapi.domain.usecase.UserService;
 import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
+import com.greff.foodapi.domain.usecase.exception.InvalidUserPasswordException;
 import com.greff.foodapi.domain.usecase.exception.UserNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -28,10 +29,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User update(User user) {
-        try {
-            return create(user);
+        return create(user);
+    }
 
-        } catch (BusinessException e) {
+//    @Transactional
+    @Override
+    public void updatePassword(User user, boolean passwordVerification) {
+        try {
+            if (!passwordVerification)
+                throw new InvalidUserPasswordException("Current password did not match, try again");
+
+            create(user);
+
+        } catch (InvalidUserPasswordException e) {
             throw new BusinessException(e.getMessage());
         }
     }
