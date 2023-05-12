@@ -91,9 +91,10 @@ public class RestaurantController {
         //since user-case is a service class of domain layer, can't know or use restaurantRequest or response DTOs classes
         //that job is for API layer, representation layer, that's why conversion happens in this layer
         var restaurant = restaurantRequestDisassembler.toDomainObject(restaurantRequest);
-        var restaurantResponse = restaurantService.create(restaurant);
 
-        return restaurantAssembler.toModel(restaurantResponse);
+        restaurant = restaurantService.create(restaurant);
+
+        return restaurantAssembler.toModel(restaurant);
     }
 
     @PutMapping("/{id}")
