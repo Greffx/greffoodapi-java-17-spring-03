@@ -1,0 +1,1 @@
+ALTER TABLE tb_groups RENAME COLUMN description TO name;
