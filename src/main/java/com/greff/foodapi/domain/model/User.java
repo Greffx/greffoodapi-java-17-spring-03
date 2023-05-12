@@ -34,4 +34,14 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
     private List<Group> groups = new ArrayList<>();
+
+    public boolean currentPasswordIsSimilarTo(String password) { //if it's equal a = a, return true, if not false
+        return getPassword().equals(password);
+    }
+
+    public boolean currentPasswordIsNotSimilarTo(String password) { //if method at line 38 is true, return false, if it's false, return true
+        return !currentPasswordIsSimilarTo(password);
+    }
+
+
 }
