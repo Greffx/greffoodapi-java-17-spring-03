@@ -18,7 +18,7 @@ public class Group {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
+    private String name;
 
     @ManyToMany //unidirectional, so it's cool to be only here the relation
     @JoinTable(name = "tb_groups_permissions",
