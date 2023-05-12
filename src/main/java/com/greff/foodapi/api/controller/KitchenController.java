@@ -64,24 +64,27 @@ public class KitchenController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) //instead of using ResponseEntity, could use this annotation and return without responseEntity
+    @ResponseStatus(HttpStatus.CREATED)
+    //instead of using ResponseEntity, could use this annotation and return without responseEntity
     //map method, PostMapping means that requests with verb http 'POST' will use this method, will create obj
     public KitchenResponse create(@RequestBody @Valid KitchenRequest kitchenRequest) {
         //annotation RequestBody means that param 'kitchen' will receive body of request, transformation of body JSON and bind with 'kitchen' instance
-
         var kitchen = kitchenRequestDisassembler.toDomainObject(kitchenRequest);
-        var kitchenResponse = kitchenService.create(kitchen);
 
-        return kitchenAssembler.toModel(kitchenResponse);
+        kitchen = kitchenService.create(kitchen);
+
+        return kitchenAssembler.toModel(kitchen);
     }
 
     @PutMapping("/{id}")
     //map method, PutMapping means that requests with verb http 'PUT' will use this method, will update obj based on id
     public KitchenResponse update(@RequestBody @Valid KitchenRequest kitchenRequest, @PathVariable Long id) {
-        var kitchen = kitchenRequestDisassembler.toDomainObject(kitchenRequest);
-        var kitchenResponse = kitchenService.update(kitchen, id);
+        var kitchen = kitchenService.findById(id);
 
-        return kitchenAssembler.toModel(kitchenResponse);
+        kitchenRequestDisassembler.updateKitchenDomainObject(kitchenRequest, kitchen);
+        kitchenService.update(kitchen);
+
+        return kitchenAssembler.toModel(kitchen);
     }
 
     @DeleteMapping("/{id}")

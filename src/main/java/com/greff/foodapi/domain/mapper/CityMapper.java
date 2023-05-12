@@ -4,10 +4,7 @@ import com.greff.foodapi.api.model.request.CityRequest;
 import com.greff.foodapi.api.model.response.CityResponse;
 import com.greff.foodapi.api.model.response.SimpleCityResponse;
 import com.greff.foodapi.domain.model.City;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", uses = StateMapper.class, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CityMapper {
@@ -21,4 +18,7 @@ public interface CityMapper {
     @Named("toSimpleCityResponse")
     @Mapping(target = "state", source = "state.name")
     SimpleCityResponse fromCityToSimpleCityResponse(City city);
+
+    @Mapping(target = "id", source = "stateIdRefRequest.id")
+    void updateDomainObject(CityRequest cityRequest, @MappingTarget City city);
 }

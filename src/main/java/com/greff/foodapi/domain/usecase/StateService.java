@@ -12,7 +12,7 @@ public interface StateService {
 
     State create(State state);
 
-    State update(State state, Long id);
+    State update(State state);
 
     void delete(Long id);
 }

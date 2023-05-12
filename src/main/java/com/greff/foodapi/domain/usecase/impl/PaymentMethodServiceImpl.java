@@ -28,11 +28,8 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     @Transactional
     @Override
-    public PaymentMethod update(PaymentMethod paymentMethodToCopy, Long id) {
-        var paymentMethod = findById(id);
-        var updatedPaymentMethod = paymentMethodMapper.copyPaymentMethodToAnotherPaymentMethodInstance(paymentMethodToCopy, paymentMethod);
-
-        return create(updatedPaymentMethod);
+    public PaymentMethod update(PaymentMethod paymentMethod) {
+        return create(paymentMethod);
     }
 
     @Override

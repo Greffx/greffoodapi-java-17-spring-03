@@ -12,7 +12,7 @@ public interface CityService {
 
     City create(City city);
 
-    City update(City city, Long id);
+    City update(City city);
 
     void delete(Long id);
 }

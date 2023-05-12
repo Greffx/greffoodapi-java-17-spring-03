@@ -14,7 +14,7 @@ public interface KitchenService {
 
     Kitchen create(Kitchen kitchen);
 
-    Kitchen update(Kitchen kitchen, Long id);
+    Kitchen update(Kitchen kitchen);
 
     void deleteById(Long id);
 

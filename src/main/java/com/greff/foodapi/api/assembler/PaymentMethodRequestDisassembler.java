@@ -15,4 +15,8 @@ public class PaymentMethodRequestDisassembler {
     public PaymentMethod toDomainObject(PaymentMethodRequest paymentMethodRequest) {
         return paymentMethodMapper.fromPaymentMethodRequestToPaymentMethod(paymentMethodRequest);
     }
+
+    public void updatePaymentMethodDomainObject(PaymentMethodRequest paymentMethodRequest, PaymentMethod paymentMethod) {
+        paymentMethodMapper.updateDomainObject(paymentMethodRequest, paymentMethod);
+    }
 }

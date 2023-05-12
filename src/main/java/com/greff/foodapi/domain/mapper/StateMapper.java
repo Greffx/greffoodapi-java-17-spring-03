@@ -4,6 +4,7 @@ import com.greff.foodapi.api.model.request.StateRequest;
 import com.greff.foodapi.api.model.response.StateResponse;
 import com.greff.foodapi.domain.model.State;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
@@ -17,6 +18,8 @@ public interface StateMapper {
     StateResponse fromStateToStateResponse(State state);
 
     State fromStateRequestToState(StateRequest stateRequest);
+
+    void updateDomainObject(StateRequest stateRequest, @MappingTarget State state);
 }
 
 

@@ -51,11 +51,8 @@ public class KitchenServiceImpl implements KitchenService {
 
     @Transactional
     @Override
-    public Kitchen update(Kitchen kitchen, Long id) {
-        Kitchen kitchenToChange = findById(id);
-        kitchenToChange.setName(kitchen.getName());
-
-        return create(kitchenToChange);
+    public Kitchen update(Kitchen kitchen) {
+        return create(kitchen);
     }
 
     @Transactional //spring that manager this transaction, that annotation indicate that

@@ -39,6 +39,7 @@ public class CityServiceImpl implements CityService {
         try {
             State state = stateRepository.findById(stateId).orElseThrow(() ->
                     new StateNotFoundException(stateId));
+
             city.setState(state);
             //when request body of create or update is necessary and user put a state id that doesn't exist it's better to give a 400 bad request
             //because there's states, but user used the wrong id
@@ -50,14 +51,9 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public City update(City city, Long id) {
-        City cityToChange = findById(id);
-
-        cityToChange.setName(city.getName());
-
+    public City update(City city) {
         try {
-            cityToChange.setState(city.getState());
-            return create(cityToChange);
+            return create(city);
 
         } catch (StateNotFoundException e) {
             throw new BusinessException(e.getMessage());

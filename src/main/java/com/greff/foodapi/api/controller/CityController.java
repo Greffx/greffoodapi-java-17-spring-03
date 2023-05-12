@@ -38,17 +38,20 @@ public class CityController {
     @ResponseStatus(HttpStatus.CREATED)
     public CityResponse createCity(@RequestBody @Valid CityRequest cityRequest) {
         var city = cityRequestDisassembler.toDomainObject(cityRequest);
-        var cityResponse = cityService.create(city);
 
-        return cityAssembler.toModel(cityResponse);
+        city = cityService.create(city);
+
+        return cityAssembler.toModel(city);
     }
 
     @PutMapping("/{id}")
     public CityResponse updateCity(@RequestBody @Valid CityRequest cityRequest, @PathVariable Long id) {
-        var city = cityRequestDisassembler.toDomainObject(cityRequest);
-        var cityResponse =  cityService.update(city, id);
+        var city = cityService.findById(id);
 
-        return cityAssembler.toModel(cityResponse);
+        cityRequestDisassembler.updateCityDomainObject(cityRequest, city);
+        cityService.update(city);
+
+        return cityAssembler.toModel(city);
     }
 
     @DeleteMapping("/{id}")

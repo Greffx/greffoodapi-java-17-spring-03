@@ -25,17 +25,20 @@ public class PaymentMethodController {
     @ResponseStatus(HttpStatus.CREATED)
     public PaymentMethodResponse create(@RequestBody @Valid PaymentMethodRequest paymentMethodRequest) {
         var paymentMethod = paymentMethodRequestDisassembler.toDomainObject(paymentMethodRequest);
-        var paymentMethodResponse = paymentMethodService.create(paymentMethod);
 
-        return paymentMethodAssembler.toModel(paymentMethodResponse);
+        paymentMethod = paymentMethodService.create(paymentMethod);
+
+        return paymentMethodAssembler.toModel(paymentMethod);
     }
 
     @PutMapping("/{id}")
     public PaymentMethodResponse update(@RequestBody @Valid PaymentMethodRequest paymentMethodRequest, @PathVariable Long id) {
-        var paymentMethod = paymentMethodRequestDisassembler.toDomainObject(paymentMethodRequest);
-        var paymentMethodResponse = paymentMethodService.update(paymentMethod, id);
+        var paymentMethod = paymentMethodService.findById(id);
 
-        return paymentMethodAssembler.toModel(paymentMethodResponse);
+        paymentMethodRequestDisassembler.updatePaymentMethodDomainObject(paymentMethodRequest, paymentMethod);
+        paymentMethodService.update(paymentMethod);
+
+        return paymentMethodAssembler.toModel(paymentMethod);
     }
 
     @GetMapping("/{id}")

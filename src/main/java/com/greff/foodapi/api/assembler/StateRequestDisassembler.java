@@ -15,4 +15,8 @@ public class StateRequestDisassembler {
     public State toDomainObject(StateRequest stateRequest) {
         return stateMapper.fromStateRequestToState(stateRequest);
     }
+
+    public void updateStateDomainObject(StateRequest stateRequest, State state) {
+        stateMapper.updateDomainObject(stateRequest, state);
+    }
 }

@@ -15,4 +15,8 @@ public class KitchenRequestDisassembler {
     public Kitchen toDomainObject(KitchenRequest kitchenRequest) {
         return kitchenMapper.fromKitchenRequestToKitchen(kitchenRequest);
     }
+
+    public void updateKitchenDomainObject(KitchenRequest kitchenRequest, Kitchen kitchen) {
+        kitchenMapper.updateDomainObject(kitchenRequest, kitchen);
+    }
 }

@@ -35,11 +35,8 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
-    public State update(State state, Long id) {
-        State stateToChange = findById(id);
-        stateToChange.setName(state.getName());
-
-        return create(stateToChange);
+    public State update(State state) {
+        return create(state);
     }
 
     @Override

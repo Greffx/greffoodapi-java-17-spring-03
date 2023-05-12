@@ -14,5 +14,5 @@ public interface PaymentMethodMapper {
 
     PaymentMethod fromPaymentMethodRequestToPaymentMethod(PaymentMethodRequest paymentMethodRequest);
 
-    PaymentMethod copyPaymentMethodToAnotherPaymentMethodInstance(PaymentMethod paymentMethodToCopy, @MappingTarget PaymentMethod paymentMethod);
+    void updateDomainObject(PaymentMethodRequest paymentMethodRequest, @MappingTarget PaymentMethod paymentMethod);
 }

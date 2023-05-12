@@ -39,17 +39,19 @@ public class StateController {
     @ResponseStatus(HttpStatus.CREATED)
     public StateResponse createState(@RequestBody @Valid StateRequest stateRequest) {
         var state = stateRequestDisassembler.toDomainObject(stateRequest);
-        var stateResponse = stateService.create(state);
+        state = stateService.create(state);
 
-        return stateAssembler.toModel(stateResponse);
+        return stateAssembler.toModel(state);
     }
 
     @PutMapping("/{id}")
     public StateResponse updateState(@RequestBody @Valid StateRequest stateRequest, @PathVariable Long id) {
-        var state = stateRequestDisassembler.toDomainObject(stateRequest);
-        var stateResponse = stateService.update(state, id);
+        var state = stateService.findById(id);
 
-        return stateAssembler.toModel(stateResponse);
+        stateRequestDisassembler.updateStateDomainObject(stateRequest, state);
+        stateService.update(state);
+
+        return stateAssembler.toModel(state);
     }
 
     @DeleteMapping("/{id}")

@@ -16,4 +16,8 @@ public class CityRequestDisassembler {
     public City toDomainObject(CityRequest cityRequest) {
         return cityMapper.fromCityRequestToCity(cityRequest);
     }
+
+    public void updateCityDomainObject(CityRequest cityRequest, City city) {
+        cityMapper.updateDomainObject(cityRequest, city);
+    }
 }

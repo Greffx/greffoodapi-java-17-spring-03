@@ -8,7 +8,7 @@ public interface PaymentMethodService {
 
     PaymentMethod create(PaymentMethod paymentMethod);
 
-    PaymentMethod update(PaymentMethod paymentMethod, Long id);
+    PaymentMethod update(PaymentMethod paymentMethod);
 
     PaymentMethod findById(Long id);
 
