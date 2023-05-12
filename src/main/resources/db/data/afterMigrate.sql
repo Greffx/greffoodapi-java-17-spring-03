@@ -134,10 +134,14 @@ VALUES ('john25@gmail.com', 'john', '1235', utc_timestamp);
 INSERT INTO tb_users(email, name, password, register_date)
 VALUES ('hawk26@gmail.com', 'hawk', '1231', utc_timestamp);
 
-INSERT INTO tb_groups(id, description)
-VALUES (1, 'adm');
-INSERT INTO tb_groups(id, description)
-VALUES (2, 'user');
+INSERT INTO tb_groups(name)
+VALUES ('manager');
+INSERT INTO tb_groups(name)
+VALUES ('seller');
+INSERT INTO tb_groups(name)
+VALUES ('secretary');
+INSERT INTO tb_groups(name)
+VALUES ('registrar');
 
 INSERT INTO tb_groups_permissions(group_id, permission_id)
 VALUES (1, 1);
@@ -171,7 +175,7 @@ VALUES (4, 2);
 #because when deleted and put again, if it has 10 properties, when delete and got a new one, will start with id 11 for example
 #to start from 1 again, we put autoincrement to start at 1, associations table don't need, don't have autoincrement
 #they only got id from other table
-#in package 'testedata' will contain data to test db and migrations, don't mix afterMigration file with migrations scripts
+#in package 'testdata' will contain data to test db and migrations, don't mix afterMigration file with migrations scripts
 #because
 
 #TIMESTAMP
