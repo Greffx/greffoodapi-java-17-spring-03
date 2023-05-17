@@ -3,10 +3,7 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.greff.foodapi.domain.model.User;
 import com.greff.foodapi.domain.repository.UserRepository;
 import com.greff.foodapi.domain.usecase.UserService;
-import com.greff.foodapi.domain.usecase.exception.BusinessException;
-import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
-import com.greff.foodapi.domain.usecase.exception.InvalidUserPasswordException;
-import com.greff.foodapi.domain.usecase.exception.UserNotFoundException;
+import com.greff.foodapi.domain.usecase.exception.*;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -23,6 +20,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User user) {
+        var optionalUser = userRepository.findByEmail(user.getEmail());
+
+        if (optionalUser.isPresent() && !optionalUser.get().getName().equals(user.getName()) &&
+                optionalUser.get().getEmail().equals(user.getEmail()))
+            //if there's a user with different name and same email, then throw exception warning
+            throw new EmailAlreadyRegisterException("This email is been used, choose another one");
+
         return userRepository.save(user);
     }
 
@@ -32,12 +36,13 @@ public class UserServiceImpl implements UserService {
         return create(user);
     }
 
-//    @Transactional
+    @Transactional
     @Override
     public void updatePassword(User user, boolean passwordVerification) {
         try {
             if (!passwordVerification)
                 throw new InvalidUserPasswordException("Current password did not match, try again");
+            //business rule to not let update password if not getting current one right
 
             create(user);
 
