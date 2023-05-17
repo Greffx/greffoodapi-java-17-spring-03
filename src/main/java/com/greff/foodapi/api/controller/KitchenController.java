@@ -79,7 +79,9 @@ public class KitchenController {
     @PutMapping("/{id}")
     //map method, PutMapping means that requests with verb http 'PUT' will use this method, will update obj based on id
     public KitchenResponse update(@RequestBody @Valid KitchenRequest kitchenRequest, @PathVariable Long id) {
-        var kitchen = kitchenService.findById(id);
+        var kitchen = kitchenService.findById(id); //when findById is call jpa manages this instance
+        //and when is altered but there's no transactional annotation,
+        //will save alteration anyway, because it will synchronize with database, those alterations
 
         kitchenRequestDisassembler.updateKitchenDomainObject(kitchenRequest, kitchen);
         kitchenService.update(kitchen);
