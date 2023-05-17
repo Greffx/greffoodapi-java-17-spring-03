@@ -20,11 +20,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User create(User user) {
+        userRepository.detach(user); //method to JPA not manage this instance
+
         var optionalUser = userRepository.findByEmail(user.getEmail());
 
-        if (optionalUser.isPresent() && !optionalUser.get().getName().equals(user.getName()) &&
-                optionalUser.get().getEmail().equals(user.getEmail()))
-            //if there's a user with different name and same email, then throw exception warning
+        if (optionalUser.isPresent() && !optionalUser.get().equals(user))
+            //if there's a user, BUT different from param user, not same user as optional, then throw exception
             throw new EmailAlreadyRegisterException("This email is been used, choose another one");
 
         return userRepository.save(user);
