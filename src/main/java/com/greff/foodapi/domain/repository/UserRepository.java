@@ -1,11 +1,12 @@
 package com.greff.foodapi.domain.repository;
 
 import com.greff.foodapi.domain.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+@Repository //when inheriting only my custom JPA repository, need to say specifically that this interface is a repository
+public interface UserRepository extends CustomJpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email); //optional means that could be null or could have a user
 }
