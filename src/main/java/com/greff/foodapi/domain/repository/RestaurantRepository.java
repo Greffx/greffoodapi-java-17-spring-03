@@ -1,11 +1,11 @@
 package com.greff.foodapi.domain.repository;
 
 import com.greff.foodapi.domain.model.Restaurant;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,9 @@ import java.util.Optional;
 //Repository needs to be prepared to receive specification, interface needs to inherit another class JpaSpecificationExecutor<EntityName>.
 //and is an Interface to allow execution of Specification.
 //got methods as 'findAll', 'findOne', 'count' that receives Specifications<EntityName> as param that we need to use.
-public interface RestaurantRepository extends JpaRepository<Restaurant, Long>, RestaurantRepositoryCustomizedQueries,
+@Repository
+public interface RestaurantRepository extends CustomJpaRepository<Restaurant, Long>,
+        RestaurantRepositoryCustomizedQueries,
         JpaSpecificationExecutor<Restaurant> {
 
     @NonNull

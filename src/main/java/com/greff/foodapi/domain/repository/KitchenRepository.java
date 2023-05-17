@@ -1,15 +1,16 @@
 package com.greff.foodapi.domain.repository;
 
 import com.greff.foodapi.domain.model.Kitchen;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 //Interface extends another interface, where id entity saying class name and type of entity id(like 'long', 'string'), this is from Spring Data JPA, SDJ
 //This type of repository of SDJ is to resume boilerplate code, boilerplate - repetitive code
-public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
+@Repository
+public interface KitchenRepository extends CustomJpaRepository<Kitchen, Long> {
     //LIKE means that contains part of a name, '%' joker character, will complete with that :name, ex: if receive letter 'a' will get a list of kitchens that contain letter 'a'
     //Containing is equal to LIKE, containing would be a flag
     //JPQL java Persistence Query Language

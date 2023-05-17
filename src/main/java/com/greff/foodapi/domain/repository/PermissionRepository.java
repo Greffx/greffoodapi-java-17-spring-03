@@ -1,8 +1,8 @@
 package com.greff.foodapi.domain.repository;
 
 import com.greff.foodapi.domain.model.Permission;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-
-public interface PermissionRepository extends JpaRepository<Permission, Long> {
+@Repository
+public interface PermissionRepository extends CustomJpaRepository<Permission, Long> {
 }
