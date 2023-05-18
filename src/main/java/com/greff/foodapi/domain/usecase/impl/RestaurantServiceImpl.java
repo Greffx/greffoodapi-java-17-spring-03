@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.Restaurant;
-import com.greff.foodapi.domain.repository.CityRepository;
-import com.greff.foodapi.domain.repository.KitchenRepository;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
+import com.greff.foodapi.domain.usecase.CityService;
+import com.greff.foodapi.domain.usecase.KitchenService;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import com.greff.foodapi.domain.usecase.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,8 +30,9 @@ import java.util.Map;
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-    private final KitchenRepository kitchenRepository;
-    private final CityRepository cityRepository;
+    private final KitchenService kitchenService;
+    private final CityService cityService;
+//    private final PaymentMethodService paymentMethodService
 
     @Override
     public List<Restaurant> findAll() {
@@ -81,11 +82,9 @@ public class RestaurantServiceImpl implements RestaurantService {
         Long kitchenId = restaurant.getKitchen().getId();
         Long cityId = restaurant.getAddress().getCity().getId();
 
-        City city = cityRepository.findById(cityId).orElseThrow(() ->
-                new CityNotFoundException(cityId));
+        City city = cityService.findById(cityId);
 
-        Kitchen kitchen = kitchenRepository.findById(kitchenId).orElseThrow(() ->
-                new KitchenNotFoundException(kitchenId));
+        Kitchen kitchen = kitchenService.findById(kitchenId);
 
         restaurant.setKitchen(kitchen);
         restaurant.getAddress().setCity(city);
@@ -168,5 +167,15 @@ public class RestaurantServiceImpl implements RestaurantService {
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException("Restaurant", id);
         }
+    }
+
+    @Transactional
+    @Override
+    public void removePaymentMethod(Long restaurantId, Long paymentMethodId) {
+        Restaurant restaurant = findById(restaurantId);
+
+
+
+        restaurant.getPaymentMethods().remove();
     }
 }
