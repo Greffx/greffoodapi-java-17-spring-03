@@ -36,4 +36,8 @@ public interface RestaurantService {
     void patchFields(Map<String, Object> fields, Restaurant restaurant, HttpServletRequest request);
 
     void deleteById(Long id);
+
+    void restaurantDissociationWithPaymentMethod(Long restaurantId, Long paymentMethodId);
+
+    void restaurantAssociationWithPaymentMethod(Long restaurantId, Long paymentMethodId);
 }

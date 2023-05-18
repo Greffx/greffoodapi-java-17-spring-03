@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.model.Kitchen;
+import com.greff.foodapi.domain.model.PaymentMethod;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
 import com.greff.foodapi.domain.usecase.CityService;
 import com.greff.foodapi.domain.usecase.KitchenService;
+import com.greff.foodapi.domain.usecase.PaymentMethodService;
 import com.greff.foodapi.domain.usecase.RestaurantService;
 import com.greff.foodapi.domain.usecase.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +34,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final KitchenService kitchenService;
     private final CityService cityService;
-//    private final PaymentMethodService paymentMethodService
+    private final PaymentMethodService paymentMethodService;
 
     @Override
     public List<Restaurant> findAll() {
@@ -171,11 +173,20 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public void removePaymentMethod(Long restaurantId, Long paymentMethodId) {
+    public void restaurantDissociationWithPaymentMethod(Long restaurantId, Long paymentMethodId) {
+        //name to represent like delete or a logical delete, anyway, restaurant will not have that type of payment anymore
         Restaurant restaurant = findById(restaurantId);
+        PaymentMethod paymentMethod = paymentMethodService.findById(paymentMethodId);
 
+        restaurant.dissociationPaymentMethod(paymentMethod);
+    }
 
+    @Transactional
+    @Override
+    public void restaurantAssociationWithPaymentMethod(Long restaurantId, Long paymentMethodId) {
+        Restaurant restaurant = findById(restaurantId);
+        PaymentMethod paymentMethod = paymentMethodService.findById(paymentMethodId);
 
-        restaurant.getPaymentMethods().remove();
+        restaurant.associationPaymentMethod(paymentMethod);
     }
 }
