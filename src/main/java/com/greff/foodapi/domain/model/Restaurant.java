@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -87,7 +88,10 @@ public class Restaurant {
     @JoinTable(name = "tb_restaurants__payment_methods",
             joinColumns = @JoinColumn(name = "restaurant_id"),
             inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
-    private List<PaymentMethod> paymentMethods; //since can have more than 1 method of payment is a collection
+    private Set<PaymentMethod> paymentMethods; //since can have more than 1 method of payment is a collection
+    //Set is an interface collection that contains no duplicate elements
+    //stores a collection of unique elements, where duplicates are automatically eliminated
+    //make sense, since can't have two payment methods like (cash, cash) or (credit card, credit card), only one is enough
 
     public void activate() { //method to help method of enable activation
         setActive(true);
@@ -95,5 +99,13 @@ public class Restaurant {
 
     public void deactivate() { //or disable
         setActive(false);
+    }
+
+    public void dissociationPaymentMethod(PaymentMethod paymentMethod) { //this method serve to service be more clean, easy to read
+        getPaymentMethods().remove(paymentMethod);
+    }
+
+    public void associationPaymentMethod(PaymentMethod paymentMethod) {
+        getPaymentMethods().add(paymentMethod);
     }
 }
