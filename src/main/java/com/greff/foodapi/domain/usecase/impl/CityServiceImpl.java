@@ -3,8 +3,8 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.greff.foodapi.domain.model.City;
 import com.greff.foodapi.domain.model.State;
 import com.greff.foodapi.domain.repository.CityRepository;
-import com.greff.foodapi.domain.repository.StateRepository;
 import com.greff.foodapi.domain.usecase.CityService;
+import com.greff.foodapi.domain.usecase.StateService;
 import com.greff.foodapi.domain.usecase.exception.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ import java.util.List;
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
-    private final StateRepository stateRepository;
+    private final StateService stateService;
 
-    public CityServiceImpl(CityRepository cityRepository, StateRepository stateRepository) {
+    public CityServiceImpl(CityRepository cityRepository, StateService stateService) {
         this.cityRepository = cityRepository;
-        this.stateRepository = stateRepository;
+        this.stateService = stateService;
     }
 
     public List<City> findAll() {
@@ -37,8 +37,7 @@ public class CityServiceImpl implements CityService {
         Long stateId = city.getState().getId();
 
         try {
-            State state = stateRepository.findById(stateId).orElseThrow(() ->
-                    new StateNotFoundException(stateId));
+            State state = stateService.findById(stateId);
 
             city.setState(state);
             //when request body of create or update is necessary and user put a state id that doesn't exist it's better to give a 400 bad request
