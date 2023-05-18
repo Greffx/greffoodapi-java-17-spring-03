@@ -1,6 +1,5 @@
 package com.greff.foodapi.domain.usecase.impl;
 
-import com.greff.foodapi.domain.mapper.PaymentMethodMapper;
 import com.greff.foodapi.domain.model.PaymentMethod;
 import com.greff.foodapi.domain.repository.PaymentMethodRepository;
 import com.greff.foodapi.domain.usecase.PaymentMethodService;
@@ -11,14 +10,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
 public class PaymentMethodServiceImpl implements PaymentMethodService {
 
     private final PaymentMethodRepository paymentMethodRepository;
-    private final PaymentMethodMapper paymentMethodMapper;
 
     @Transactional
     @Override
@@ -39,8 +38,10 @@ public class PaymentMethodServiceImpl implements PaymentMethodService {
     }
 
     @Override
-    public List<PaymentMethod> findAll() {
-        return paymentMethodRepository.findAll();
+    public Set<PaymentMethod> findAll() {
+        return new HashSet<>(paymentMethodRepository.findAll());
+        //This HashSet is an implementation of Set interface
+        //Constructs a new set containing
     }
 
     @Transactional

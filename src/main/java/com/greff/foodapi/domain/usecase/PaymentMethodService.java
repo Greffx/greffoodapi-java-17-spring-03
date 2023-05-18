@@ -2,7 +2,7 @@ package com.greff.foodapi.domain.usecase;
 
 import com.greff.foodapi.domain.model.PaymentMethod;
 
-import java.util.List;
+import java.util.Set;
 
 public interface PaymentMethodService {
 
@@ -12,7 +12,7 @@ public interface PaymentMethodService {
 
     PaymentMethod findById(Long id);
 
-    List<PaymentMethod> findAll();
+    Set<PaymentMethod> findAll();
 
     void deleteById(Long id);
 

@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @RestController
@@ -49,7 +49,7 @@ public class PaymentMethodController {
     }
 
     @GetMapping
-    public List<PaymentMethodResponse> findAll() {
+    public Set<PaymentMethodResponse> findAll() {
         var paymentMethods = paymentMethodService.findAll();
 
         return paymentMethodAssembler.toCollectionModel(paymentMethods);
