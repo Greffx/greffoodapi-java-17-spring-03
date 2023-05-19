@@ -25,4 +25,12 @@ public class Group {
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private Set<Permission> permission = new HashSet<>();
+
+    public void permissionDisassociation(Permission permission) {
+        getPermission().remove(permission);
+    }
+
+    public void permissionAsassociation(Permission permission) {
+        getPermission().add(permission);
+    }
 }

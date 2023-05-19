@@ -2,9 +2,11 @@ package com.greff.foodapi.domain.usecase.impl;
 
 import com.greff.foodapi.domain.model.Group;
 import com.greff.foodapi.domain.repository.GroupRepository;
+import com.greff.foodapi.domain.repository.PermissionRepository;
 import com.greff.foodapi.domain.usecase.GroupService;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.GroupNotFoundException;
+import com.greff.foodapi.domain.usecase.exception.PermissioNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
 
     private final GroupRepository groupRepository;
+    private final PermissionRepository permissionRepository;
 
     @Transactional
     @Override
@@ -52,5 +55,29 @@ public class GroupServiceImpl implements GroupService {
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException("Group", id);
         }
+    }
+
+    @Transactional
+    @Override
+    public void disassociatePermission(Long groupId, Long permissionId) {
+        var group = findById(groupId);
+
+        var permission = group.getPermission().stream().filter(
+                groupPermission -> groupPermission.getId().equals(permissionId)).findFirst()
+                .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, "Group", groupId));
+
+        group.permissionDisassociation(permission);
+    }
+
+    @Transactional
+    @Override
+    public void associatePermission(Long groupId, Long permissionId) {
+        var group = findById(groupId);
+
+        var permission = permissionRepository.findById(permissionId)
+                .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, "Group", groupId));
+
+        group.permissionAsassociation(permission);
+
     }
 }

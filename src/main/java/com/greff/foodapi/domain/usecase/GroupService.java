@@ -15,4 +15,8 @@ public interface GroupService {
     List<Group> findAll();
 
     void deleteById(Long id);
+
+    void disassociatePermission(Long groupId, Long permissionId);
+
+    void associatePermission(Long groupId, Long permissionId);
 }
