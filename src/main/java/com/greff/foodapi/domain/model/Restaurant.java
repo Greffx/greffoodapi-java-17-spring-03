@@ -71,7 +71,7 @@ public class Restaurant {
     private OffsetDateTime updateDate;
 
     @OneToMany(mappedBy = "restaurant") //collection resource owns this relation
-    private List<Product> product = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 
     //many restaurants own many payment methods
     //if you needs to be eager here, you can change (fetch = eager), rarely will change to eager, more like change eager to lazy
