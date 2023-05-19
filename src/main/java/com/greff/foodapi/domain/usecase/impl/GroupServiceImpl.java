@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 public class GroupServiceImpl implements GroupService {
 
+    public static final String GROUP_RESOURCE_NAME = "Group";
     private final GroupRepository groupRepository;
     private final PermissionRepository permissionRepository;
 
@@ -35,7 +36,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group findById(Long id) {
-        return groupRepository.findById(id).orElseThrow(() -> new GroupNotFoundException("Group", id));
+        return groupRepository.findById(id).orElseThrow(() -> new GroupNotFoundException(GROUP_RESOURCE_NAME, id));
     }
 
     @Override
@@ -53,7 +54,7 @@ public class GroupServiceImpl implements GroupService {
             groupRepository.flush();
 
         } catch (DataIntegrityViolationException e) {
-            throw new EntityInUseException("Group", id);
+            throw new EntityInUseException(GROUP_RESOURCE_NAME, id);
         }
     }
 
@@ -64,7 +65,7 @@ public class GroupServiceImpl implements GroupService {
 
         var permission = group.getPermission().stream().filter(
                 groupPermission -> groupPermission.getId().equals(permissionId)).findFirst()
-                .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, "Group", groupId));
+                .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, GROUP_RESOURCE_NAME, groupId));
 
         group.permissionDisassociation(permission);
     }
@@ -75,7 +76,7 @@ public class GroupServiceImpl implements GroupService {
         var group = findById(groupId);
 
         var permission = permissionRepository.findById(permissionId)
-                .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, "Group", groupId));
+                .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, GROUP_RESOURCE_NAME, groupId));
 
         group.permissionAsassociation(permission);
 
