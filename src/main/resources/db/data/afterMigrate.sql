@@ -114,9 +114,15 @@ VALUES (6, 1);
 INSERT INTO tb_products (active, description, name, price, restaurant_id)
 VALUES (true, 'goes with a delicious cream', 'Salad', 15, 1);
 INSERT INTO tb_products (active, description, name, price, restaurant_id)
+VALUES (true, 'goes with a delicious ham', 'Big chew stuff', 15, 1);
+INSERT INTO tb_products (active, description, name, price, restaurant_id)
+VALUES (true, 'hottest curry around the block', 'Curry', 15, 1);
+INSERT INTO tb_products (active, description, name, price, restaurant_id)
 VALUES (true, 'goes with a soda and fries', 'Vegan Burger', 45.20, 3);
 INSERT INTO tb_products (active, description, name, price, restaurant_id)
 VALUES (true, 'Most fast and worm food piece', 'Pizza slice', 7.45, 2);
+INSERT INTO tb_products (active, description, name, price, restaurant_id)
+VALUES (false, 'test to not active product', 'stuff', 7.45, 4);
 
 INSERT INTO tb_permissions (id, name, description)
 VALUES (1, 'consult of products', 'this user got permission to see products');
