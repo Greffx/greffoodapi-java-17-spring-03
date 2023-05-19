@@ -85,7 +85,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         Long cityId = restaurant.getAddress().getCity().getId();
 
         City city = cityService.findById(cityId);
-
         Kitchen kitchen = kitchenService.findById(kitchenId);
 
         restaurant.setKitchen(kitchen);
