@@ -125,11 +125,11 @@ INSERT INTO tb_products (active, description, name, price, restaurant_id)
 VALUES (false, 'test to not active product', 'stuff', 7.45, 4);
 
 INSERT INTO tb_permissions (id, name, description)
-VALUES (1, 'consult of products', 'this user got permission to see products');
+VALUES (1, 'CONSULT_KITCHENS', 'permission to consult kitchens');
 INSERT INTO tb_permissions (id, name, description)
-VALUES (2, 'consult of states', 'this user got permission to see states');
+VALUES (2, 'EDIT_KITCHENS', 'permission to edit kitchens');
 INSERT INTO tb_permissions (id, name, description)
-VALUES (3, 'consult of restaurants', 'this user got permission to see restaurants');
+VALUES (3, 'CONSULT_RESTAURANTS', 'permission to consult restaurants');
 
 INSERT INTO tb_users(email, name, password, register_date)
 VALUES ('bob23@gmail.com', 'bob', '1234', utc_timestamp);
@@ -159,6 +159,8 @@ INSERT INTO tb_groups_permissions(group_id, permission_id)
 VALUES (2, 1);
 INSERT INTO tb_groups_permissions(group_id, permission_id)
 VALUES (2, 3);
+INSERT INTO tb_groups_permissions(group_id, permission_id)
+VALUES (3, 2);
 
 INSERT INTO tb_users_groups(user_id, group_id)
 VALUES (1, 1);
