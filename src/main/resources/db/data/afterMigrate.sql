@@ -69,19 +69,19 @@ VALUES ('Campo Largo', 2);
 
 INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, cep_address, public_area_address,
                             number_address, complement_address, street_address, city_address_id, creation_date,
-                            update_date, active)
+                            update_date, active, open)
 VALUES ('Ganesh_Fast_Food', 3.50, 1, '12345999', 'Near to the elephant', '95', 'center of india', 'cow street', 4,
-        utc_timestamp, utc_timestamp, true);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active)
-VALUES ('Haiku_Tales', 5.60, 2, utc_timestamp, utc_timestamp, true);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active)
-VALUES ('SamuraiSushi', 2.50, 2, utc_timestamp, utc_timestamp, true);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active)
-VALUES ('Indian_Hero', 3.20, 1, utc_timestamp, utc_timestamp, true);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active)
-VALUES ('Speed Galeto BR', 0, 3, utc_timestamp, utc_timestamp, true);
-INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active)
-VALUES ('Marmita Do Zé', 0, 3, utc_timestamp, utc_timestamp, true);
+        utc_timestamp, utc_timestamp, true, true);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active, open)
+VALUES ('Haiku_Tales', 5.60, 2, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active, open)
+VALUES ('SamuraiSushi', 2.50, 2, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active, open)
+VALUES ('Indian_Hero', 3.20, 1, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active, open)
+VALUES ('Speed Galeto BR', 0, 3, utc_timestamp, utc_timestamp, true, true);
+INSERT INTO tb_restaurants (restaurant_name, delivery_tax, kitchen_id_code, creation_date, update_date, active, open)
+VALUES ('Marmita Do Zé', 0, 3, utc_timestamp, utc_timestamp, true, true);
 
 INSERT INTO tb_payment_methods (id, description)
 VALUES (1, 'cash');

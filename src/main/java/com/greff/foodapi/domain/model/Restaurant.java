@@ -56,6 +56,8 @@ public class Restaurant {
 
     private Boolean active = Boolean.TRUE; //new attribute, when a restaurant is instanced, will always start as active true
 
+    private Boolean open = Boolean.TRUE;
+
     @CreationTimestamp //annotation of 'IMPLEMENTATION Hibernate', not from JPA.
     //CreationTimestamp add, inform creationDate will have a Date.now when it's created by the first time
     //columnDefinition is to take it out milliseconds of column
@@ -107,5 +109,13 @@ public class Restaurant {
 
     public void associationPaymentMethod(PaymentMethod paymentMethod) {
         getPaymentMethods().add(paymentMethod);
+    }
+
+    public void openRestaurant() {
+        setOpen(true);
+    }
+
+    public void closeRestaurant() {
+        setOpen(false);
     }
 }

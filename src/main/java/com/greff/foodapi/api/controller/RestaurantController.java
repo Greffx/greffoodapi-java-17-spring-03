@@ -122,6 +122,18 @@ public class RestaurantController {
         restaurantService.deactivation(id);
     }
 
+    @PutMapping("{id}/opening")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void openingRestaurant(@PathVariable Long id) {
+        restaurantService.openingRestaurant(id);
+    }
+
+    @PutMapping("{id}/closing")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void closingRestaurant(@PathVariable Long id) {
+        restaurantService.closingRestaurant(id);
+    }
+
 
     @PatchMapping("/{id}")
     //map to 'PATCH' endpoint, which means that don't need to update everything, like 'PUT' type, that needs everything

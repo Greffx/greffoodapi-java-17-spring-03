@@ -40,4 +40,8 @@ public interface RestaurantService {
     void restaurantDissociationWithPaymentMethod(Long restaurantId, Long paymentMethodId);
 
     void restaurantAssociationWithPaymentMethod(Long restaurantId, Long paymentMethodId);
+
+    void closingRestaurant(Long id);
+
+    void openingRestaurant(Long id);
 }

@@ -188,4 +188,20 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         restaurant.associationPaymentMethod(paymentMethod);
     }
+
+    @Transactional
+    @Override
+    public void closingRestaurant(Long id) {
+        var restaurant = findById(id);
+
+        restaurant.closeRestaurant();
+    }
+
+    @Transactional
+    @Override
+    public void openingRestaurant(Long id) {
+        var restaurant = findById(id);
+
+        restaurant.openRestaurant();
+    }
 }

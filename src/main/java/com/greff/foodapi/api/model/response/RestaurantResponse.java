@@ -20,6 +20,7 @@ public class RestaurantResponse {
     private String name;
     private BigDecimal deliveryTax;
     private Boolean active;
+    private Boolean open;
 
     @JsonProperty("kitchen")
     private KitchenResponse kitchenResponse;
