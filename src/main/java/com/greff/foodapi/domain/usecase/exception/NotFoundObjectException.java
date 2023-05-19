@@ -13,4 +13,8 @@ public abstract class NotFoundObjectException extends BusinessException {
     protected NotFoundObjectException(String resourceName, Long id) {
         super(String.format("%s with id %d, not found", resourceName, id));
     }
+
+    protected NotFoundObjectException(String resourceName, Long id, String resourceName2, Long id2) {
+        super(String.format("%s with id %d don't exist in %s with id %d", resourceName, id, resourceName2, id2));
+    }
 }
