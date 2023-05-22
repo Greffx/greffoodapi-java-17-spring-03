@@ -1,7 +1,9 @@
 package com.greff.foodapi.domain.usecase.impl;
 
+import com.greff.foodapi.domain.model.Group;
 import com.greff.foodapi.domain.model.User;
 import com.greff.foodapi.domain.repository.UserRepository;
+import com.greff.foodapi.domain.usecase.GroupService;
 import com.greff.foodapi.domain.usecase.UserService;
 import com.greff.foodapi.domain.usecase.exception.*;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final GroupService groupService;
 
     @Transactional
     @Override
@@ -74,5 +77,23 @@ public class UserServiceImpl implements UserService {
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException("User", id);
         }
+    }
+
+    @Transactional
+    @Override
+    public void groupDisassociation(Long userId, Long groupId) {
+        User user = findById(userId);
+        Group group = groupService.findById(groupId);
+
+        user.disassociateGroup(group);
+    }
+
+    @Transactional
+    @Override
+    public void groupAsassociation(Long userId, Long groupId) {
+        User user = findById(userId);
+        Group group = groupService.findById(groupId);
+
+        user.associateGroup(group);
     }
 }

@@ -7,8 +7,8 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -33,10 +33,18 @@ public class User {
     @JoinTable(name = "tb_users_groups",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private List<Group> groups = new ArrayList<>();
+    private Set<Group> groups = new HashSet<>();
 
     public boolean currentPasswordIsSimilarTo(String password) { //if it's equal a = a, return true, if not false
         return getPassword().equals(password);
+    }
+
+    public void disassociateGroup(Group group) {
+        getGroups().remove(group);
+    }
+
+    public void associateGroup(Group group) {
+        getGroups().add(group);
     }
 
 //    public boolean currentPasswordIsNotSimilarTo(String password) { if method at line 38 is true, return false, if it's false, return true

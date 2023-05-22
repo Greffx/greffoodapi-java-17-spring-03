@@ -17,4 +17,8 @@ public interface UserService {
     List<User> findAll();
 
     void delete(Long id);
+
+    void groupDisassociation(Long userId, Long groupId);
+
+    void groupAsassociation(Long userId, Long groupId);
 }
