@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -89,11 +90,19 @@ public class Restaurant {
     //@JoinColumn is to define the name of foreign key, fk
     @JoinTable(name = "tb_restaurants__payment_methods",
             joinColumns = @JoinColumn(name = "restaurant_id"),
-            inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
+            inverseJoinColumns = @JoinColumn(name = "payment_method_id")
+    )
     private Set<PaymentMethod> paymentMethods; //since can have more than 1 method of payment is a collection
     //Set is an interface collection that contains no duplicate elements
     //stores a collection of unique elements, where duplicates are automatically eliminated
     //make sense, since can't have two payment methods like (cash, cash) or (credit card, credit card), only one is enough
+
+    @ManyToMany
+    @JoinTable(name = "tb_restaurants_users",
+            joinColumns = @JoinColumn(name = "restaurant_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<User> responsibles = new HashSet<>();
 
     public void activate() { //method to help method of enable activation
         setActive(true);
