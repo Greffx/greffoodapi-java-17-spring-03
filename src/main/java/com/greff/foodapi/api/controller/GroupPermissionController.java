@@ -21,7 +21,7 @@ public class GroupPermissionController {
     public Set<PermissionResponse> findAllPermissions(@PathVariable Long groupId) {
         var group = groupService.findById(groupId);
 
-        var permissions = group.getPermission();
+        var permissions = group.getPermissions();
 
         return permissionAssembler.toCollectionModel(permissions);
     }
