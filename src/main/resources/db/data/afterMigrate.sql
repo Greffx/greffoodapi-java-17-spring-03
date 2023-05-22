@@ -24,6 +24,8 @@ DELETE
 FROM tb_restaurants;
 DELETE
 FROM tb_restaurants__payment_methods;
+DELETE
+FROM tb_restaurants_users;
 
 SET foreign_key_checks = 1;
 
@@ -45,6 +47,7 @@ ALTER TABLE tb_products
     AUTO_INCREMENT = 1;
 ALTER TABLE tb_restaurants
     AUTO_INCREMENT = 1;
+
 
 INSERT IGNORE INTO tb_kitchens (id, name)
 VALUES (1, 'Indian');
@@ -180,6 +183,19 @@ INSERT INTO tb_users_groups(user_id, group_id)
 VALUES (3, 3);
 INSERT INTO tb_users_groups(user_id, group_id)
 VALUES (4, 4);
+
+INSERT INTO tb_restaurants_users(restaurant_id, user_id)
+VALUES (1, 1);
+INSERT INTO tb_restaurants_users(restaurant_id, user_id)
+VALUES (1, 2);
+INSERT INTO tb_restaurants_users(restaurant_id, user_id)
+VALUES (2, 3);
+INSERT INTO tb_restaurants_users(restaurant_id, user_id)
+VALUES (3, 4);
+INSERT INTO tb_restaurants_users(restaurant_id, user_id)
+VALUES (5, 2);
+INSERT INTO tb_restaurants_users(restaurant_id, user_id)
+VALUES (6, 1);
 
 #insert into, but if there's a problem with constraint or anything like it, just ignore command and keep going
 #file callback, when flyway  migrations is done will call afterMigration file, IT'S NOT A MIGRATION, it's a simple callback sql file
