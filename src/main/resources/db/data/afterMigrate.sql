@@ -210,7 +210,6 @@ VALUES (6, 1);
 #to start from 1 again, we put autoincrement to start at 1, associations table don't need, don't have autoincrement
 #they only got id from other table
 #in package 'testdata' will contain data to test db and migrations, don't mix afterMigration file with migrations scripts
-#because
 
 #TIMESTAMP
 #utc_timestamp use local date time of your computer system
