@@ -24,13 +24,13 @@ public class Group {
     @JoinTable(name = "tb_groups_permissions",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
-    private Set<Permission> permission = new HashSet<>();
+    private Set<Permission> permissions = new HashSet<>();
 
     public void permissionDisassociation(Permission permission) {
-        getPermission().remove(permission);
+        getPermissions().remove(permission);
     }
 
     public void permissionAsassociation(Permission permission) {
-        getPermission().add(permission);
+        getPermissions().add(permission);
     }
 }
