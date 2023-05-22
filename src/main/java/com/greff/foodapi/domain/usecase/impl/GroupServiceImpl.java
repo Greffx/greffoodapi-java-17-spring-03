@@ -63,7 +63,7 @@ public class GroupServiceImpl implements GroupService {
     public void disassociatePermission(Long groupId, Long permissionId) {
         var group = findById(groupId);
 
-        var permission = group.getPermission().stream().filter(
+        var permission = group.getPermissions().stream().filter(
                 groupPermission -> groupPermission.getId().equals(permissionId)).findFirst()
                 .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, GROUP_RESOURCE_NAME, groupId));
 
