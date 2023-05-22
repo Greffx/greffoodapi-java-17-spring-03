@@ -165,11 +165,21 @@ VALUES (3, 2);
 INSERT INTO tb_users_groups(user_id, group_id)
 VALUES (1, 1);
 INSERT INTO tb_users_groups(user_id, group_id)
+VALUES (1, 2);
+INSERT INTO tb_users_groups(user_id, group_id)
+VALUES (1, 4);
+INSERT INTO tb_users_groups(user_id, group_id)
 VALUES (2, 1);
+INSERT INTO tb_users_groups(user_id, group_id)
+VALUES (2, 3);
 INSERT INTO tb_users_groups(user_id, group_id)
 VALUES (3, 2);
 INSERT INTO tb_users_groups(user_id, group_id)
-VALUES (4, 2);
+VALUES (3, 1);
+INSERT INTO tb_users_groups(user_id, group_id)
+VALUES (3, 3);
+INSERT INTO tb_users_groups(user_id, group_id)
+VALUES (4, 4);
 
 #insert into, but if there's a problem with constraint or anything like it, just ignore command and keep going
 #file callback, when flyway  migrations is done will call afterMigration file, IT'S NOT A MIGRATION, it's a simple callback sql file
