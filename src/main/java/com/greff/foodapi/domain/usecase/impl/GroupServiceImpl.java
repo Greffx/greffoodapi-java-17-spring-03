@@ -2,8 +2,8 @@ package com.greff.foodapi.domain.usecase.impl;
 
 import com.greff.foodapi.domain.model.Group;
 import com.greff.foodapi.domain.repository.GroupRepository;
-import com.greff.foodapi.domain.repository.PermissionRepository;
 import com.greff.foodapi.domain.usecase.GroupService;
+import com.greff.foodapi.domain.usecase.PermissionService;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.GroupNotFoundException;
 import com.greff.foodapi.domain.usecase.exception.PermissioNotFoundException;
@@ -20,7 +20,7 @@ public class GroupServiceImpl implements GroupService {
 
     public static final String GROUP_RESOURCE_NAME = "Group";
     private final GroupRepository groupRepository;
-    private final PermissionRepository permissionRepository;
+    private final PermissionService permissionService;
 
     @Transactional
     @Override
@@ -75,10 +75,8 @@ public class GroupServiceImpl implements GroupService {
     public void associatePermission(Long groupId, Long permissionId) {
         var group = findById(groupId);
 
-        var permission = permissionRepository.findById(permissionId)
-                .orElseThrow(() -> new PermissioNotFoundException("Permission", permissionId, GROUP_RESOURCE_NAME, groupId));
+        var permission = permissionService.findById(permissionId);
 
         group.permissionAsassociation(permission);
-
     }
 }
