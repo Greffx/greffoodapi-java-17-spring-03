@@ -205,10 +205,10 @@ VALUES (5, 2);
 INSERT INTO tb_restaurants_users(restaurant_id, user_id)
 VALUES (6, 1);
 
-INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, confirmed_date, canceled_date,
-                      delivered_date, status, restaurant_id, payment_method_id, user_id, city_address_id, cep_address,
+INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
                       complement_address, number_address, public_area_address, street_address)
-VALUES (75, 10, 85, utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp, 'CREATED', 1, 1, 1, 1, 12345,
+VALUES (75, 10, 85, utc_timestamp, 'CREATED', 1, 1, 1, 1, 12345,
         'near to the river', 75, 'river', 'river block street');
 
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
@@ -216,10 +216,10 @@ VALUES (3, 15, 45, 'cool food', 1, 1);
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
 VALUES (2, 15, 30, 'great food', 1, 2);
 
-INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, confirmed_date, canceled_date,
-                      delivered_date, status, restaurant_id, payment_method_id, user_id, city_address_id, cep_address,
+INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
                       complement_address, number_address, public_area_address, street_address)
-VALUES (15, 10, 25, utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp, 'CREATED', 1, 2, 2, 2, 12346,
+VALUES (15, 10, 25, utc_timestamp, 'CREATED', 1, 2, 2, 2, 12346,
         'near the house', 123, 'house', 'house block street');
 
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
