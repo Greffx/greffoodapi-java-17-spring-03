@@ -1,5 +1,6 @@
 package com.greff.foodapi.api.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 //this one do everything already
 @Setter
 @Getter
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class RestaurantResponse {
 
     private Long id;
