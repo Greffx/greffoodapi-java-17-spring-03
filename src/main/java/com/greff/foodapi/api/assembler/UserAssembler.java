@@ -6,6 +6,7 @@ import com.greff.foodapi.domain.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,7 +19,7 @@ public class UserAssembler {
         return userMapper.fromUserToUserResponse(user);
     }
 
-    public List<UserResponse> toCollectionModel(List<User> users) {
+    public List<UserResponse> toCollectionModel(Collection<User> users) {
         return users.stream().map(this::toModel).toList();
     }
 }
