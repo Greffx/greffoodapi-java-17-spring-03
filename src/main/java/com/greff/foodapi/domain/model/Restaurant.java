@@ -127,4 +127,12 @@ public class Restaurant {
     public void closeRestaurant() {
         setOpen(false);
     }
+
+    public void disassociateResponsible(User user) {
+        getResponsibles().remove(user);
+    }
+
+    public void associateResponsible(User user) {
+        getResponsibles().add(user);
+    }
 }

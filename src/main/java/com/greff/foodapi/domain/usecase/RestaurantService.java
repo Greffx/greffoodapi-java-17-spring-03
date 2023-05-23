@@ -44,4 +44,9 @@ public interface RestaurantService {
     void closingRestaurant(Long id);
 
     void openingRestaurant(Long id);
+
+    void disassociateResponsible(Long restaurantId, Long responsbileId);
+
+    void associateResponsible(Long restaurantId, Long responsbileId);
+
 }

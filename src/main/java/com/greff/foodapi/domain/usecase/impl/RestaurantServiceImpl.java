@@ -7,10 +7,7 @@ import com.greff.foodapi.domain.model.Kitchen;
 import com.greff.foodapi.domain.model.PaymentMethod;
 import com.greff.foodapi.domain.model.Restaurant;
 import com.greff.foodapi.domain.repository.RestaurantRepository;
-import com.greff.foodapi.domain.usecase.CityService;
-import com.greff.foodapi.domain.usecase.KitchenService;
-import com.greff.foodapi.domain.usecase.PaymentMethodService;
-import com.greff.foodapi.domain.usecase.RestaurantService;
+import com.greff.foodapi.domain.usecase.*;
 import com.greff.foodapi.domain.usecase.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -35,6 +32,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final KitchenService kitchenService;
     private final CityService cityService;
     private final PaymentMethodService paymentMethodService;
+    private final UserService userService;
 
     @Override
     public List<Restaurant> findAll() {
@@ -203,5 +201,23 @@ public class RestaurantServiceImpl implements RestaurantService {
         var restaurant = findById(id);
 
         restaurant.openRestaurant();
+    }
+
+    @Transactional
+    @Override
+    public void disassociateResponsible(Long restaurantId, Long responsbileId) {
+        var restaurant = findById(restaurantId);
+        var user = userService.findById(responsbileId);
+
+        restaurant.disassociateResponsible(user);
+    }
+
+    @Transactional
+    @Override
+    public void associateResponsible(Long restaurantId, Long responsbileId) {
+        var restaurant = findById(restaurantId);
+        var user = userService.findById(responsbileId);
+
+        restaurant.associateResponsible(user);
     }
 }
