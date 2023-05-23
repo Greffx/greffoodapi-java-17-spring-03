@@ -22,8 +22,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "subtotal_per_item", nullable = false)
-    private BigDecimal subtotalPerItem;
+    @Column(name = "subtotal", nullable = false)
+    private BigDecimal subtotal;
 
     @Column(name = "delivery_tax", nullable = false)
     private BigDecimal deliveryTax;
@@ -44,8 +44,10 @@ public class Order {
     @Column(name = "delivered_date", columnDefinition = "datetime")
     private OffsetDateTime deliveredDate;
 
-    @Column(nullable = false)
-    private OrderStatus status;
+    //when an order is created, will always start with "CREATED" enum
+    //help to convert String to enum type
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status = OrderStatus.CREATED;
 
     @Embedded
     private Address address;
