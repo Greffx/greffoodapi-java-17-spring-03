@@ -28,6 +28,8 @@ DELETE
 FROM tb_restaurants_users;
 DELETE
 FROM tb_orders;
+DELETE
+FROM tb_order_items;
 
 SET foreign_key_checks = 1;
 
@@ -50,6 +52,8 @@ ALTER TABLE tb_products
 ALTER TABLE tb_restaurants
     AUTO_INCREMENT = 1;
 ALTER TABLE tb_orders
+    AUTO_INCREMENT = 1;
+ALTER TABLE tb_order_items
     AUTO_INCREMENT = 1;
 
 
@@ -219,7 +223,7 @@ VALUES (15, 10, 25, utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp, 
         'near the house', 123, 'house', 'house block street');
 
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
-VALUES (1, 15, 15, 'cool food', 1, 3);
+VALUES (1, 15, 15, 'cool food', 2, 3);
 
 #insert into, but if there's a problem with constraint or anything like it, just ignore command and keep going
 #file callback, when flyway  migrations is done will call afterMigration file, IT'S NOT A MIGRATION, it's a simple callback sql file
