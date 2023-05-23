@@ -1,0 +1,1 @@
+ALTER TABLE tb_orders RENAME COLUMN subtotal_per_item TO subtotal;

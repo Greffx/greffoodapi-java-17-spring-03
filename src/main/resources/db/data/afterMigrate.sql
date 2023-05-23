@@ -26,6 +26,8 @@ DELETE
 FROM tb_restaurants__payment_methods;
 DELETE
 FROM tb_restaurants_users;
+DELETE
+FROM tb_orders;
 
 SET foreign_key_checks = 1;
 
@@ -46,6 +48,8 @@ ALTER TABLE tb_permissions
 ALTER TABLE tb_products
     AUTO_INCREMENT = 1;
 ALTER TABLE tb_restaurants
+    AUTO_INCREMENT = 1;
+ALTER TABLE tb_orders
     AUTO_INCREMENT = 1;
 
 
@@ -196,6 +200,26 @@ INSERT INTO tb_restaurants_users(restaurant_id, user_id)
 VALUES (5, 2);
 INSERT INTO tb_restaurants_users(restaurant_id, user_id)
 VALUES (6, 1);
+
+INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, confirmed_date, canceled_date,
+                      delivered_date, status, restaurant_id, payment_method_id, user_id, city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (75, 10, 85, utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp, 'CREATED', 1, 1, 1, 1, 12345,
+        'near to the river', 75, 'river', 'river block street');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (3, 15, 45, 'cool food', 1, 1);
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (2, 15, 30, 'great food', 1, 2);
+
+INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, confirmed_date, canceled_date,
+                      delivered_date, status, restaurant_id, payment_method_id, user_id, city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (15, 10, 25, utc_timestamp, utc_timestamp, utc_timestamp, utc_timestamp, 'CREATED', 1, 2, 2, 2, 12346,
+        'near the house', 123, 'house', 'house block street');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (1, 15, 15, 'cool food', 1, 3);
 
 #insert into, but if there's a problem with constraint or anything like it, just ignore command and keep going
 #file callback, when flyway  migrations is done will call afterMigration file, IT'S NOT A MIGRATION, it's a simple callback sql file
