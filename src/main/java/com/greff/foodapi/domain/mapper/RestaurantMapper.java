@@ -3,13 +3,10 @@ package com.greff.foodapi.domain.mapper;
 import com.greff.foodapi.api.model.request.RestaurantRequest;
 import com.greff.foodapi.api.model.response.RestaurantResponse;
 import com.greff.foodapi.domain.model.Restaurant;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
-        uses = {KitchenMapper.class, CityMapper.class, PaymentMethodMapper.class, AddressMapper.class},
+        uses = {KitchenMapper.class, CityMapper.class, AddressMapper.class},
         unmappedTargetPolicy = ReportingPolicy.IGNORE)
 //The componentModel = "spring" attribute indicates that the generated mapper implementation class
 //should be registered as a Spring component and can be autowired into other Spring components.
