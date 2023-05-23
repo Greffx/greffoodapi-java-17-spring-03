@@ -5,11 +5,13 @@ import com.greff.foodapi.api.model.response.PaymentMethodResponse;
 import com.greff.foodapi.domain.model.PaymentMethod;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PaymentMethodMapper {
 
+    @Named("toPaymentMethodResponse")
     PaymentMethodResponse fromPaymentMethodToPaymentMethodResponse(PaymentMethod paymentMethod);
 
     PaymentMethod fromPaymentMethodRequestToPaymentMethod(PaymentMethodRequest paymentMethodRequest);

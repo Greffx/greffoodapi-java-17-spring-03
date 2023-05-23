@@ -5,14 +5,12 @@ import com.greff.foodapi.api.model.request.UserRequest;
 import com.greff.foodapi.api.model.request.UserUpdateRequest;
 import com.greff.foodapi.api.model.response.UserResponse;
 import com.greff.foodapi.domain.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
+    @Named("toUserResponse")
     UserResponse fromUserToUserResponse(User user);
 
     User fromUserRequestToUser(UserRequest userRequest);
