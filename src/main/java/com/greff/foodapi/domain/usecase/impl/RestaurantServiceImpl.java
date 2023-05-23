@@ -105,9 +105,31 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
+    public void restaurantActivations(List<Long> restaurantsId) {
+        try {
+            restaurantsId.forEach(this::activation);
+
+        } catch (NotFoundObjectException e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+
+    @Transactional
+    @Override
     public void deactivation(Long id) {
         Restaurant restaurant = findById(id);
         restaurant.deactivate();
+    }
+
+    @Transactional
+    @Override
+    public void restaurantDeactivations(List<Long> restaurantsId) {
+        try {
+            restaurantsId.forEach(this::deactivation);
+
+        } catch (NotFoundObjectException e) {
+            throw new BusinessException(e.getMessage());
+        }
     }
 
     @Transactional
@@ -205,18 +227,18 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Transactional
     @Override
-    public void disassociateResponsible(Long restaurantId, Long responsbileId) {
+    public void disassociateResponsible(Long restaurantId, Long responsibleId) {
         var restaurant = findById(restaurantId);
-        var user = userService.findById(responsbileId);
+        var user = userService.findById(responsibleId);
 
         restaurant.disassociateResponsible(user);
     }
 
     @Transactional
     @Override
-    public void associateResponsible(Long restaurantId, Long responsbileId) {
+    public void associateResponsible(Long restaurantId, Long responsibleId) {
         var restaurant = findById(restaurantId);
-        var user = userService.findById(responsbileId);
+        var user = userService.findById(responsibleId);
 
         restaurant.associateResponsible(user);
     }

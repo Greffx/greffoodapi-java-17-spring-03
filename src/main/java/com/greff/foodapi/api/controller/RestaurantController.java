@@ -115,12 +115,26 @@ public class RestaurantController {
         restaurantService.activation(id);
     }
 
+    @PutMapping("/activations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    //need to be a list because is more than 1 restaurant, it's several restaurants
+    public void activateSeveralRestaurants(@RequestBody List<Long> restaurantsId) {
+        restaurantService.restaurantActivations(restaurantsId);
+    }
+
     //this is like a logical delete, still exist at database
     @DeleteMapping("/{id}/deactivate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void restaurantDeactivation(@PathVariable Long id) {
         restaurantService.deactivation(id);
     }
+
+    @DeleteMapping("/deactivations")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deactivateSeveralRestaurants(@RequestBody List<Long> restaurantsId) {
+        restaurantService.restaurantDeactivations(restaurantsId);
+    }
+
 
     @PutMapping("{id}/opening")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -133,7 +147,6 @@ public class RestaurantController {
     public void closingRestaurant(@PathVariable Long id) {
         restaurantService.closingRestaurant(id);
     }
-
 
     @PatchMapping("/{id}")
     //map to 'PATCH' endpoint, which means that don't need to update everything, like 'PUT' type, that needs everything

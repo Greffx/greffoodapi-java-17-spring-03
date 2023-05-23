@@ -29,7 +29,11 @@ public interface RestaurantService {
 
     void activation(Long id);
 
+    void restaurantActivations(List<Long> restaurantsId);
+
     void deactivation(Long id);
+
+    void restaurantDeactivations(List<Long> restaurantsId);
 
     Restaurant update(Restaurant restaurant);
 
