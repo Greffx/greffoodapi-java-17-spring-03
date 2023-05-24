@@ -1,14 +1,17 @@
 package com.greff.foodapi.domain.mapper;
 
+import com.greff.foodapi.api.model.request.OrderRequest;
 import com.greff.foodapi.api.model.response.OrderResponse;
 import com.greff.foodapi.api.model.response.SimpleOrderResponse;
 import com.greff.foodapi.domain.model.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
         uses = {RestaurantMapper.class, PaymentMethodMapper.class, UserMapper.class,
-                AddressMapper.class, OrderItemMapper.class})
+                AddressMapper.class, OrderItemMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper {
 
     @Mapping(target = "restaurantResponse.id", source = "restaurant.id")
@@ -30,4 +33,9 @@ public interface OrderMapper {
     @Mapping(target = "userResponse", source = "user", qualifiedByName = "toUserResponse")
     SimpleOrderResponse fromOrderToSimpleOrderResponse(Order order);
 
+    @Mapping(target = "paymentMethod.id", source = "paymentMethodId.id")
+    @Mapping(target = "restaurant.id", source = "restaurantId.id")
+    @Mapping(target = "items", source = "itemRequests", qualifiedByName = "toOrderItem")
+    @Mapping(target = "address", source = "addressRequest", qualifiedByName = "toAddress")
+    Order fromOrderRequestToOrder(OrderRequest orderRequest);
 }
