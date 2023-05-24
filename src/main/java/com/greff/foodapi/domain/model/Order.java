@@ -64,6 +64,18 @@ public class Order {
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
+
+    public BigDecimal sumOfSubTotalOfAllItems(List<OrderItem> items) {
+        BigDecimal sum = new BigDecimal(0);
+
+        for (OrderItem orderItem : items) sum = sum.add(orderItem.getTotalPrice());
+
+        return sum;
+    }
+
+    public BigDecimal sumOrderTotalPrice(BigDecimal subTotalOfAllItems, BigDecimal deliveryTax) {
+        return subTotalOfAllItems.add(deliveryTax);
+    }
 }
