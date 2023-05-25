@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         var city = cityService.findById(order.getAddress().getCity().getId());
         var user = userService.findById(1L);
 
-        order.setUuid(String.valueOf(UUID.randomUUID()));
+        order.setUuid(UUID.randomUUID().toString());
         order.setRestaurant(restaurant);
         order.setDeliveryTax(restaurant.getDeliveryTax());
         order.setPaymentMethod(paymentMethod);
