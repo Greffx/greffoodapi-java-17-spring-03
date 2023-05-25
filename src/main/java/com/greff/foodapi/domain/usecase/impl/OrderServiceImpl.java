@@ -1,6 +1,5 @@
 package com.greff.foodapi.domain.usecase.impl;
 
-import com.greff.foodapi.domain.enums.OrderStatus;
 import com.greff.foodapi.domain.model.Order;
 import com.greff.foodapi.domain.model.Product;
 import com.greff.foodapi.domain.repository.OrderRepository;
@@ -83,7 +82,6 @@ public class OrderServiceImpl implements OrderService {
         order.setRestaurant(restaurant);
         order.setDeliveryTax(restaurant.getDeliveryTax());
         order.setPaymentMethod(paymentMethod);
-        order.setStatus(OrderStatus.CREATED);
         order.setUser(user);
         order.getAddress().setCity(city);
     }
