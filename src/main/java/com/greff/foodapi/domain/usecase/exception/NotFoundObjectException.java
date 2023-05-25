@@ -11,7 +11,7 @@ public abstract class NotFoundObjectException extends BusinessException {
     //Abstract classes should not have public constructors,
     // Constructors of abstract classes can only be called in constructors of their subclasses
     protected NotFoundObjectException(String resourceName, Object id) {
-        super(String.format("%s with id %d, not found", resourceName, id));
+        super(String.format("%s with id %s, not found", resourceName, id));
     }
 
     protected NotFoundObjectException(String resourceName, Long id, String resourceName2, Long id2) {
