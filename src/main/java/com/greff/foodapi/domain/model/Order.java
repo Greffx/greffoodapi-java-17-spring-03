@@ -64,6 +64,8 @@ public class Order {
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
+    //cascade = CascadeType.ALL will only save items when using this one. when trying to save order with items
+    //says like "when saving order, if it has items, save it too"
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
 
