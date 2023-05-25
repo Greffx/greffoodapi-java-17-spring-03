@@ -35,7 +35,8 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    public BigDecimal calculatingSubTotal(BigDecimal price, Integer quantity) {
-        return price.multiply(new BigDecimal(quantity));
+    public void calculatingSubTotal() {
+        var totalPerItem = getProduct().getPrice().multiply(new BigDecimal(this.quantity));
+        setTotalPrice(totalPerItem);
     }
 }

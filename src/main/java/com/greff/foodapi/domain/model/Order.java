@@ -67,15 +67,15 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
 
-    public BigDecimal sumOfSubTotalOfAllItems(List<OrderItem> items) {
+    public void sumOfSubTotalOfAllItems(List<OrderItem> items) {
         BigDecimal sum = new BigDecimal(0);
 
         for (OrderItem orderItem : items) sum = sum.add(orderItem.getTotalPrice());
 
-        return sum;
+        setSubtotal(sum);
     }
 
-    public BigDecimal sumOrderTotalPrice(BigDecimal subTotalOfAllItems, BigDecimal deliveryTax) {
-        return subTotalOfAllItems.add(deliveryTax);
+    public void sumOrderTotalPrice() {
+        setTotal(getSubtotal().add(restaurant.getDeliveryTax()));
     }
 }
