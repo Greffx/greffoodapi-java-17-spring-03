@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order findById(Long id);
+    Order findByUuid(String uuid);
 
     List<Order> findAll();
 

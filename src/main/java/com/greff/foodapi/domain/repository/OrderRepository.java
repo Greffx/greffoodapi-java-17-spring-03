@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderRepository  extends CustomJpaRepository<Order, Long> {
@@ -18,4 +19,7 @@ public interface OrderRepository  extends CustomJpaRepository<Order, Long> {
     //If I want to fetch the associated entity eagerly, you can use JOIN FETCH in your query.
     @Query("FROM Order o JOIN FETCH o.user JOIN FETCH o.restaurant")
     List<Order> findAll();
+
+    @Query("SELECT o FROM Order o WHERE o.uuid = :uuid")
+    Optional<Order> findByUuid(String uuid);
 }

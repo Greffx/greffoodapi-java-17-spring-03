@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @Getter
 public class SimpleOrderResponse {
 
-        private Long id;
+        private String uuid;
         private BigDecimal subtotal;
         private BigDecimal deliveryTax;
         private BigDecimal total;

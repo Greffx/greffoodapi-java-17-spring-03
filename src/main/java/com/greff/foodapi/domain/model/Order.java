@@ -23,6 +23,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "external_id", nullable = false)
+    private String uuid;
+
     @Column(name = "subtotal", nullable = false)
     private BigDecimal subtotal;
 

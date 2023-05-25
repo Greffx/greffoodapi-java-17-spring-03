@@ -22,9 +22,9 @@ public class OrderController {
     private final OrderService orderService;
     private OrderRequestDisassembler orderRequestDisassembler;
 
-    @GetMapping("/{id}")
-    public OrderResponse findById(@PathVariable Long id) {
-        var order = orderService.findById(id);
+    @GetMapping("/{uuid}")
+    public OrderResponse findById(@PathVariable String uuid) {
+        var order = orderService.findByUuid(uuid);
 
         return orderAssembler.toModel(order);
     }
@@ -46,26 +46,26 @@ public class OrderController {
         return orderAssembler.toModel(order);
     }
 
-    @PutMapping("/{id}/confirmation")
+    @PutMapping("/{uuid}/confirmation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void alteringOrderStatusToConfirmed(@PathVariable Long id) {
-        var order = orderService.findById(id);
+    public void alteringOrderStatusToConfirmed(@PathVariable String uuid) {
+        var order = orderService.findByUuid(uuid);
 
         orderService.alteringOrderStatusToConfirmed(order);
     }
 
-    @PutMapping("/{id}/delivered")
+    @PutMapping("/{uuid}/delivered")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void alteringOrderStatusToDelivered(@PathVariable Long id) {
-        var order = orderService.findById(id);
+    public void alteringOrderStatusToDelivered(@PathVariable String uuid) {
+        var order = orderService.findByUuid(uuid);
 
         orderService.alteringOrderStatusToDelivered(order);
     }
 
-    @PutMapping("/{id}/cancellation")
+    @PutMapping("/{uuid}/cancellation")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void alteringOrderStatusToCanceled(@PathVariable Long id) {
-        var order = orderService.findById(id);
+    public void alteringOrderStatusToCanceled(@PathVariable String uuid) {
+        var order = orderService.findByUuid(uuid);
 
         orderService.alteringOrderStatusToCanceled(order);
     }

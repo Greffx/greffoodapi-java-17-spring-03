@@ -15,7 +15,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OrderResponse {
 
-        private Long id;
+        private String uuid; //exposing UUID to user, better than to expose real id, will use only internally, to queries and such
+        //UUID is for users to use, to find by id and others
         private BigDecimal subtotal;
         private BigDecimal deliveryTax;
         private BigDecimal total;

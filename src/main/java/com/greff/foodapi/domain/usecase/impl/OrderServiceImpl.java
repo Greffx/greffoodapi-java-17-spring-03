@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @Service
@@ -26,8 +27,8 @@ public class OrderServiceImpl implements OrderService {
     private final UserService userService;
 
     @Override
-    public Order findById(Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new OrderNotFoundException("Order", id));
+    public Order findByUuid(String uuid) {
+        return orderRepository.findByUuid(uuid).orElseThrow(() -> new OrderNotFoundException("Order", uuid));
     }
 
     @Override
@@ -97,6 +98,7 @@ public class OrderServiceImpl implements OrderService {
         var city = cityService.findById(order.getAddress().getCity().getId());
         var user = userService.findById(1L);
 
+        order.setUuid(String.valueOf(UUID.randomUUID()));
         order.setRestaurant(restaurant);
         order.setDeliveryTax(restaurant.getDeliveryTax());
         order.setPaymentMethod(paymentMethod);
