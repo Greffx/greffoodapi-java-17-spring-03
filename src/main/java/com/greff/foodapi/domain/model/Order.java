@@ -80,4 +80,19 @@ public class Order {
     public void sumOrderTotalPrice() {
         setTotal(getSubtotal().add(restaurant.getDeliveryTax()));
     }
+
+    public void alteringStatusToConfirmed() {
+        setStatus(OrderStatus.CONFIRMED);
+        setConfirmedDate(OffsetDateTime.now());
+    }
+
+    public void alteringStatusToDelivered() {
+        setStatus(OrderStatus.DELIVERED);
+        setDeliveredDate(OffsetDateTime.now());
+    }
+
+    public void alteringStatusToCanceled() {
+        setStatus(OrderStatus.CANCELED);
+        setCanceledDate(OffsetDateTime.now());
+    }
 }

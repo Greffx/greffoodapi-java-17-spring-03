@@ -46,4 +46,27 @@ public class OrderController {
         return orderAssembler.toModel(order);
     }
 
+    @PutMapping("/{id}/confirmation")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void alteringOrderStatusToConfirmed(@PathVariable Long id) {
+        var order = orderService.findById(id);
+
+        orderService.alteringOrderStatusToConfirmed(order);
+    }
+
+    @PutMapping("/{id}/delivered")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void alteringOrderStatusToDelivered(@PathVariable Long id) {
+        var order = orderService.findById(id);
+
+        orderService.alteringOrderStatusToDelivered(order);
+    }
+
+    @PutMapping("/{id}/cancellation")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void alteringOrderStatusToCanceled(@PathVariable Long id) {
+        var order = orderService.findById(id);
+
+        orderService.alteringOrderStatusToCanceled(order);
+    }
 }

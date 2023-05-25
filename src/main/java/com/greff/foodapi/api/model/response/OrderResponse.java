@@ -1,5 +1,6 @@
 package com.greff.foodapi.api.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.greff.foodapi.domain.enums.OrderStatus;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Setter
 @Getter
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class OrderResponse {
 
         private Long id;
