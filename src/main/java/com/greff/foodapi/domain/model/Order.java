@@ -1,6 +1,7 @@
 package com.greff.foodapi.domain.model;
 
 import com.greff.foodapi.domain.enums.OrderStatus;
+import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -95,4 +96,16 @@ public class Order {
         setStatus(OrderStatus.CANCELED);
         setCanceledDate(OffsetDateTime.now());
     }
+
+    //instead of lombok with annotation @Data doing this method, I will implement
+    //it's going to be a private one, so only can change in this class
+    private void setStatus(OrderStatus newStatus) {
+        if (getStatus().cantAlterTo(newStatus, getStatus())) throw new BusinessException(
+                String.format("Status %s from order %d can't be alter to %s Status", getStatus(), getId(), newStatus));
+
+        this.status = newStatus;
+    }
+
+    //entity class can have some business methods implemented to use, that makes entity class rich in content,
+    //it is ok, can be only used for entity representation too, depends on how you want to use
 }

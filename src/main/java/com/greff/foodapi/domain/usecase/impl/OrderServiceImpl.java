@@ -1,6 +1,5 @@
 package com.greff.foodapi.domain.usecase.impl;
 
-import com.greff.foodapi.domain.enums.OrderStatus;
 import com.greff.foodapi.domain.model.Order;
 import com.greff.foodapi.domain.model.Product;
 import com.greff.foodapi.domain.repository.OrderRepository;
@@ -64,44 +63,19 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void alteringOrderStatusToConfirmed(Order order) {
-        try {
-            if (order.getStatus() != OrderStatus.CREATED) throw new BusinessException(
-                    "Can only CONFIRM if order is CREATED");
-
-            order.alteringStatusToConfirmed();
-
-        } catch (BusinessException e) {
-            throw new BusinessException(e.getMessage());
-        }
+        order.alteringStatusToConfirmed();
     }
 
     @Transactional
     @Override
     public void alteringOrderStatusToDelivered(Order order) {
-        try {
-            if (order.getStatus() != OrderStatus.CONFIRMED) throw new BusinessException(
-                    "Can only be DELIVERED after CONFIRMATION");
-
-            order.alteringStatusToDelivered();
-
-        } catch (BusinessException e) {
-            throw new BusinessException(e.getMessage());
-        }
+        order.alteringStatusToDelivered();
     }
 
     @Transactional
     @Override
     public void alteringOrderStatusToCanceled(Order order) {
-        try {
-            if (order.getStatus() != OrderStatus.CREATED) throw new BusinessException(
-                    "Can CANCEL when it's CREATED, can't cancel after that");
-
-            order.alteringStatusToCanceled();
-
-        } catch (BusinessException e) {
-            throw new BusinessException(e.getMessage());
-        }
-
+        order.alteringStatusToCanceled();
     }
 
     private void validatingOrderItems(Order order) {
