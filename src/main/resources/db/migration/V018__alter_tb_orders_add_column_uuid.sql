@@ -1,0 +1,3 @@
+ALTER TABLE tb_orders ADD COLUMN external_id VARCHAR(50) NOT NULL AFTER id; 	-- to go after column id, that is why 'AFTER id'
+UPDATE tb_orders SET external_id = uuid() WHERE id > 0; -- to set value column for each instance with Unique Universal Identifier
+ALTER TABLE tb_orders ADD CONSTRAINT uk_order_external_id unique (external_id); -- add constraint with invented name to modify external id column to a unique value type

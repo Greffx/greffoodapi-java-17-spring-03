@@ -205,10 +205,10 @@ VALUES (5, 2);
 INSERT INTO tb_restaurants_users(restaurant_id, user_id)
 VALUES (6, 1);
 
-INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
                       city_address_id, cep_address,
                       complement_address, number_address, public_area_address, street_address)
-VALUES (75, 10, 85, utc_timestamp, 'CREATED', 1, 1, 1, 1, 12345,
+VALUES ('300dfba8-aad9-4e30-bb4f-4a5362be06a1', 75, 10, 85, utc_timestamp, 'CREATED', 1, 1, 1, 1, 12345,
         'near to the river', 75, 'river', 'river block street');
 
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
@@ -216,10 +216,10 @@ VALUES (3, 15, 45, 'cool food', 1, 1);
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
 VALUES (2, 15, 30, 'great food', 1, 2);
 
-INSERT INTO tb_orders(subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
                       city_address_id, cep_address,
                       complement_address, number_address, public_area_address, street_address)
-VALUES (15, 10, 25, utc_timestamp, 'CREATED', 1, 2, 2, 2, 12346,
+VALUES ('705aa8ab-4def-448a-962b-caab32c368b3', 15, 10, 25, utc_timestamp, 'CREATED', 1, 2, 2, 2, 12346,
         'near the house', 123, 'house', 'house block street');
 
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
@@ -242,3 +242,8 @@ VALUES (1, 15, 15, 'cool food', 2, 3);
 #TIMESTAMP
 #utc_timestamp use local date time of your computer system
 #utc_timestamp use date time changed with UTC pattern
+
+#UUID
+#unique universal identifier, better to use this in external implementation,
+#like find by id than id 1,2,3. could be a security fail, UUID helps with that, don't reveal true id,
+#better to use internal id to help with problems and such
