@@ -49,4 +49,15 @@ public class ProductServiceImpl implements ProductService {
 
         return restaurant.getProducts();
     }
+
+    @Override
+    public List<Product> findActiveProducts(Long restaurantId) {
+        var restaurant = restaurantService.findById(restaurantId);
+
+        List<Product> products = productRepository.findByActiveProducts(restaurant);
+
+        return products;
+    }
+
+
 }

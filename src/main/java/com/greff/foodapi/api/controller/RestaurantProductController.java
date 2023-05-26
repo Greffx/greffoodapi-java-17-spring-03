@@ -46,8 +46,19 @@ public class RestaurantProductController {
     }
 
     @GetMapping
-    public List<ProductResponse> findAllProducts(@PathVariable Long restaurantId) {
-        var products = productService.findAll(restaurantId);
+    public List<ProductResponse> findAllProducts(@PathVariable Long restaurantId,
+                                                 @RequestParam( //request param, not like pathVariable, will go after ? (end of URL) like
+                                                         //restaurants/{restaurantId}/products?active=true&(& means that can bind another request param)
+                                                         value = "active", //setting param name to use on URL
+                                                         defaultValue = "false", //can set it default value, if user don't put anything
+                                                         required = false //default is true, but put it if user want to
+                                                 ) Boolean active) {
+        List<Product> products;
+
+        if (Boolean.TRUE.equals(active)) products = productService.findActiveProducts(restaurantId); //if request param is true return filtered list
+
+        else products = productService.findAll(restaurantId); //else return all products, true or false
+
 
         return productAssembler.toCollectionModel(products);
     }
@@ -58,8 +69,4 @@ public class RestaurantProductController {
 
         return productAssembler.toModel(product);
     }
-
-
-
-
 }

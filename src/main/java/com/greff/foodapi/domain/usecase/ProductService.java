@@ -13,4 +13,6 @@ public interface ProductService {
     Product findProductThroughRestaurant(Long restaurantId, Long productId);
 
     List<Product> findAll(Long restaurantId);
+
+    List<Product> findActiveProducts(Long restaurantId);
 }
