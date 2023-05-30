@@ -23,7 +23,7 @@ public class OrderSpecs {
                 //so will try to fetch attributes in count that don't exist and throw exception
                 //is like 'SELECT count(o1_0.id) FROM tb_orders o1_0 WHERE o1_0.user_id=?', that's why throws exception
                 //SELECT count(o1_0.id) FROM tb_orders o1_0 WHERE o1_0.user_id=? and counts how many elements with that filter
-                //(this query is right, just using as example to show that really does and why thorws exception)
+                //(this query is right, just using as example to show that really does and why throws exception)
                 //this if says 'entity order is equal to query type, if yes, do fetch'
 
                 //to resolve many queries, to only fetch all in one query use fetch, very similar to the one that I used in repository
