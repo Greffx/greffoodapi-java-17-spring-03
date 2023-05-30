@@ -7,6 +7,7 @@ import com.greff.foodapi.api.model.response.ProblemType;
 import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.MessageSource;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@AllArgsConstructor
 @RestControllerAdvice
 //this annotation means that can add exception handlers which all project exceptions will be treated in here
 //center point to treat them will be this class
@@ -39,10 +41,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
             "Internal error unexpected, try again and if happens the same problem, contact system administrator.";
 
     private final MessageSource messageSource; //interface to fix messages
-
-    public ApiExceptionHandler(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     //don't need to treat all internal exceptions spring MVC
     // springResponseEntityExceptionHandler this class already do that for us, can be inherited by exception global classes like mine
