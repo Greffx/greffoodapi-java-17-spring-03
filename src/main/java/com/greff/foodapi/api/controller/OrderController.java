@@ -5,6 +5,7 @@ import com.greff.foodapi.api.assembler.OrderRequestDisassembler;
 import com.greff.foodapi.api.model.request.OrderRequest;
 import com.greff.foodapi.api.model.response.OrderResponse;
 import com.greff.foodapi.api.model.response.SimpleOrderResponse;
+import com.greff.foodapi.domain.repository.filter.OrderFilter;
 import com.greff.foodapi.domain.usecase.OrderService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -30,8 +31,15 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<SimpleOrderResponse> findById() {
+    public List<SimpleOrderResponse> findAll() {
         var orders = orderService.findAll();
+
+        return orderAssembler.toSimpleCollectionModel(orders);
+    }
+
+    @GetMapping("/filter")
+    public List<SimpleOrderResponse> findAllWithFilters(OrderFilter orderFilter) {
+        var orders = orderService.findAllWithFilters(orderFilter);
 
         return orderAssembler.toSimpleCollectionModel(orders);
     }

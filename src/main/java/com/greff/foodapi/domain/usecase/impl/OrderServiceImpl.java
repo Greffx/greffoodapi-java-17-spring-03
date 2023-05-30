@@ -3,6 +3,7 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.greff.foodapi.domain.model.Order;
 import com.greff.foodapi.domain.model.Product;
 import com.greff.foodapi.domain.repository.OrderRepository;
+import com.greff.foodapi.domain.repository.filter.OrderFilter;
 import com.greff.foodapi.domain.usecase.*;
 import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
@@ -14,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+
+import static com.greff.foodapi.infrastructure.repository.spec.OrderSpecs.usingFilters;
 
 @AllArgsConstructor
 @Service
@@ -34,6 +37,12 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> findAllWithFilters(OrderFilter orderFilter) {
+        System.out.println("PASSOU AQUI 1 ");
+        return orderRepository.findAll(usingFilters(orderFilter)); //using specification factor method
     }
 
     @Transactional
