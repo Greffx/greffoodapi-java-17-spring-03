@@ -6,8 +6,8 @@ import com.greff.foodapi.domain.model.PaymentMethod;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @Component
@@ -19,7 +19,7 @@ public class PaymentMethodAssembler {
         return paymentMethodMapper.fromPaymentMethodToPaymentMethodResponse(paymentMethod);
     }
 
-    public Set<PaymentMethodResponse> toCollectionModel(Set<PaymentMethod> paymentMethods) {
-        return paymentMethods.stream().map(this::toModel).collect(Collectors.toSet());
+    public List<PaymentMethodResponse> toCollectionModel(Collection<PaymentMethod> paymentMethods) {
+        return paymentMethods.stream().map(this::toModel).toList();
     }
 }

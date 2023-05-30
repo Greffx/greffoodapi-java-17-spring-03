@@ -6,8 +6,8 @@ import com.greff.foodapi.domain.model.Permission;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.List;
 
 @AllArgsConstructor
 @Component
@@ -19,7 +19,7 @@ public class PermissionAssembler {
         return permissionMapper.fromPermissionToPermissionResponse(permission);
     }
 
-    public Set<PermissionResponse> toCollectionModel(Set<Permission> permissions) {
-        return permissions.stream().map(this::toModel).collect(Collectors.toSet());
+    public List<PermissionResponse> toCollectionModel(Collection<Permission> permissions) {
+        return permissions.stream().map(this::toModel).toList();
     }
 }

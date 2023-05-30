@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -19,7 +19,7 @@ public class RestaurantPaymentMethodController {
     private final PaymentMethodAssembler paymentMethodAssembler;
 
     @GetMapping//receiving restaurantId, to list all its payment methods
-    public Set<PaymentMethodResponse> findAll(@PathVariable Long restaurantId) {//since binding is in line 15, don't need to use in line 20
+    public List<PaymentMethodResponse> findAll(@PathVariable Long restaurantId) {//since binding is in line 15, don't need to use in line 20
         Restaurant restaurant = restaurantService.findById(restaurantId);
 
         return paymentMethodAssembler.toCollectionModel(restaurant.getPaymentMethods());

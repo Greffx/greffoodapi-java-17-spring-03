@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -18,7 +18,7 @@ public class GroupPermissionController {
     private final GroupService groupService;
 
     @GetMapping
-    public Set<PermissionResponse> findAllPermissions(@PathVariable Long groupId) {
+    public List<PermissionResponse> findAllPermissions(@PathVariable Long groupId) {
         var group = groupService.findById(groupId);
 
         var permissions = group.getPermissions();
@@ -28,7 +28,7 @@ public class GroupPermissionController {
 
     @PutMapping("/{permissionId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void permissionAsassociation(@PathVariable Long groupId, @PathVariable Long permissionId) {
+    public void permissionAssociation(@PathVariable Long groupId, @PathVariable Long permissionId) {
         groupService.associatePermission(groupId, permissionId);
     }
 
