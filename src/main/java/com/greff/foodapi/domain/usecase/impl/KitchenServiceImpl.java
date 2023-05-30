@@ -8,6 +8,8 @@ import com.greff.foodapi.domain.usecase.KitchenService;
 import com.greff.foodapi.domain.usecase.exception.EntityInUseException;
 import com.greff.foodapi.domain.usecase.exception.KitchenNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +24,11 @@ public class KitchenServiceImpl implements KitchenService {
         this.kitchenRepository = kitchenRepository;
     }
 
-    public List<Kitchen> findAll() {
-        return kitchenRepository.findAll(); //the return will be a list of kitchens that we got with repository
+    public Page<Kitchen> findAll(Pageable pageable) {
+        //the return will be a list of kitchens that we got with repository
+        //this method findAll from JPA repository, accepts PAGEABLE
+        //and returns a PAGE now, not a list anymore
+        return kitchenRepository.findAll(pageable);
     }
 
     @Override

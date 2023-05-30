@@ -8,6 +8,9 @@ import com.greff.foodapi.api.model.response.KitchenResponse;
 import com.greff.foodapi.domain.usecase.KitchenService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,12 +34,21 @@ public class KitchenController {
 
     @GetMapping
     //need to map method, getMapping means that requests with verb http 'GET' will use this method
-    public List<KitchenResponse> findAll() { //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
+    public Page<KitchenResponse> findAll(Pageable pageable) {//to use PAGEABLE, need to come with param from request
+        //this is called 'endpoint', with methods like GET, POST, PUT and REMOVE
         //this can be called as a collection of resources, that means is something that is exposed in web
         //resource to be reached, need to be id by a URI, we need a URL to request, using http protocol
-        var kitchens = kitchenService.findAll();
+        var kitchensPage = kitchenService.findAll(pageable);
 
-        return kitchenAssembler.toCollectionModel(kitchens);
+        //getContent() get elements from that page. Returns the page content as List.
+        //kitchensPage.getContent()
+
+        List<KitchenResponse> kitchensModel = kitchenAssembler.toCollectionModel(kitchensPage.getContent());
+
+        //first param is content, elements of a list, passing pageable from request param and total number of elements
+        Page<KitchenResponse> kitchenModelPage = new PageImpl<>(kitchensModel, pageable, kitchensPage.getTotalElements());
+
+        return kitchenModelPage;
     }
 
     @GetMapping("/{id}") //This is specification, we need this because can't have 2 endpoints with same path.
