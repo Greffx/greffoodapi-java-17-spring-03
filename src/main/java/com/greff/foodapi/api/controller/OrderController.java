@@ -9,6 +9,9 @@ import com.greff.foodapi.domain.repository.filter.OrderFilter;
 import com.greff.foodapi.domain.usecase.OrderService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,10 +41,14 @@ public class OrderController {
     }
 
     @GetMapping("/filter")
-    public List<SimpleOrderResponse> findAllWithFilters(OrderFilter orderFilter) {
-        var orders = orderService.findAllWithFilters(orderFilter);
+    public Page<SimpleOrderResponse> findAllWithFilters(OrderFilter orderFilter, Pageable pageable) {
+        var ordersPage = orderService.findAllWithFilters(orderFilter, pageable);
 
-        return orderAssembler.toSimpleCollectionModel(orders);
+        List<SimpleOrderResponse> ordersModel = orderAssembler.toSimpleCollectionModel(ordersPage.getContent());
+
+        Page<SimpleOrderResponse> ordersModelPage = new PageImpl<>(ordersModel, pageable, ordersPage.getTotalElements());
+
+        return ordersModelPage;
     }
 
     @PostMapping

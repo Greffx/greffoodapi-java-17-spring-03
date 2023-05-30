@@ -10,6 +10,8 @@ import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;
 import com.greff.foodapi.domain.usecase.exception.OrderNotFoundException;
 import com.greff.foodapi.domain.usecase.exception.PaymentMethodNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,12 +39,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
-    }
+    } 
 
     @Override
-    public List<Order> findAllWithFilters(OrderFilter orderFilter) {
-        System.out.println("PASSOU AQUI 1 ");
-        return orderRepository.findAll(usingFilters(orderFilter)); //using specification factor method
+    public Page<Order> findAllWithFilters(OrderFilter orderFilter, Pageable pageable) {
+        return orderRepository.findAll(usingFilters(orderFilter), pageable); //using specification factor method
     }
 
     @Transactional

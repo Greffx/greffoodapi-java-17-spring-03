@@ -18,10 +18,19 @@ public class OrderSpecs {
     public static Specification<Order> usingFilters(OrderFilter orderFilter) { //returning an order dynamic specification query
         return (root, query, criteriaBuilder) -> { //anonymous method, so a lambda
 
-            //to resolve many queries, to only fetch all in one query use fetch, very similar to the one that I used in repository
-            root.fetch("restaurant").fetch("kitchen");
-            //one attribute fetched can fetch another attribute if necessary
-            root.fetch("user");
+            if (Order.class.equals(query.getResultType())) {
+                //need this if block because when using pageable, could select count, it does that to count how many elements
+                //so will try to fetch attributes in count that don't exist and throw exception
+                //is like 'SELECT count(o1_0.id) FROM tb_orders o1_0 WHERE o1_0.user_id=?', that's why throws exception
+                //SELECT count(o1_0.id) FROM tb_orders o1_0 WHERE o1_0.user_id=? and counts how many elements with that filter
+                //(this query is right, just using as example to show that really does and why thorws exception)
+                //this if says 'entity order is equal to query type, if yes, do fetch'
+
+                //to resolve many queries, to only fetch all in one query use fetch, very similar to the one that I used in repository
+                root.fetch("restaurant").fetch("kitchen");
+                //one attribute fetched can fetch another attribute if necessary
+                root.fetch("user");
+            }
 
             var predicates = new ArrayList<Predicate>(); //creating a predicate arrayList, will hold several predicates
             //this list hold a list of query filters, like name equals to something or value greater or equal to something
