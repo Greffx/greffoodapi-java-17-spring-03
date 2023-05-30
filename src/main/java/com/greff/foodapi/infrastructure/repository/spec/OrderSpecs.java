@@ -46,9 +46,9 @@ public class OrderSpecs {
 
             if (orderFilter.getInitCreationDate() != null)
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("creationDate"), orderFilter.getInitCreationDate()));
-//
-//            if (orderFilter.getEndCreationDate() != null)
-//                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("creationDate"), orderFilter.getEndCreationDate()));
+
+            if (orderFilter.getEndCreationDate() != null)
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("creationDate"), orderFilter.getEndCreationDate()));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0])); //need to return a 'Predicate...', which is a varargs
             //so to be a varargs need to instance like an Array, and this is a way to do this '.toArray(new Predicate[0])',
