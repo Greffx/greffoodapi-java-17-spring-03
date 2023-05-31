@@ -22,6 +22,7 @@ public class OrderSpecs {
                 //need this if block because when using pageable, could select count, it does that to count how many elements
                 //so will try to fetch attributes in count that don't exist and throw exception
                 //is like 'SELECT count(o1_0.id) FROM tb_orders o1_0 WHERE o1_0.user_id=?', that's why throws exception
+                //doesn't make sense fetch with count
                 //SELECT count(o1_0.id) FROM tb_orders o1_0 WHERE o1_0.user_id=? and counts how many elements with that filter
                 //(this query is right, just using as example to show that really does and why throws exception)
                 //this if says 'entity order is equal to query type, if yes, do fetch'
