@@ -3,7 +3,7 @@ package com.greff.foodapi.domain.usecase.impl;
 import com.greff.foodapi.domain.model.Order;
 import com.greff.foodapi.domain.model.Product;
 import com.greff.foodapi.domain.repository.OrderRepository;
-import com.greff.foodapi.domain.repository.filter.OrderFilter;
+import com.greff.foodapi.domain.model.filter.OrderFilter;
 import com.greff.foodapi.domain.usecase.*;
 import com.greff.foodapi.domain.usecase.exception.BusinessException;
 import com.greff.foodapi.domain.usecase.exception.NotFoundObjectException;

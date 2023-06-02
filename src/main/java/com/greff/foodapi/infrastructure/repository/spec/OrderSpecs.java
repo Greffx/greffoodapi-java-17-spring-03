@@ -1,7 +1,7 @@
 package com.greff.foodapi.infrastructure.repository.spec;
 
 import com.greff.foodapi.domain.model.Order;
-import com.greff.foodapi.domain.repository.filter.OrderFilter;
+import com.greff.foodapi.domain.model.filter.OrderFilter;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 

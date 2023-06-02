@@ -5,7 +5,7 @@ import com.greff.foodapi.api.assembler.OrderRequestDisassembler;
 import com.greff.foodapi.api.model.request.OrderRequest;
 import com.greff.foodapi.api.model.response.OrderResponse;
 import com.greff.foodapi.api.model.response.SimpleOrderResponse;
-import com.greff.foodapi.domain.repository.filter.OrderFilter;
+import com.greff.foodapi.domain.model.filter.OrderFilter;
 import com.greff.foodapi.domain.usecase.OrderService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

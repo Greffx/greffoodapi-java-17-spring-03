@@ -1,4 +1,4 @@
-package com.greff.foodapi.domain.repository.filter;
+package com.greff.foodapi.domain.model.filter;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.OffsetDateTime;
 
 //this class is a DTO, to represent filters from controllers requests, URL query params
+//it's a DOMAIN filter now, makes more sense
 @Getter
 @Setter
 public class OrderFilter {

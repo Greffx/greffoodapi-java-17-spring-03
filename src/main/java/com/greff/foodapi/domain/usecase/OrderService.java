@@ -1,7 +1,7 @@
 package com.greff.foodapi.domain.usecase;
 
 import com.greff.foodapi.domain.model.Order;
-import com.greff.foodapi.domain.repository.filter.OrderFilter;
+import com.greff.foodapi.domain.model.filter.OrderFilter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
