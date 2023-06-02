@@ -27,7 +27,7 @@ public class SellsQueryServiceImpl implements SellsQueryService {
     @Override
     //important to understand this method don't need to ONLY return queries, can transform objects too, work with objects or stuff similar to this
     //like a service impl
-    public List<OrderDailySells> findDailySells(DailySellsFilter dailySellsFilter) {
+    public List<OrderDailySells> findDailySells(DailySellsFilter dailySellsFilter, String timeOffSet) {
         CriteriaBuilder builder = manager.getCriteriaBuilder(); //used to create queries, criteria, aggregate functions and more
         //this is the criteria builder factor, used to create a criteria instance
 
@@ -70,11 +70,18 @@ public class SellsQueryServiceImpl implements SellsQueryService {
             );
         }
 
+        //THERE IS A QUERY LIKE THIS IN SQL DB FOR EXAMPLE, BETTER TO REMEMBER ALL OF THIS
+
+        //this expression returns like CONVERT_TZ(CREATION_DATE, '+00:00', '-03:00') '-03:00' this one could any time that user can choose
+        Expression<Date> functionConvertTzCreationDate = builder.function("convert_tz", Date.class,
+                orderRoot.get(CREATION_DATE), builder.literal("+00:00"), builder.literal(timeOffSet));
+
         //builder.function() from interface EXPRESSION will create an expression to execute a function from database
         //first param is name function in database that will be used,
         //second param is what type to expected to return in java and
         //third param is which property to use for this function
-        Expression<Date> dateFunctionCreationDate = builder.function("DATE", Date.class, orderRoot.get(CREATION_DATE));
+        //this expression got another expression inside, would be like DATE(CONVERT_TZ(CREATION_DATE, '+00:00', '-03:00'))
+        Expression<Date> dateFunctionCreationDate = builder.function("DATE", Date.class, functionConvertTzCreationDate);
         //Expression represents a value or an expression that can be used in the selection, grouping, or filtering of query results
 
         //this one means that select will be used in construct from another class

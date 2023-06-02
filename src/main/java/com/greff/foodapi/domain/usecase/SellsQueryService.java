@@ -9,5 +9,5 @@ public interface SellsQueryService {
     //created interface because is more like infrastructure stuff, since will use JPA to query
     //so impl of this class will be there
 
-    List<OrderDailySells> findDailySells(DailySellsFilter dailySellsFilter);
+    List<OrderDailySells> findDailySells(DailySellsFilter dailySellsFilter, String timeOffSet);
 }
