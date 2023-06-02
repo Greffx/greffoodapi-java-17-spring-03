@@ -264,7 +264,16 @@ VALUES (3, 15, 45, 'cool food', 1, 1);
 INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
                       city_address_id, cep_address,
                       complement_address, number_address, public_area_address, street_address)
-VALUES (uuid(), 75, 10, 85, '2023-05-21 18:00:00', 'DELIVERED', 2, 1, 1, 1, 12345,
+VALUES (uuid(), 75, 10, 85, '2023-05-20 18:00:00', 'DELIVERED', 3, 1, 1, 1, 12345,
+        'near to the river', 75, 'close to them', 'street 1262');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (3, 15, 45, 'cool food', 1, 1);
+
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (uuid(), 75, 10, 85, '2023-05-21 01:00:00', 'DELIVERED', 2, 1, 1, 1, 12345,
         'near to the river', 75, 'close to him', 'street 661');
 
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
