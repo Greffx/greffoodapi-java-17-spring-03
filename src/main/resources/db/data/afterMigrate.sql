@@ -225,6 +225,51 @@ VALUES ('705aa8ab-4def-448a-962b-caab32c368b3', 15, 10, 25, utc_timestamp, 'CREA
 INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
 VALUES (1, 15, 15, 'cool food', 2, 3);
 
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (uuid(), 75, 10, 85, '2023-05-11 11:00:00', 'CONFIRMED', 1, 1, 1, 1, 12345,
+        'near to the river', 75, 'tower', 'street 412');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (3, 15, 45, 'cool food', 1, 1);
+
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (uuid(), 75, 10, 85, '2023-05-11 12:00:00', 'DELIVERED', 1, 1, 1, 1, 12345,
+        'near to the river', 75, 'idk', 'street 111');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (3, 15, 45, 'cool food', 1, 1);
+
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (uuid(), 75, 10, 85, '2023-03-11 13:00:00', 'CONFIRMED', 1, 1, 1, 1, 12345,
+        'near to the river', 75, 'clock tower', 'street 123');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (3, 15, 45, 'cool food', 1, 1);
+
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (uuid(), 75, 10, 85, '2023-05-21 18:00:00', 'CANCELED', 2, 1, 1, 1, 12345,
+        'near to the river', 75, 'close to you', 'street 666');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (3, 15, 45, 'cool food', 1, 1);
+
+INSERT INTO tb_orders(external_id, subtotal, delivery_tax, total, creation_date, status, restaurant_id, payment_method_id, user_id,
+                      city_address_id, cep_address,
+                      complement_address, number_address, public_area_address, street_address)
+VALUES (uuid(), 75, 10, 85, '2023-05-21 18:00:00', 'DELIVERED', 2, 1, 1, 1, 12345,
+        'near to the river', 75, 'close to him', 'street 661');
+
+INSERT INTO tb_order_items(quantity, unity_price, total_price, observation, order_id, product_id)
+VALUES (3, 15, 45, 'cool food', 1, 1);
+
 #insert into, but if there's a problem with constraint or anything like it, just ignore command and keep going
 #file callback, when flyway  migrations is done will call afterMigration file, IT'S NOT A MIGRATION, it's a simple callback sql file
 #we can do anything inside this file
