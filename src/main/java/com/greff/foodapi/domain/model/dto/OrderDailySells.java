@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor //important to use this all args constructor because will be needed it in service impl in builder.construct method
 @Setter
@@ -13,7 +13,7 @@ import java.util.Date;
 public class OrderDailySells {
     //class to represent response DTO, since it hold no sensitive data, it is ok to return this one
 
-    private Date date;
+    private LocalDate date;
     private Long totalSells;
     private BigDecimal totalProfit;
 

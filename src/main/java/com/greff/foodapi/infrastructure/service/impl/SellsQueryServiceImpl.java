@@ -10,9 +10,9 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -73,7 +73,7 @@ public class SellsQueryServiceImpl implements SellsQueryService {
         //THERE IS A QUERY LIKE THIS IN SQL DB FOR EXAMPLE, BETTER TO REMEMBER ALL OF THIS
 
         //this expression returns like CONVERT_TZ(CREATION_DATE, '+00:00', '-03:00') '-03:00' this one could any time that user can choose
-        Expression<Date> functionConvertTzCreationDate = builder.function("convert_tz", Date.class,
+        Expression<LocalDate> functionConvertTzCreationDate = builder.function("convert_tz", LocalDate.class,
                 orderRoot.get(CREATION_DATE), builder.literal("+00:00"), builder.literal(timeOffSet));
 
         //builder.function() from interface EXPRESSION will create an expression to execute a function from database
@@ -81,7 +81,7 @@ public class SellsQueryServiceImpl implements SellsQueryService {
         //second param is what type to expected to return in java and
         //third param is which property to use for this function
         //this expression got another expression inside, would be like DATE(CONVERT_TZ(CREATION_DATE, '+00:00', '-03:00'))
-        Expression<Date> dateFunctionCreationDate = builder.function("DATE", Date.class, functionConvertTzCreationDate);
+        Expression<LocalDate> dateFunctionCreationDate = builder.function("DATE", LocalDate.class, functionConvertTzCreationDate);
         //Expression represents a value or an expression that can be used in the selection, grouping, or filtering of query results
 
         //this one means that select will be used in construct from another class
