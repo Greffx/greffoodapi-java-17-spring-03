@@ -30,6 +30,8 @@ DELETE
 FROM tb_orders;
 DELETE
 FROM tb_order_items;
+DELETE
+FROM tb_product_photo;
 
 SET foreign_key_checks = 1;
 
